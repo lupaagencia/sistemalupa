@@ -48907,6 +48907,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -48960,14 +48967,14 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
             idcliente: 0,
             cliente_seleccionado: null,
             cseleccionado: false
-        }, _defineProperty(_ref, 'nombre', ''), _defineProperty(_ref, 'tipo_cliente', 'Natural'), _defineProperty(_ref, 'tipo_documento', ''), _defineProperty(_ref, 'documento', ''), _defineProperty(_ref, 'direccion', ''), _defineProperty(_ref, 'pais', 'Colombia'), _defineProperty(_ref, 'departamento', 'Valle del Cauca'), _defineProperty(_ref, 'ciudad', 'Cali'), _defineProperty(_ref, 'telefono', ''), _defineProperty(_ref, 'email', ''), _defineProperty(_ref, 'contacto', ''), _defineProperty(_ref, 'telefono_contacto', ''), _defineProperty(_ref, 'email_contacto', ''), _defineProperty(_ref, 'arrayDetalle', []), _defineProperty(_ref, 'titulo_detalle', ''), _defineProperty(_ref, 'valor_detalle', ''), _defineProperty(_ref, 'descripcion_detalle', ''), _defineProperty(_ref, 'arrayArticulos', []), _defineProperty(_ref, 'idarticulo', 0), _defineProperty(_ref, 'articulo_seleccionado', null), _defineProperty(_ref, 'aseleccionado', false), _defineProperty(_ref, 'nombre_articulo', ''), _defineProperty(_ref, 'precio', 0), _defineProperty(_ref, 'cantidad', 1000), _defineProperty(_ref, 'vieworden', 0), _defineProperty(_ref, 'listado', 1), _defineProperty(_ref, 'idcosto', 0), _defineProperty(_ref, 'nombre_insumo', ''), _defineProperty(_ref, 'valor_insumo', 0), _defineProperty(_ref, 'unidad_medida', ''), _defineProperty(_ref, 'insumo_seleccionado', null), _defineProperty(_ref, 'iseleccionado', false), _defineProperty(_ref, 'arrayInsumos', []), _defineProperty(_ref, 'arrayCostos', []), _defineProperty(_ref, 'descripcion_costo', ''), _defineProperty(_ref, 'valor_costo', 0), _defineProperty(_ref, 'cantidad_costo', 1), _defineProperty(_ref, 'tipo_costo', ''), _defineProperty(_ref, 'orden_costo', 0), _defineProperty(_ref, 'modala', 0), _defineProperty(_ref, 'modalc', 0), _defineProperty(_ref, 'modali', 0), _defineProperty(_ref, 'modalfecha', 0), _defineProperty(_ref, 'modalIntervalo', 0), _defineProperty(_ref, 'tituloModal', ''), _defineProperty(_ref, 'tipoAccion', 0), _defineProperty(_ref, 'errorIngreso', 0), _defineProperty(_ref, 'errorMostrarMsjIngreso', []), _defineProperty(_ref, 'pagination', {
+        }, _defineProperty(_ref, 'nombre', ''), _defineProperty(_ref, 'tipo_cliente', 'Natural'), _defineProperty(_ref, 'tipo_documento', ''), _defineProperty(_ref, 'num_documento', ''), _defineProperty(_ref, 'direccion', ''), _defineProperty(_ref, 'pais', 'Colombia'), _defineProperty(_ref, 'departamento', 'Valle del Cauca'), _defineProperty(_ref, 'ciudad', 'Cali'), _defineProperty(_ref, 'telefono', ''), _defineProperty(_ref, 'email', ''), _defineProperty(_ref, 'contacto', ''), _defineProperty(_ref, 'telefono_contacto', ''), _defineProperty(_ref, 'email_contacto', ''), _defineProperty(_ref, 'arrayDetalle', []), _defineProperty(_ref, 'titulo_detalle', ''), _defineProperty(_ref, 'valor_detalle', ''), _defineProperty(_ref, 'descripcion_detalle', ''), _defineProperty(_ref, 'arrayArticulos', []), _defineProperty(_ref, 'idarticulo', 0), _defineProperty(_ref, 'articulo_seleccionado', null), _defineProperty(_ref, 'aseleccionado', false), _defineProperty(_ref, 'nombre_articulo', ''), _defineProperty(_ref, 'precio', 0), _defineProperty(_ref, 'cantidad', 1000), _defineProperty(_ref, 'vieworden', 0), _defineProperty(_ref, 'listado', 1), _defineProperty(_ref, 'idcosto', 0), _defineProperty(_ref, 'nombre_insumo', ''), _defineProperty(_ref, 'valor_insumo', 0), _defineProperty(_ref, 'unidad_medida', ''), _defineProperty(_ref, 'insumo_seleccionado', null), _defineProperty(_ref, 'iseleccionado', false), _defineProperty(_ref, 'arrayInsumos', []), _defineProperty(_ref, 'arrayCostos', []), _defineProperty(_ref, 'descripcion_costo', ''), _defineProperty(_ref, 'valor_costo', 0), _defineProperty(_ref, 'cantidad_costo', 1), _defineProperty(_ref, 'tipo_costo', ''), _defineProperty(_ref, 'orden_costo', 0), _defineProperty(_ref, 'modala', 0), _defineProperty(_ref, 'modalc', 0), _defineProperty(_ref, 'modali', 0), _defineProperty(_ref, 'modalfecha', 0), _defineProperty(_ref, 'modalIntervalo', 0), _defineProperty(_ref, 'tituloModal', ''), _defineProperty(_ref, 'tipoAccion', 0), _defineProperty(_ref, 'errorIngreso', 0), _defineProperty(_ref, 'errorMostrarMsjIngreso', []), _defineProperty(_ref, 'pagination', {
             'total': 0,
             'current_page': 0,
             'per_page': 0,
             'last_page': 0,
             'from': 0,
             'to': 0
-        }), _defineProperty(_ref, 'offset', 3), _defineProperty(_ref, 'criterio', ''), _defineProperty(_ref, 'buscar_cliente', ''), _defineProperty(_ref, 'criterioA', 'nombre'), _defineProperty(_ref, 'buscar_articulo', ''), _defineProperty(_ref, 'buscar_insumo', ''), _defineProperty(_ref, 'topedit', 0), _defineProperty(_ref, 'dominio', ''), _defineProperty(_ref, 'msjCliente', ''), _defineProperty(_ref, 'msjArticulo', ''), _ref;
+        }), _defineProperty(_ref, 'offset', 3), _defineProperty(_ref, 'criterio', ''), _defineProperty(_ref, 'buscar_cliente', ''), _defineProperty(_ref, 'criterioA', 'nombre'), _defineProperty(_ref, 'buscar_articulo', ''), _defineProperty(_ref, 'buscar_insumo', ''), _defineProperty(_ref, 'topedit', 0), _defineProperty(_ref, 'dominio', ''), _defineProperty(_ref, 'msjCliente', ''), _defineProperty(_ref, 'msjArticulo', ''), _defineProperty(_ref, 'seccion', ''), _ref;
     },
 
     components: {},
@@ -49112,7 +49119,7 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
             me.nombre = val1.nombre;
             me.tipo_documento = val1.tipo_documento;
             me.tipo_cliente = val1.tipo_cliente;
-            me.documento = val1.documento;
+            me.num_documento = val1.num_documento;
             me.direccion = val1.direccion;
             me.pais = val1.pais;
             me.departamento = val1.departamento;
@@ -49142,7 +49149,7 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
             me.pais = '';
             me.departamento = '';
             me.ciudad = '';
-            me.documento = '';
+            me.num_documento = '';
             me.email = '';
             me.email_contacto = '';
         },
@@ -49253,7 +49260,7 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
             me.arrayArticulo = [];
             me.modala = 0;
         },
-        selectInsumos: function selectInsumos() {
+        selectInsumos: function selectInsumos(seccion) {
             var me = this;
 
             var url = me.dominio + '/costop/selectInsumos?filtro=' + this.buscar_insumo;
@@ -49261,6 +49268,7 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
                 var respuesta = response.data;
                 me.arrayInsumos = respuesta.insumos;
                 me.modali = 1;
+                me.seccion = seccion;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -49305,6 +49313,17 @@ var meses = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '
             me.arrayInsumos = [];
             me.modali = 0;
             me.calcularCosto();
+        },
+        getDatosDetalles: function getDatosDetalles(val1, index) {
+            var me = this;
+            me.loading = true;
+            me.idcosto = val1.id;
+            me.titulo_costo = val1.tipo_costo;
+            me.valor_detalle = val1.nombre;
+            me.buscar_insumo = val1.nombre;
+            me.iseleccionado = true;
+            me.arrayInsumos = [];
+            me.modali = 0;
         },
         cambiarPagina: function cambiarPagina(page, buscar, criterio) {
             var me = this;
@@ -50375,7 +50394,9 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _c("div", {
-                                domProps: { textContent: _vm._s(_vm.documento) }
+                                domProps: {
+                                  textContent: _vm._s(_vm.num_documento)
+                                }
                               })
                             ]),
                             _vm._v(" "),
@@ -50906,53 +50927,6 @@ var render = function() {
                                 {
                                   staticClass: "form-check btn",
                                   class: [
-                                    _vm.estadoc == "AN"
-                                      ? "btn-warning"
-                                      : "btn-secondary"
-                                  ]
-                                },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.estadoc,
-                                        expression: "estadoc"
-                                      }
-                                    ],
-                                    attrs: {
-                                      type: "radio",
-                                      name: "estadoc",
-                                      id: "AN",
-                                      value: "AN"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(_vm.estadoc, "AN")
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.estadoc = "AN"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    {
-                                      staticClass: "form-check-label",
-                                      attrs: { for: "AN" }
-                                    },
-                                    [_vm._v("Analizar")]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "form-check btn",
-                                  class: [
                                     _vm.estadoc == "C"
                                       ? "btn-warning"
                                       : "btn-secondary"
@@ -50990,7 +50964,7 @@ var render = function() {
                                       staticClass: "form-check-label",
                                       attrs: { for: "C" }
                                     },
-                                    [_vm._v(" Cotizar")]
+                                    [_vm._v("Por Cotizar")]
                                   )
                                 ]
                               ),
@@ -51000,54 +50974,7 @@ var render = function() {
                                 {
                                   staticClass: "form-check btn",
                                   class: [
-                                    _vm.estadoc == "CE"
-                                      ? "btn-success"
-                                      : "btn-secondary"
-                                  ]
-                                },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.estadoc,
-                                        expression: "estadoc"
-                                      }
-                                    ],
-                                    attrs: {
-                                      type: "radio",
-                                      name: "estadoc",
-                                      id: "CE",
-                                      value: "CE"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(_vm.estadoc, "CE")
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.estadoc = "CE"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    {
-                                      staticClass: "form-check-label",
-                                      attrs: { for: "CE" }
-                                    },
-                                    [_vm._v(" Cotización enviada")]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "form-check btn",
-                                  class: [
-                                    _vm.estadoc == "NR"
+                                    _vm.estadoc == "PC"
                                       ? "btn-warning"
                                       : "btn-secondary"
                                   ]
@@ -51065,15 +50992,15 @@ var render = function() {
                                     attrs: {
                                       type: "radio",
                                       name: "estadoc",
-                                      id: "NR",
-                                      value: "NR"
+                                      id: "PC",
+                                      value: "PC"
                                     },
                                     domProps: {
-                                      checked: _vm._q(_vm.estadoc, "NR")
+                                      checked: _vm._q(_vm.estadoc, "PC")
                                     },
                                     on: {
                                       change: function($event) {
-                                        _vm.estadoc = "NR"
+                                        _vm.estadoc = "PC"
                                       }
                                     }
                                   }),
@@ -51082,9 +51009,9 @@ var render = function() {
                                     "label",
                                     {
                                       staticClass: "form-check-label",
-                                      attrs: { for: "NR" }
+                                      attrs: { for: "PC" }
                                     },
-                                    [_vm._v(" Negociación/Revisión")]
+                                    [_vm._v(" Por Concretar")]
                                   )
                                 ]
                               ),
@@ -51141,53 +51068,6 @@ var render = function() {
                                 {
                                   staticClass: "form-check btn",
                                   class: [
-                                    _vm.estadoc == "PC"
-                                      ? "btn-warning"
-                                      : "btn-secondary"
-                                  ]
-                                },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.estadoc,
-                                        expression: "estadoc"
-                                      }
-                                    ],
-                                    attrs: {
-                                      type: "radio",
-                                      name: "estadoc",
-                                      id: "PC",
-                                      value: "PC"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(_vm.estadoc, "PC")
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.estadoc = "PC"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "label",
-                                    {
-                                      staticClass: "form-check-label",
-                                      attrs: { for: "PC" }
-                                    },
-                                    [_vm._v(" Por concretar")]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "form-check btn",
-                                  class: [
                                     _vm.estadoc == "VC"
                                       ? "btn-success"
                                       : "btn-secondary"
@@ -51230,7 +51110,7 @@ var render = function() {
                                       staticClass: "form-check-label",
                                       attrs: { for: "VC" }
                                     },
-                                    [_vm._v(" Venta cerrada")]
+                                    [_vm._v(" Venta Cerrada")]
                                   )
                                 ]
                               ),
@@ -51282,7 +51162,54 @@ var render = function() {
                                       staticClass: "form-check-label",
                                       attrs: { for: "P" }
                                     },
-                                    [_vm._v(" Perdida y cerrada")]
+                                    [_vm._v(" No Compra")]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-check btn",
+                                  class: [
+                                    _vm.estadoc == "AN"
+                                      ? "btn-warning"
+                                      : "btn-secondary"
+                                  ]
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.estadoc,
+                                        expression: "estadoc"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "radio",
+                                      name: "estadoc",
+                                      id: "AN",
+                                      value: "AN"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(_vm.estadoc, "AN")
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        _vm.estadoc = "AN"
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-check-label",
+                                      attrs: { for: "AN" }
+                                    },
+                                    [_vm._v("Aplazada")]
                                   )
                                 ]
                               )
@@ -51918,19 +51845,21 @@ var render = function() {
                                               {
                                                 name: "model",
                                                 rawName: "v-model",
-                                                value: _vm.documento,
-                                                expression: "documento"
+                                                value: _vm.num_documento,
+                                                expression: "num_documento"
                                               }
                                             ],
                                             staticClass: "form-control",
                                             attrs: { type: "text" },
-                                            domProps: { value: _vm.documento },
+                                            domProps: {
+                                              value: _vm.num_documento
+                                            },
                                             on: {
                                               input: function($event) {
                                                 if ($event.target.composing) {
                                                   return
                                                 }
-                                                _vm.documento =
+                                                _vm.num_documento =
                                                   $event.target.value
                                               }
                                             }
@@ -52941,6 +52870,38 @@ var render = function() {
                     _c("div", { staticClass: "form-group row border p-4 " }, [
                       _vm._m(12),
                       _vm._v(" "),
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("div", { staticClass: "form-inline" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.buscar_detalle,
+                                expression: "buscar_detalle"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "Ingrese costos del trabajo"
+                            },
+                            domProps: { value: _vm.buscar_detalle },
+                            on: {
+                              keyup: function($event) {
+                                _vm.selectInsumos("detalle")
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.buscar_detalle = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
                       _c("div", { staticClass: "col-md-2" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [
@@ -53256,941 +53217,1222 @@ var render = function() {
                                       )
                                     : _c("tbody", [_vm._m(14)])
                                 ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "form-group row border p-4 insumos"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "modal fade",
+                                      class: { mostrar: _vm.modali },
+                                      staticStyle: {
+                                        display: "none",
+                                        "z-index": "10000"
+                                      },
+                                      attrs: {
+                                        tabindex: "-1",
+                                        role: "dialog",
+                                        "aria-labelledby": "myModalLabel",
+                                        "aria-hidden": "true"
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "modal-dialog",
+                                          class: { "modal-bajo": _vm.topedit }
+                                        },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "modal-content" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "modal-header" },
+                                                [
+                                                  _c(
+                                                    "h5",
+                                                    {
+                                                      staticClass: "modal-title"
+                                                    },
+                                                    [_vm._v("Seleccione costo")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "button",
+                                                    {
+                                                      staticClass: "close",
+                                                      attrs: {
+                                                        type: "button",
+                                                        "data-dismiss": "modal",
+                                                        "aria-label": "Close"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.cerrarModali()
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "span",
+                                                        {
+                                                          attrs: {
+                                                            "aria-hidden":
+                                                              "true"
+                                                          }
+                                                        },
+                                                        [_vm._v("×")]
+                                                      )
+                                                    ]
+                                                  )
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                { staticClass: "modal-body" },
+                                                [
+                                                  _vm.arrayInsumos
+                                                    ? [
+                                                        _vm.seccion == "costo"
+                                                          ? _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "list-group"
+                                                              },
+                                                              _vm._l(
+                                                                _vm.arrayInsumos,
+                                                                function(
+                                                                  insumo,
+                                                                  index
+                                                                ) {
+                                                                  return _c(
+                                                                    "a",
+                                                                    {
+                                                                      key:
+                                                                        insumo.id,
+                                                                      staticClass:
+                                                                        "list-group-item list-group-item-action",
+                                                                      class: {
+                                                                        active:
+                                                                          _vm.insumo_seleccionado
+                                                                      },
+                                                                      attrs: {
+                                                                        href:
+                                                                          "#"
+                                                                      },
+                                                                      domProps: {
+                                                                        textContent: _vm._s(
+                                                                          insumo.nombre
+                                                                        )
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.getDatosInsumos(
+                                                                            insumo,
+                                                                            index
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                }
+                                                              )
+                                                            )
+                                                          : _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "list-group"
+                                                              },
+                                                              _vm._l(
+                                                                _vm.arrayInsumos,
+                                                                function(
+                                                                  insumo,
+                                                                  index
+                                                                ) {
+                                                                  return _c(
+                                                                    "a",
+                                                                    {
+                                                                      key:
+                                                                        insumo.id,
+                                                                      staticClass:
+                                                                        "list-group-item list-group-item-action",
+                                                                      class: {
+                                                                        active:
+                                                                          _vm.insumo_seleccionado
+                                                                      },
+                                                                      attrs: {
+                                                                        href:
+                                                                          "#"
+                                                                      },
+                                                                      domProps: {
+                                                                        textContent: _vm._s(
+                                                                          insumo.nombre
+                                                                        )
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.getDatosDetalles(
+                                                                            insumo,
+                                                                            index
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                }
+                                                              )
+                                                            )
+                                                      ]
+                                                    : _vm._e()
+                                                ],
+                                                2
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                { staticClass: "modal-footer" },
+                                                [
+                                                  _c(
+                                                    "button",
+                                                    {
+                                                      staticClass:
+                                                        "btn btn-primary",
+                                                      attrs: {
+                                                        type: "button",
+                                                        "data-dismiss": "modal"
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.cerrarModali()
+                                                        }
+                                                      }
+                                                    },
+                                                    [_vm._v("Cancelar")]
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(15),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-4" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c("label", [
+                                        _vm._v("Seleccione Insumo o servicio "),
+                                        _c(
+                                          "span",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.idcosto == 0,
+                                                expression: "idcosto==0"
+                                              }
+                                            ],
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v("(*Seleccione)")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "form-group row" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "col-md-3" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "form-inline" },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          _vm.buscar_insumo,
+                                                        expression:
+                                                          "buscar_insumo"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      type: "text",
+                                                      placeholder:
+                                                        "Ingrese costos del trabajo"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.buscar_insumo
+                                                    },
+                                                    on: {
+                                                      keyup: function($event) {
+                                                        _vm.selectInsumos(
+                                                          "costo"
+                                                        )
+                                                      },
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.buscar_insumo =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _vm.insumo_seleccionado != null
+                                            ? _c(
+                                                "div",
+                                                { staticClass: "col-md-12" },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "form-group row border p-4 subform"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "col-md-3"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "label",
+                                                            {
+                                                              attrs: { for: "" }
+                                                            },
+                                                            [_vm._v("Insumo")]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("input", {
+                                                            directives: [
+                                                              {
+                                                                name: "model",
+                                                                rawName:
+                                                                  "v-model",
+                                                                value:
+                                                                  _vm.nombre_insumo,
+                                                                expression:
+                                                                  "nombre_insumo"
+                                                              }
+                                                            ],
+                                                            staticClass:
+                                                              "form-control",
+                                                            attrs: {
+                                                              type: "text"
+                                                            },
+                                                            domProps: {
+                                                              value:
+                                                                _vm.nombre_insumo
+                                                            },
+                                                            on: {
+                                                              input: function(
+                                                                $event
+                                                              ) {
+                                                                if (
+                                                                  $event.target
+                                                                    .composing
+                                                                ) {
+                                                                  return
+                                                                }
+                                                                _vm.nombre_insumo =
+                                                                  $event.target.value
+                                                              }
+                                                            }
+                                                          })
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "col-md-3"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "label",
+                                                            {
+                                                              attrs: { for: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Valor Insumo"
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("input", {
+                                                            directives: [
+                                                              {
+                                                                name: "model",
+                                                                rawName:
+                                                                  "v-model",
+                                                                value:
+                                                                  _vm.valor_insumo,
+                                                                expression:
+                                                                  "valor_insumo"
+                                                              }
+                                                            ],
+                                                            staticClass:
+                                                              "form-control",
+                                                            attrs: {
+                                                              type: "text"
+                                                            },
+                                                            domProps: {
+                                                              value:
+                                                                _vm.valor_insumo
+                                                            },
+                                                            on: {
+                                                              keyup: function(
+                                                                $event
+                                                              ) {
+                                                                _vm.calcularCosto()
+                                                              },
+                                                              input: function(
+                                                                $event
+                                                              ) {
+                                                                if (
+                                                                  $event.target
+                                                                    .composing
+                                                                ) {
+                                                                  return
+                                                                }
+                                                                _vm.valor_insumo =
+                                                                  $event.target.value
+                                                              }
+                                                            }
+                                                          })
+                                                        ]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "col-md-3"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "label",
+                                                            {
+                                                              attrs: { for: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Unidad de medida"
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("input", {
+                                                            directives: [
+                                                              {
+                                                                name: "model",
+                                                                rawName:
+                                                                  "v-model",
+                                                                value:
+                                                                  _vm.unidad_medida,
+                                                                expression:
+                                                                  "unidad_medida"
+                                                              }
+                                                            ],
+                                                            staticClass:
+                                                              "form-control",
+                                                            attrs: {
+                                                              type: "text"
+                                                            },
+                                                            domProps: {
+                                                              value:
+                                                                _vm.unidad_medida
+                                                            },
+                                                            on: {
+                                                              input: function(
+                                                                $event
+                                                              ) {
+                                                                if (
+                                                                  $event.target
+                                                                    .composing
+                                                                ) {
+                                                                  return
+                                                                }
+                                                                _vm.unidad_medida =
+                                                                  $event.target.value
+                                                              }
+                                                            }
+                                                          })
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        ]
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.insumo_seleccionado != null
+                                    ? _c("div", { staticClass: "col-md-2" }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "form-group" },
+                                          [
+                                            _c("label", [
+                                              _vm._v("Titulo "),
+                                              _c(
+                                                "span",
+                                                {
+                                                  directives: [
+                                                    {
+                                                      name: "show",
+                                                      rawName: "v-show",
+                                                      value:
+                                                        _vm.tipo_costo == 0,
+                                                      expression:
+                                                        "tipo_costo==0"
+                                                    }
+                                                  ],
+                                                  staticStyle: { color: "red" }
+                                                },
+                                                [_vm._v("(*Ingrese)")]
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("div", {
+                                              staticClass: "form-control",
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  _vm.tipo_costo
+                                                )
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      ])
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-1" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c("label", [
+                                        _vm._v("Cantidad costo"),
+                                        _c(
+                                          "span",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.cantidad_costo == 0,
+                                                expression: "cantidad_costo==0"
+                                              }
+                                            ],
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v("(*Ingrese)")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.cantidad_costo,
+                                            expression: "cantidad_costo"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: {
+                                          type: "number",
+                                          value: "0",
+                                          step: "any",
+                                          placeholder: "Cantidad del costo"
+                                        },
+                                        domProps: { value: _vm.cantidad_costo },
+                                        on: {
+                                          keyup: function($event) {
+                                            _vm.calcularCosto()
+                                          },
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.cantidad_costo =
+                                              $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-2" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c("label", [
+                                        _vm._v("Orden de producción"),
+                                        _c(
+                                          "span",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.orden == 0,
+                                                expression: "orden==0"
+                                              }
+                                            ],
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v("(*Ingrese)")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.orden_costo,
+                                            expression: "orden_costo"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: {
+                                          type: "text",
+                                          placeholder: "Orden de producción"
+                                        },
+                                        domProps: { value: _vm.orden_costo },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.orden_costo =
+                                              $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-2" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c("label", [
+                                        _vm._v("Valor costo"),
+                                        _c(
+                                          "span",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value: _vm.valor_costo == 0,
+                                                expression: "valor_costo==0"
+                                              }
+                                            ],
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v("(*Ingrese)")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.valor_costo,
+                                            expression: "valor_costo"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: {
+                                          type: "number",
+                                          value: "",
+                                          step: "any",
+                                          placeholder: "Valor del costo"
+                                        },
+                                        domProps: { value: _vm.valor_costo },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.valor_costo =
+                                              $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-2" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c("label", [
+                                        _vm._v("Descripcion"),
+                                        _c(
+                                          "span",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.descripcion_costo == 0,
+                                                expression:
+                                                  "descripcion_costo==0"
+                                              }
+                                            ],
+                                            staticStyle: { color: "red" }
+                                          },
+                                          [_vm._v("(*Ingrese)")]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.descripcion_costo,
+                                            expression: "descripcion_costo"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: {
+                                          type: "number",
+                                          value: "0",
+                                          step: "any",
+                                          placeholder: "Descripción del costo"
+                                        },
+                                        domProps: {
+                                          value: _vm.descripcion_costo
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.descripcion_costo =
+                                              $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md-1" }, [
+                                    _c("div", { staticClass: "form-group" }, [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-success form-control btnagregar",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.agregarCosto()
+                                            }
+                                          }
+                                        },
+                                        [_c("i", { staticClass: "icon-plus" })]
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "form-group col-md-12 border p-4"
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "table-responsive col-md-12"
+                                        },
+                                        [
+                                          _c(
+                                            "table",
+                                            {
+                                              staticClass:
+                                                "table table-bordered table-striped table-sm"
+                                            },
+                                            [
+                                              _vm._m(16),
+                                              _vm._v(" "),
+                                              _vm.arrayCostos.length
+                                                ? _c(
+                                                    "tbody",
+                                                    [
+                                                      _vm._l(
+                                                        _vm.arrayCostos,
+                                                        function(costo, index) {
+                                                          return _c(
+                                                            "tr",
+                                                            {
+                                                              key: costo.id,
+                                                              class: [
+                                                                costo.terminado ==
+                                                                1
+                                                                  ? "bg-success"
+                                                                  : costo.completado ==
+                                                                    1
+                                                                    ? "bg-warning"
+                                                                    : "bg-danger"
+                                                              ]
+                                                            },
+                                                            [
+                                                              _c("td", [
+                                                                _c(
+                                                                  "button",
+                                                                  {
+                                                                    staticClass:
+                                                                      "btn btn-danger btn-sm",
+                                                                    attrs: {
+                                                                      type:
+                                                                        "button"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        _vm.eliminarCosto(
+                                                                          index
+                                                                        )
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _c("i", {
+                                                                      staticClass:
+                                                                        "icon-close"
+                                                                    })
+                                                                  ]
+                                                                )
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.tipo_costo,
+                                                                      expression:
+                                                                        "costo.tipo_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type:
+                                                                      "text",
+                                                                    value: "3"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.tipo_costo
+                                                                  },
+                                                                  on: {
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "tipo_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.nombre_insumo,
+                                                                      expression:
+                                                                        "costo.nombre_insumo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type:
+                                                                      "text",
+                                                                    value: "3"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.nombre_insumo
+                                                                  },
+                                                                  on: {
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "nombre_insumo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.descripcion_costo,
+                                                                      expression:
+                                                                        "costo.descripcion_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type: "text"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.descripcion_costo
+                                                                  },
+                                                                  on: {
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "descripcion_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.orden_costo,
+                                                                      expression:
+                                                                        "costo.orden_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type: "text"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.orden_costo
+                                                                  },
+                                                                  on: {
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "orden_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.valor_costo,
+                                                                      expression:
+                                                                        "costo.valor_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type: "text"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.valor_costo
+                                                                  },
+                                                                  on: {
+                                                                    change:
+                                                                      _vm.subtotalCosto,
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "valor_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.cantidad_costo,
+                                                                      expression:
+                                                                        "costo.cantidad_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type:
+                                                                      "number"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.cantidad_costo
+                                                                  },
+                                                                  on: {
+                                                                    change:
+                                                                      _vm.subtotalCosto,
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "cantidad_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ]),
+                                                              _vm._v(" "),
+                                                              _c("td", [
+                                                                _c("input", {
+                                                                  directives: [
+                                                                    {
+                                                                      name:
+                                                                        "model",
+                                                                      rawName:
+                                                                        "v-model",
+                                                                      value:
+                                                                        costo.subtotal_costo,
+                                                                      expression:
+                                                                        "costo.subtotal_costo"
+                                                                    }
+                                                                  ],
+                                                                  staticClass:
+                                                                    "form-control",
+                                                                  attrs: {
+                                                                    type: "text"
+                                                                  },
+                                                                  domProps: {
+                                                                    value:
+                                                                      costo.subtotal_costo
+                                                                  },
+                                                                  on: {
+                                                                    input: function(
+                                                                      $event
+                                                                    ) {
+                                                                      if (
+                                                                        $event
+                                                                          .target
+                                                                          .composing
+                                                                      ) {
+                                                                        return
+                                                                      }
+                                                                      _vm.$set(
+                                                                        costo,
+                                                                        "subtotal_costo",
+                                                                        $event
+                                                                          .target
+                                                                          .value
+                                                                      )
+                                                                    }
+                                                                  }
+                                                                })
+                                                              ])
+                                                            ]
+                                                          )
+                                                        }
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "tr",
+                                                        {
+                                                          staticStyle: {
+                                                            "background-color":
+                                                              "#CEECF5"
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._m(17),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              attrs: {
+                                                                colspan: "4"
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.totalCostos
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    2
+                                                  )
+                                                : _c("tbody", [_vm._m(18)])
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
                               )
                             ]
                           )
                         ]
                       )
                     ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group row border p-4 insumos" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "modal fade",
-                            class: { mostrar: _vm.modali },
-                            staticStyle: {
-                              display: "none",
-                              "z-index": "10000"
-                            },
-                            attrs: {
-                              tabindex: "-1",
-                              role: "dialog",
-                              "aria-labelledby": "myModalLabel",
-                              "aria-hidden": "true"
-                            }
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "modal-dialog",
-                                class: { "modal-bajo": _vm.topedit }
-                              },
-                              [
-                                _c("div", { staticClass: "modal-content" }, [
-                                  _c("div", { staticClass: "modal-header" }, [
-                                    _c("h5", { staticClass: "modal-title" }, [
-                                      _vm._v("Seleccione costo")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "close",
-                                        attrs: {
-                                          type: "button",
-                                          "data-dismiss": "modal",
-                                          "aria-label": "Close"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.cerrarModali()
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c(
-                                          "span",
-                                          { attrs: { "aria-hidden": "true" } },
-                                          [_vm._v("×")]
-                                        )
-                                      ]
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "modal-body" },
-                                    [
-                                      _vm.arrayInsumos
-                                        ? [
-                                            _c(
-                                              "div",
-                                              { staticClass: "list-group" },
-                                              _vm._l(_vm.arrayInsumos, function(
-                                                insumo,
-                                                index
-                                              ) {
-                                                return _c("a", {
-                                                  key: insumo.id,
-                                                  staticClass:
-                                                    "list-group-item list-group-item-action",
-                                                  class: {
-                                                    active:
-                                                      _vm.insumo_seleccionado
-                                                  },
-                                                  attrs: { href: "#" },
-                                                  domProps: {
-                                                    textContent: _vm._s(
-                                                      insumo.nombre
-                                                    )
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.getDatosInsumos(
-                                                        insumo,
-                                                        index
-                                                      )
-                                                    }
-                                                  }
-                                                })
-                                              })
-                                            )
-                                          ]
-                                        : _vm._e()
-                                    ],
-                                    2
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "modal-footer" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-primary",
-                                        attrs: {
-                                          type: "button",
-                                          "data-dismiss": "modal"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.cerrarModali()
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Cancelar")]
-                                    )
-                                  ])
-                                ])
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm._m(15),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-4" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [
-                              _vm._v("Seleccione Insumo o servicio "),
-                              _c(
-                                "span",
-                                {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.idcosto == 0,
-                                      expression: "idcosto==0"
-                                    }
-                                  ],
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v("(*Seleccione)")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "form-group row" }, [
-                              _c("div", { staticClass: "col-md-3" }, [
-                                _c("div", { staticClass: "form-inline" }, [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.buscar_insumo,
-                                        expression: "buscar_insumo"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      placeholder: "Ingrese costos del trabajo"
-                                    },
-                                    domProps: { value: _vm.buscar_insumo },
-                                    on: {
-                                      keyup: function($event) {
-                                        _vm.selectInsumos("nuevo")
-                                      },
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.buscar_insumo = $event.target.value
-                                      }
-                                    }
-                                  })
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _vm.insumo_seleccionado != null
-                                ? _c("div", { staticClass: "col-md-12" }, [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "form-group row border p-4 subform"
-                                      },
-                                      [
-                                        _c("div", { staticClass: "col-md-3" }, [
-                                          _c("label", { attrs: { for: "" } }, [
-                                            _vm._v("Insumo")
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.nombre_insumo,
-                                                expression: "nombre_insumo"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: { type: "text" },
-                                            domProps: {
-                                              value: _vm.nombre_insumo
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.nombre_insumo =
-                                                  $event.target.value
-                                              }
-                                            }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "col-md-3" }, [
-                                          _c("label", { attrs: { for: "" } }, [
-                                            _vm._v("Valor Insumo")
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.valor_insumo,
-                                                expression: "valor_insumo"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: { type: "text" },
-                                            domProps: {
-                                              value: _vm.valor_insumo
-                                            },
-                                            on: {
-                                              keyup: function($event) {
-                                                _vm.calcularCosto()
-                                              },
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.valor_insumo =
-                                                  $event.target.value
-                                              }
-                                            }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("div", { staticClass: "col-md-3" }, [
-                                          _c("label", { attrs: { for: "" } }, [
-                                            _vm._v("Unidad de medida")
-                                          ]),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: _vm.unidad_medida,
-                                                expression: "unidad_medida"
-                                              }
-                                            ],
-                                            staticClass: "form-control",
-                                            attrs: { type: "text" },
-                                            domProps: {
-                                              value: _vm.unidad_medida
-                                            },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.unidad_medida =
-                                                  $event.target.value
-                                              }
-                                            }
-                                          })
-                                        ])
-                                      ]
-                                    )
-                                  ])
-                                : _vm._e()
-                            ])
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _vm.insumo_seleccionado != null
-                          ? _c("div", { staticClass: "col-md-2" }, [
-                              _c("div", { staticClass: "form-group" }, [
-                                _c("label", [
-                                  _vm._v("Titulo "),
-                                  _c(
-                                    "span",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: _vm.tipo_costo == 0,
-                                          expression: "tipo_costo==0"
-                                        }
-                                      ],
-                                      staticStyle: { color: "red" }
-                                    },
-                                    [_vm._v("(*Ingrese)")]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", {
-                                  staticClass: "form-control",
-                                  domProps: {
-                                    textContent: _vm._s(_vm.tipo_costo)
-                                  }
-                                })
-                              ])
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-1" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [
-                              _vm._v("Cantidad costo"),
-                              _c(
-                                "span",
-                                {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.cantidad_costo == 0,
-                                      expression: "cantidad_costo==0"
-                                    }
-                                  ],
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v("(*Ingrese)")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.cantidad_costo,
-                                  expression: "cantidad_costo"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "number",
-                                value: "0",
-                                step: "any",
-                                placeholder: "Cantidad del costo"
-                              },
-                              domProps: { value: _vm.cantidad_costo },
-                              on: {
-                                keyup: function($event) {
-                                  _vm.calcularCosto()
-                                },
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.cantidad_costo = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-2" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [
-                              _vm._v("Orden de producción"),
-                              _c(
-                                "span",
-                                {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.orden == 0,
-                                      expression: "orden==0"
-                                    }
-                                  ],
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v("(*Ingrese)")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.orden_costo,
-                                  expression: "orden_costo"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                placeholder: "Orden de producción"
-                              },
-                              domProps: { value: _vm.orden_costo },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.orden_costo = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-2" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [
-                              _vm._v("Valor costo"),
-                              _c(
-                                "span",
-                                {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.valor_costo == 0,
-                                      expression: "valor_costo==0"
-                                    }
-                                  ],
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v("(*Ingrese)")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.valor_costo,
-                                  expression: "valor_costo"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "number",
-                                value: "",
-                                step: "any",
-                                placeholder: "Valor del costo"
-                              },
-                              domProps: { value: _vm.valor_costo },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.valor_costo = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-2" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [
-                              _vm._v("Descripcion"),
-                              _c(
-                                "span",
-                                {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.descripcion_costo == 0,
-                                      expression: "descripcion_costo==0"
-                                    }
-                                  ],
-                                  staticStyle: { color: "red" }
-                                },
-                                [_vm._v("(*Ingrese)")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.descripcion_costo,
-                                  expression: "descripcion_costo"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "number",
-                                value: "0",
-                                step: "any",
-                                placeholder: "Descripción del costo"
-                              },
-                              domProps: { value: _vm.descripcion_costo },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.descripcion_costo = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-1" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-success form-control btnagregar",
-                                on: {
-                                  click: function($event) {
-                                    _vm.agregarCosto()
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "icon-plus" })]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form-group col-md-12 border p-4" },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "table-responsive col-md-12" },
-                              [
-                                _c(
-                                  "table",
-                                  {
-                                    staticClass:
-                                      "table table-bordered table-striped table-sm"
-                                  },
-                                  [
-                                    _vm._m(16),
-                                    _vm._v(" "),
-                                    _vm.arrayCostos.length
-                                      ? _c(
-                                          "tbody",
-                                          [
-                                            _vm._l(_vm.arrayCostos, function(
-                                              costo,
-                                              index
-                                            ) {
-                                              return _c(
-                                                "tr",
-                                                {
-                                                  key: costo.id,
-                                                  class: [
-                                                    costo.terminado == 1
-                                                      ? "bg-success"
-                                                      : costo.completado == 1
-                                                        ? "bg-warning"
-                                                        : "bg-danger"
-                                                  ]
-                                                },
-                                                [
-                                                  _c("td", [
-                                                    _c(
-                                                      "button",
-                                                      {
-                                                        staticClass:
-                                                          "btn btn-danger btn-sm",
-                                                        attrs: {
-                                                          type: "button"
-                                                        },
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.eliminarCosto(
-                                                              index
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [
-                                                        _c("i", {
-                                                          staticClass:
-                                                            "icon-close"
-                                                        })
-                                                      ]
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.tipo_costo,
-                                                          expression:
-                                                            "costo.tipo_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: {
-                                                        type: "text",
-                                                        value: "3"
-                                                      },
-                                                      domProps: {
-                                                        value: costo.tipo_costo
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "tipo_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.nombre_insumo,
-                                                          expression:
-                                                            "costo.nombre_insumo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: {
-                                                        type: "text",
-                                                        value: "3"
-                                                      },
-                                                      domProps: {
-                                                        value:
-                                                          costo.nombre_insumo
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "nombre_insumo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.descripcion_costo,
-                                                          expression:
-                                                            "costo.descripcion_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: { type: "text" },
-                                                      domProps: {
-                                                        value:
-                                                          costo.descripcion_costo
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "descripcion_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.orden_costo,
-                                                          expression:
-                                                            "costo.orden_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: { type: "text" },
-                                                      domProps: {
-                                                        value: costo.orden_costo
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "orden_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.valor_costo,
-                                                          expression:
-                                                            "costo.valor_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: { type: "text" },
-                                                      domProps: {
-                                                        value: costo.valor_costo
-                                                      },
-                                                      on: {
-                                                        change:
-                                                          _vm.subtotalCosto,
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "valor_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.cantidad_costo,
-                                                          expression:
-                                                            "costo.cantidad_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: { type: "number" },
-                                                      domProps: {
-                                                        value:
-                                                          costo.cantidad_costo
-                                                      },
-                                                      on: {
-                                                        change:
-                                                          _vm.subtotalCosto,
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "cantidad_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c("td", [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            costo.subtotal_costo,
-                                                          expression:
-                                                            "costo.subtotal_costo"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "form-control",
-                                                      attrs: { type: "text" },
-                                                      domProps: {
-                                                        value:
-                                                          costo.subtotal_costo
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            costo,
-                                                            "subtotal_costo",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    })
-                                                  ])
-                                                ]
-                                              )
-                                            }),
-                                            _vm._v(" "),
-                                            _c(
-                                              "tr",
-                                              {
-                                                staticStyle: {
-                                                  "background-color": "#CEECF5"
-                                                }
-                                              },
-                                              [
-                                                _vm._m(17),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "td",
-                                                  { attrs: { colspan: "4" } },
-                                                  [
-                                                    _vm._v(
-                                                      _vm._s(_vm.totalCostos)
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            )
-                                          ],
-                                          2
-                                        )
-                                      : _c("tbody", [_vm._m(18)])
-                                  ]
-                                )
-                              ]
-                            )
-                          ]
-                        )
-                      ]
-                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group row" }, [
                       _c("div", { staticClass: "col-md-12" }, [
@@ -54469,7 +54711,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "5" } }, [
         _vm._v(
-          " \n                                            No hay artíclos agregados\n                                        "
+          " \n                                                        No hay artíclos agregados\n                                                    "
         )
       ])
     ])

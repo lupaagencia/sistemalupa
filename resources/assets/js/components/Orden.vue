@@ -200,7 +200,7 @@
                                                 <label>Razón Social:</label> <div v-text="nombre"></div>
                                             </li>
                                             <li>
-                                                <label v-text="tipo_documento"></label> <div v-text="documento"></div>
+                                                <label v-text="tipo_documento"></label> <div v-text="num_documento"></div>
                                             </li>
                                             <li>
                                                 <label>Dirección: </label> <div v-text="direccion"></div>
@@ -369,37 +369,30 @@
                                     </div>
                                     <div class="estadoOrden">
                                             <h3 class="btn btn-dark">Estado comercial</h3>
-                                            <div class="form-check btn" :class="[estadoc=='AN' ? 'btn-warning': 'btn-secondary']">
-                                                <input type="radio" name="estadoc" id="AN"  v-model="estadoc" value="AN">
-                                                <label class="form-check-label" for="AN">Analizar</label>
-                                            </div>
                                             <div class="form-check btn" :class="[estadoc=='C' ? 'btn-warning': 'btn-secondary']">
                                                 <input type="radio" name="estadoc" id="C" v-model="estadoc" value="C">
-                                                <label class="form-check-label"  for="C"> Cotizar</label>                                
+                                                <label class="form-check-label"  for="C">Por Cotizar</label>                                
                                             </div>
-                                            <div class="form-check btn" :class="[estadoc=='CE' ? 'btn-success': 'btn-secondary']">
-                                                <input type="radio" name="estadoc" id="CE"  v-model="estadoc" value="CE">
-                                                <label class="form-check-label" for="CE"> Cotización enviada</label>                                           
+                                            <div class="form-check btn" :class="[estadoc=='PC' ? 'btn-warning': 'btn-secondary']">
+                                                <input type="radio" name="estadoc" id="PC"  v-model="estadoc" value="PC">
+                                                <label class="form-check-label" for="PC"> Por Concretar</label>                                    
                                             </div>
-                                            <div class="form-check btn" :class="[estadoc=='NR' ? 'btn-warning': 'btn-secondary']">
-                                                <input type="radio" name="estadoc" id="NR" v-model="estadoc" value="NR">
-                                                <label class="form-check-label" for="NR" > Negociación/Revisión</label>
-                                            </div>
+                                           
                                             <div class="form-check btn" :class="[estadoc=='PA' ? 'btn-warning': 'btn-secondary']">
                                                 <input type="radio" name="estadoc" id="PA"  v-model="estadoc" value="PA">
                                                 <label class="form-check-label" for="PA"> Pendiente Abono</label>                                        
                                             </div>
-                                            <div class="form-check btn" :class="[estadoc=='PC' ? 'btn-warning': 'btn-secondary']">
-                                                <input type="radio" name="estadoc" id="PC"  v-model="estadoc" value="PC">
-                                                <label class="form-check-label" for="PC"> Por concretar</label>                                    
-                                            </div>
                                             <div @click="asignarFecha()" class="form-check btn" :class="[estadoc=='VC' ? 'btn-success': 'btn-secondary']">
                                                 <input type="radio" name="estadoc" id="VC"  v-model="estadoc" value="VC">
-                                                <label class="form-check-label" for="VC"> Venta cerrada</label> 
+                                                <label class="form-check-label" for="VC"> Venta Cerrada</label> 
                                             </div>
                                             <div @click="asignarFecha()" class="form-check btn" :class="[estadoc=='P' ? 'btn-danger': 'btn-secondary']">
                                                 <input type="radio" name="estadoc" id="P"  v-model="estadoc" value="P">
-                                                <label class="form-check-label" for="P"> Perdida y cerrada</label>                                  
+                                                <label class="form-check-label" for="P"> No Compra</label>                                  
+                                            </div>
+                                            <div class="form-check btn" :class="[estadoc=='AN' ? 'btn-warning': 'btn-secondary']">
+                                                <input type="radio" name="estadoc" id="AN"  v-model="estadoc" value="AN">
+                                                <label class="form-check-label" for="AN">Aplazada</label>
                                             </div>
                                     </div>
                                     <div class="estadoOrden">
@@ -481,7 +474,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="">Documento</label>
-                                                    <input type="text" class="form-control" v-model="documento">
+                                                    <input type="text" class="form-control" v-model="num_documento">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="">Dirección</label>
@@ -683,8 +676,12 @@
                             <div class="col-md-12 mt-2">
                                 <h4>Detalles del trabajo</h4>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" v-model="buscar_detalle" @keyup="selectInsumos('detalle')" placeholder="Ingrese costos del trabajo">
+                                </div>  
+                            </div>
                             <div class="col-md-2">
-                                
                                 <div class="form-group">
                                     <label>Tipo Detalle <span style="color:red" v-show="titulo_detalle==0">(*Ingrese)</span></label>
                                     <input type="text" class="form-control" v-model="titulo_detalle" placeholder="Tinta, Papel, tamaño, etc">
@@ -747,6 +744,186 @@
                                             </tr>  
                                         </tbody>                               
                                     </table>
+                                    <div class="form-group row border p-4 insumos">
+                                        <!--Inicio del modal insumos-->
+                                        <div class="modal fade" tabindex="-1" :class="{'mostrar' : modali}" role="dialog" aria-labelledby="myModalLabel" style="display: none; z-index:10000" aria-hidden="true">
+                                            <div class="modal-dialog" :class="{'modal-bajo':topedit}">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Seleccione costo</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cerrarModali()">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <template v-if="arrayInsumos">
+                                                            <div v-if="seccion=='costo'" class="list-group">
+                                                                <a href="#" 
+                                                                class="list-group-item list-group-item-action" 
+                                                                :class="{'active' : insumo_seleccionado}" 
+                                                                v-for="(insumo,index) in arrayInsumos" 
+                                                                :key="insumo.id" 
+                                                                v-text="insumo.nombre"
+                                                                @click="getDatosInsumos(insumo,index)">
+                                                                </a> 
+                                                            </div>
+                                                            <div v-else class="list-group">
+                                                                <a href="#" 
+                                                                class="list-group-item list-group-item-action" 
+                                                                :class="{'active' : insumo_seleccionado}" 
+                                                                v-for="(insumo,index) in arrayInsumos" 
+                                                                :key="insumo.id" 
+                                                                v-text="insumo.nombre"
+                                                                @click="getDatosDetalles(insumo,index)">
+                                                                </a> 
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" @click="cerrarModali()" data-dismiss="modal">Cancelar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                        <!--Fin del modal-->
+                                        <div class="col-md-12 mt-2">
+                                            <h4>Costos del trabajo</h4>
+                                        </div>
+                                    
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Seleccione Insumo o servicio <span style="color:red" v-show="idcosto==0">(*Seleccione)</span> </label>
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-inline">
+                                                            <input type="text" class="form-control" v-model="buscar_insumo" @keyup="selectInsumos('costo')" placeholder="Ingrese costos del trabajo">
+                                                        </div>  
+                                                    </div>
+                                                    <div class="col-md-12" v-if="insumo_seleccionado!=null">
+                                                        <div class="form-group row border p-4 subform">
+                                                            <div class="col-md-3">
+                                                                <label for="">Insumo</label>
+                                                                <input type="text" class="form-control" v-model="nombre_insumo">
+                                                            </div>
+                                                            
+                                                            <div class="col-md-3">
+                                                                <label for="">Valor Insumo</label>
+                                                                <input type="text" class="form-control" @keyup="calcularCosto()" v-model="valor_insumo">
+                                                            </div>
+                                                                <div class="col-md-3">
+                                                                <label for="">Unidad de medida</label>
+                                                                <input type="text" class="form-control" v-model="unidad_medida">
+                                                            </div>
+                                                        </div>                                  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" v-if="insumo_seleccionado!=null">
+                                            <div class="form-group">
+                                                <label>Titulo <span style="color:red" v-show="tipo_costo==0">(*Ingrese)</span></label>
+                                                <div  class="form-control" v-text="tipo_costo" ></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <label>Cantidad costo<span style="color:red"  v-show="cantidad_costo==0">(*Ingrese)</span></label>
+                                                <input type="number" value="0" step="any" class="form-control" @keyup="calcularCosto()" v-model="cantidad_costo" placeholder="Cantidad del costo">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Orden de producción<span style="color:red"  v-show="orden==0">(*Ingrese)</span></label>
+                                                <input type="text" class="form-control" v-model="orden_costo" placeholder="Orden de producción">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Valor costo<span style="color:red" v-show="valor_costo==0">(*Ingrese)</span></label>
+                                                <input type="number" value="" step="any" class="form-control" v-model="valor_costo" placeholder="Valor del costo">
+                                                <!-- {{calcularCosto2}} -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Descripcion<span style="color:red" v-show="descripcion_costo==0">(*Ingrese)</span></label>
+                                                <input type="number" value="0" step="any" class="form-control" v-model="descripcion_costo" placeholder="Descripción del costo">
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <button @click="agregarCosto()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <!-- lista de costos del trabajo -->
+                                        <div class="form-group col-md-12 border p-4">
+                                            <div class="table-responsive col-md-12">
+                                                <table class="table table-bordered table-striped table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Costo</th>
+                                                            <th>Insumo</th>
+                                                            <th>Descripcion</th>
+                                                            <th>Orden de producción</th>
+                                                            <th>Valor</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Subtotal</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody v-if="arrayCostos.length">
+                                                        <tr v-for="(costo,index) in arrayCostos" :key="costo.id" :class="[ costo.terminado==1 ? 'bg-success': costo.completado==1 ? 'bg-warning': 'bg-danger']" >
+                                                            <td>
+                                                                <button @click="eliminarCosto(index)" type="button" class="btn btn-danger btn-sm">
+                                                                    <i class="icon-close"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td >
+                                                                <input type="text" v-model="costo.tipo_costo"  value="3" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" v-model="costo.nombre_insumo"  value="3" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" v-model="costo.descripcion_costo" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text"  v-model="costo.orden_costo" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text"  @change="subtotalCosto" v-model="costo.valor_costo" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" @change="subtotalCosto" v-model="costo.cantidad_costo" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" v-model="costo.subtotal_costo" class="form-control">
+                                                            </td>
+                                                        
+                                                        </tr>
+                                                    
+                                                        <tr style="background-color: #CEECF5;">
+                                                            <td colspan="4" align="right"><strong>Total Costos:</strong></td>
+                                                            <td colspan="4">{{totalCostos}}</td>
+                                                            <!-- <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td> -->
+                                                        </tr>
+
+                                                    </tbody>  
+                                                    <tbody v-else>
+                                                        <tr>
+                                                            <td colspan="5"> 
+                                                                No hay artíclos agregados
+                                                            </td>
+                                                        </tr>  
+                                                    </tbody>                               
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- fin de listado de costos del trabajo -->
+                                    </div>
                                 </div>
                             </div>
                             <!-- fin lista de detalles de trabajo agregados -->
@@ -754,176 +931,6 @@
                         </div>
                         <!-- fin detalles de trabajo -->
                         <!-- costos del trabajos-->
-                        <div class="form-group row border p-4 insumos">
-                             <!--Inicio del modal insumos-->
-                            <div class="modal fade" tabindex="-1" :class="{'mostrar' : modali}" role="dialog" aria-labelledby="myModalLabel" style="display: none; z-index:10000" aria-hidden="true">
-                                <div class="modal-dialog" :class="{'modal-bajo':topedit}">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Seleccione costo</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cerrarModali()">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <template v-if="arrayInsumos">
-                                                <div class="list-group">
-                                                    <a href="#" 
-                                                    class="list-group-item list-group-item-action" 
-                                                    :class="{'active' : insumo_seleccionado}" 
-                                                    v-for="(insumo,index) in arrayInsumos" 
-                                                    :key="insumo.id" 
-                                                    v-text="insumo.nombre"
-                                                    @click="getDatosInsumos(insumo,index)">
-                                                    </a> 
-                                                </div>
-                                            </template>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" @click="cerrarModali()" data-dismiss="modal">Cancelar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!--Fin del modal-->
-                            <div class="col-md-12 mt-2">
-                                <h4>Costos del trabajo</h4>
-                            </div>
-                           
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Seleccione Insumo o servicio <span style="color:red" v-show="idcosto==0">(*Seleccione)</span> </label>
-                                    <div class="form-group row">
-                                        <div class="col-md-3">
-                                            <div class="form-inline">
-                                                <input type="text" class="form-control" v-model="buscar_insumo" @keyup="selectInsumos('nuevo')" placeholder="Ingrese costos del trabajo">
-                                            </div>  
-                                        </div>
-                                        <div class="col-md-12" v-if="insumo_seleccionado!=null">
-                                            <div class="form-group row border p-4 subform">
-                                                <div class="col-md-3">
-                                                    <label for="">Insumo</label>
-                                                    <input type="text" class="form-control" v-model="nombre_insumo">
-                                                </div>
-                                                
-                                                <div class="col-md-3">
-                                                    <label for="">Valor Insumo</label>
-                                                    <input type="text" class="form-control" @keyup="calcularCosto()" v-model="valor_insumo">
-                                                </div>
-                                                    <div class="col-md-3">
-                                                    <label for="">Unidad de medida</label>
-                                                    <input type="text" class="form-control" v-model="unidad_medida">
-                                                </div>
-                                            </div>                                  
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2" v-if="insumo_seleccionado!=null">
-                                <div class="form-group">
-                                    <label>Titulo <span style="color:red" v-show="tipo_costo==0">(*Ingrese)</span></label>
-                                    <div  class="form-control" v-text="tipo_costo" ></div>
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <label>Cantidad costo<span style="color:red"  v-show="cantidad_costo==0">(*Ingrese)</span></label>
-                                    <input type="number" value="0" step="any" class="form-control" @keyup="calcularCosto()" v-model="cantidad_costo" placeholder="Cantidad del costo">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Orden de producción<span style="color:red"  v-show="orden==0">(*Ingrese)</span></label>
-                                    <input type="text" class="form-control" v-model="orden_costo" placeholder="Orden de producción">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Valor costo<span style="color:red" v-show="valor_costo==0">(*Ingrese)</span></label>
-                                    <input type="number" value="" step="any" class="form-control" v-model="valor_costo" placeholder="Valor del costo">
-                                    <!-- {{calcularCosto2}} -->
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Descripcion<span style="color:red" v-show="descripcion_costo==0">(*Ingrese)</span></label>
-                                    <input type="number" value="0" step="any" class="form-control" v-model="descripcion_costo" placeholder="Descripción del costo">
-                                </div>
-                            </div>
-                          
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <button @click="agregarCosto()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
-                                </div>
-                            </div>
-
-                            <!-- lista de costos del trabajo -->
-                              <div class="form-group col-md-12 border p-4">
-                                <div class="table-responsive col-md-12">
-                                    <table class="table table-bordered table-striped table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Costo</th>
-                                                <th>Insumo</th>
-                                                <th>Descripcion</th>
-                                                <th>Orden de producción</th>
-                                                <th>Valor</th>
-                                                <th>Cantidad</th>
-                                                <th>Subtotal</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-if="arrayCostos.length">
-                                            <tr v-for="(costo,index) in arrayCostos" :key="costo.id" :class="[ costo.terminado==1 ? 'bg-success': costo.completado==1 ? 'bg-warning': 'bg-danger']" >
-                                                <td>
-                                                    <button @click="eliminarCosto(index)" type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close"></i>
-                                                    </button>
-                                                </td>
-                                                <td >
-                                                    <input type="text" v-model="costo.tipo_costo"  value="3" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="text" v-model="costo.nombre_insumo"  value="3" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="text" v-model="costo.descripcion_costo" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="text"  v-model="costo.orden_costo" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="text"  @change="subtotalCosto" v-model="costo.valor_costo" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="number" @change="subtotalCosto" v-model="costo.cantidad_costo" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <input type="text" v-model="costo.subtotal_costo" class="form-control">
-                                                </td>
-                                             
-                                            </tr>
-                                        
-                                            <tr style="background-color: #CEECF5;">
-                                                <td colspan="4" align="right"><strong>Total Costos:</strong></td>
-                                                <td colspan="4">{{totalCostos}}</td>
-                                                <!-- <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td> -->
-                                            </tr>
-
-                                        </tbody>  
-                                        <tbody v-else>
-                                            <tr>
-                                                <td colspan="5"> 
-                                                    No hay artíclos agregados
-                                                </td>
-                                            </tr>  
-                                        </tbody>                               
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- fin de listado de costos del trabajo -->
-                        </div>
                         <!--fin costos del trabajo-->
                         
                       
@@ -1004,7 +1011,7 @@
                 nombre:'',
                 tipo_cliente:'Natural',
                 tipo_documento:'',
-                documento:'',
+                num_documento:'',
                 direccion:'',
                 pais:'Colombia',
                 departamento:'Valle del Cauca',
@@ -1066,7 +1073,8 @@
                 topedit:0,
                 dominio:'',
                 msjCliente:'',
-                msjArticulo:''
+                msjArticulo:'',
+                seccion:''
                
             }
         },
@@ -1226,7 +1234,7 @@
                 me.nombre=val1.nombre;
                 me.tipo_documento=val1.tipo_documento
                 me.tipo_cliente=val1.tipo_cliente
-                me.documento=val1.documento
+                me.num_documento=val1.num_documento
                 me.direccion=val1.direccion
                 me.pais=val1.pais
                 me.departamento=val1.departamento
@@ -1256,7 +1264,7 @@
                 me.pais=''
                 me.departamento=''
                 me.ciudad=''
-                me.documento=''
+                me.num_documento=''
                 me.email=''
                 me.email_contacto=''
                 
@@ -1376,7 +1384,7 @@
                 me.arrayArticulo=[];
                 me.modala=0
             },
-            selectInsumos(){
+            selectInsumos(seccion){
                 let me=this;
               
                 var url= me.dominio+'/costop/selectInsumos?filtro='+this.buscar_insumo;
@@ -1384,6 +1392,7 @@
                     let respuesta = response.data;
                     me.arrayInsumos=respuesta.insumos;
                     me.modali=1
+                    me.seccion=seccion
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -1433,6 +1442,17 @@
                 me.arrayInsumos=[];
                 me.modali=0
                 me.calcularCosto()
+            },
+            getDatosDetalles(val1, index){
+                let me = this;
+                me.loading = true;
+                me.idcosto = val1.id;
+                me.titulo_costo=val1.tipo_costo;
+                me.valor_detalle=val1.nombre;
+                me.buscar_insumo=val1.nombre
+                me.iseleccionado=true
+                me.arrayInsumos=[];
+                me.modali=0
             },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
