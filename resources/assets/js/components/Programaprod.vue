@@ -33,30 +33,37 @@
                             </div>
                         </div>
                             <div> 
+                                <h2 style="display:flex; flex-direction:row; justify-content:center" class="bg-primary pt-1 pb-1" ><span v-for="(busqueda, index) in busquedaActual" :key="index"  style="margin-right:10px">- {{busqueda}} </span> </h2>
+                                <div class="table-responsive">
                                  <table class="table table-bordered table-striped table-sm">
                                     <thead>
                                         <tr>
-                                            <th>Opciones</th>
-                                            <th>Cliente</th>
-                                            <th>Producto</th>
-                                            <th>Proceso</th>
-                                            <th>Cantidad</th>
-                                            <th>Proceso iniciado</th>
-                                            <th>Fecha que termina</th>
-                                            <th>Proceso terminado</th>
+                       
+                                            <th >Opciones</th>
+                                            <th @click="ordenar('fecha')">Fecha <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('cliente')">Cliente  <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('articulo')">Producto <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('nombre_insumo')">Proceso <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('descripcion_costo')">Descripción <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('cantidad')">Cantidad <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('completado')">Proceso iniciado <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('fecha')">Fecha que termina <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('terminado')">Proceso terminado <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="arrayProcesos.length">
                                         <tr v-for="(proceso, index) in arrayProcesos" :key="index">
                                             <td>
-                                                <button type="button"  class="btn btn-primary btn-sm">
+                                                <button type="button" @click="listarOrdenes(1,proceso.idorden,'=','ordentrabajos.id')" class="btn btn-primary btn-sm">
                                                 <i class="icon-eye"></i>
                                                 </button> &nbsp;  
                                             </td>
+                                            <td v-text="proceso.fecha"></td>
                                             <td v-text="proceso.cliente"></td>
                                             <td v-text="proceso.articulo"></td>
                                             <td >{{proceso.titulo}} {{proceso.nombre_insumo}}</td>
-                                            <td>{{proceso.cantidad}} {{proceso.unidad_medida}}</td>
+                                            <td v-text="proceso.descripcion_costo" ></td>
+                                            <td>{{proceso.cantidad}} {{proceso.unidad_medida}} </td>
                                             <td>
                                                <select :class="proceso.completado==1 ? 'bg-success':'bg-warning'" v-model="proceso.completado" @change="cambiarProceso(proceso,'completado', busquedaActual)">
                                                    <option value="0" >No Iniciado</option>
@@ -104,152 +111,10 @@
                                         </tr>
                                     </tbody>    
                                 </table>
-                            </div>
-                    </template>
-                    <template v-else-if="listado==3">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <div class="col-xl-12">
-                                        <div class="input-group">
-                                            <input type="text" v-model="buscare" @keyup="listarOrdenes(1,`%${buscare}%`,'like','personas.nombre')"  placeholder="Empresa">
-                                            <input type="text" v-model="buscarc" @keyup="listarOrdenes(1,`%${buscarc}%`,'like','clientes.contacto')"  placeholder="Contacto">
-                                            <input type="text" v-model="buscarv" @keyup="listarOrdenes(1,`%${buscarv}%`,'like','ordentrabajos.total')"  placeholder="Valor orden">
-                                            
-                                            <div class="input-group">
-                                                <div class="modal fade" tabindex="-1" :class="{'mostrar' : modalIntervalo}">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Asiganr Intervalo</h5>
-                                                                <button @click="cerrarModalIntervalo" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div v-text="`${fechaI}-${fechaF}`"></div>
-                                                                <div class="inputGruop">
-                                                                    <input type="date" placeholder="Fecha Inicial" v-model="fechaI">
-                                                                    <input type="date" placeholder="Fecha Final" v-model="fechaF">
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button @click="cerrarModalIntervalo" type="button" class="btn btn-secondary">Cerrar</button>
-                                                                <button @click="filtrarFecha()" type="button" class="btn btn-primary">Aplicar</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>  
-                                                <select @change="filtrarFecha()" v-model="filtroFecha">
-                                                    <option value="1">Filtrar por fecha</option>   
-                                                    <option value="hoy">Hoy</option>   
-                                                    <option value="ayer">Ayer</option>  
-                                                    <option value="ultimos7">Ultimos 7 días</option>  
-                                                    <option value="ultimos30">Ultimos 30 días</option>  
-                                                    <option value="semana">Esta semana</option>  
-                                                    <option value="mes">Este mes</option>  
-                                                </select>
-                                                <button class="btn btn-primary" @click="asiganarIntervalo()">Intervalo fecha</button>
-                                            </div>
-                                            
-                                        
-                                        </div>
-                                    </div>
-                                        <div class="col-xl-12">
-                                        <div class="input-group">
-                                            <div class="alert alert-primary mb-0 p-1" ><strong>Estado</strong> </div>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('')">Todos</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('D')">Diseño</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('A')">Aprobación</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('EP')">Enviar a producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('ENP')">En producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('E')">Por entregar</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('T')">Terminada</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-sm">
-                                    
-                                    <thead>
-                                        <tr>
-                                            <th>Opciones</th>
-                                            <th>Fecha</th>
-                                            <th>Fecha de cierre</th>
-                                            <th>Trabajo</th>
-                                            <th>Cliente</th>
-                                            <th>Nombre contacto</th>
-                                            <th>Teléfono</th>
-                                            <th>Carpeta</th>
-                                            <th>Estado Comerical</th>
-                                            <th>Estado Producción</th>
-                                            <th>Valor orden</th>
-                                            <th>Fecha de entrega</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody v-if="arrayOrdenes.length">
-                                        <tr v-for="orden in arrayOrdenes" :key="orden.idorden">
-                                            <td>
-                                            
-                                                <button type="button" @click="verOrden(orden)" class="btn btn-primary btn-sm">
-                                                <i class="icon-eye"></i>
-                                                </button> &nbsp;
-                                                <button type="button" @click="editarOrden(orden,'edit')" class="btn btn-warning btn-sm">
-                                                <i class="icon-pencil"></i>
-                                                </button> &nbsp;
-                                                <button type="button" @click="copiarOrden(orden)" class="btn btn-success btn-sm">
-                                                <i class="fa fa-copy"></i>
-                                                </button> &nbsp;
-                                                <button type="button" class="btn btn-danger btn-sm" @click="eliminarOrden(orden.idorden)">
-                                                    <i class="icon-trash"></i>
-                                                </button>
-                                            </td>
-                                            <td v-text="orden.fechaorden"></td>
-                                            <td v-text="orden.fecha"></td>
-                                            <td v-text="orden.articulo"></td>
-                                            <td v-text="orden.rasonsocial"></td>
-                                            <td v-text="orden.contacto"></td>
-                                            <td v-text="orden.telefono_contacto"></td>
-                                            <td v-text="orden.carpeta_cliente"></td>
-                                            <td v-text="estadocomercial[orden.estadoc]"></td>
-                                            <td v-text="estadoproduccion[orden.estadop]"></td>
-                                            <td v-text="orden.total"></td>
-                                            <td v-text="orden.fecha_entrega"></td>
-                                            <table>
-
-                                            <tr  v-if="vieworden==orden.idorden">
-                                                <td >
-                                                    Orden de trabajo
-                                                </td>
-                                            </tr>
-                                            </table>
-                                                                        
-                                        </tr> 
-                                    </tbody>
-                                    <tbody v-else>
-                                        <tr>
-                                            <td colspan="5">
-                                                No hay ordenes creadas
-                                            </td>
-                                        </tr>
-                                    </tbody>    
-                                </table>
-                            </div>
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item" v-if="pagination.current_page > 1">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
-                                    </li>
-                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
-                                    </li>
-                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </template>
-                    <!--Fin Listado-->
+                  
                     <template v-else-if="listado===2">
                         <div class="botones_vieworden">
                             <button class="btn btn-primary" @click="ocultarDetalle">Volver al listado de ordenes</button>
@@ -262,7 +127,7 @@
                                     <img src="img/logo.png" alt="">
                                 </div>
                                <div class="fecha_norden">
-                                    <h5 v-text="`ORDEN DE TRABAJO NO. ${idorden}`"></h5>
+                                    <h5 v-text="`ORDEN DE TRABAJO NO. ${arrayOrdenes.idorden}`"></h5>
                                     <div class="card fecha_orden">
                                         <div class="card-body ">
                                             <strong> <div>Fecha:</div>   <div v-text="fecha"></div></strong>
@@ -279,22 +144,22 @@
                                        
                                         <ul>
                                             <li>
-                                                <label>Contacto:</label> <div v-text="contacto"></div> 
+                                                <label>Contacto:</label> <div v-text="arrayOrdenes.contacto"></div> 
                                             </li>
                                             <li>
-                                                <label>Correo:</label> <div v-text="email_contacto"></div>
+                                                <label>Correo:</label> <div v-text="arrayOrdenes.email_contacto"></div>
                                             </li>
                                             <li>
-                                                <label>Razón Social:</label> <div v-text="nombre"></div>
+                                                <label>Razón Social:</label> <div v-text="arrayOrdenes.nombre"></div>
                                             </li>
                                             <li>
-                                                <label v-text="tipo_documento"></label> <div v-text="documento"></div>
+                                                <label v-text="tipo_documento"></label> <div v-text="arrayOrdenes.documento"></div>
                                             </li>
                                             <li>
-                                                <label>Dirección: </label> <div v-text="direccion"></div>
+                                                <label>Dirección: </label> <div v-text="arrayOrdenes.direccion"></div>
                                             </li>
                                             <li>
-                                                <label>Teléfono empresa: </label> <div v-text="telefono_contacto"></div>
+                                                <label>Teléfono empresa: </label> <div v-text="arrayOrdenes.telefono_contacto"></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -303,10 +168,11 @@
                             <div class="datosorden">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div><label for="">Cantidad trabajo:</label> <div v-text="cantidad"></div></div>
-                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="ancho_material"></div><div v-text="largo_material"></div></div>
-                                        <div><label for="">Carpeta cliente:</label> <div v-text="carpeta_cliente"></div></div>
-                                        <div><label for="">Fecha de entrega:</label> <div v-text="fecha_entrega"></div></div>
+                                        <div><label for="">Producto:</label> <div v-text="arrayOrdenes.articulo"></div></div>
+                                        <div><label for="">Cantidad trabajo:</label> <div v-text="arrayOrdenes.cantidad"></div></div>
+                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="`Arte: ${arrayOrdenes.ancho_material}`"></div><div v-text="`Material: ${largo_material}`"></div></div>
+                                        <div><label for="">Carpeta cliente:</label> <div v-text="arrayOrdenes.carpeta_cliente"></div></div>
+                                        <div><label for="">Fecha de entrega:</label> <div v-text="arrayOrdenes.fecha_entrega"></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -317,7 +183,7 @@
                                     </div>
                                     <div class="card-body">
                                         <ul>
-                                            <li v-for="(detalle, index) in arrayDetalle" :key="index">
+                                            <li v-for="(detalle, index) in detalles" :key="index">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr>
@@ -337,7 +203,7 @@
                                     </div>
                                     <div class="card-body">
                                         <ul>
-                                            <li v-for="(costo, index) in arrayCostos" :key="index">
+                                            <li v-for="(costo, index) in costos" :key="index">
                                                 <table class="table">
                                                     
                                                     <tbody>
@@ -362,7 +228,7 @@
                                         <div class="card-header">
                                             <h4 for="">Detalles de diseño</h4> 
                                         </div>
-                                        <div v-text="detalle_diseno" class="card"></div>
+                                        <div v-text="arrayOrdenes.detalle_diseno" class="card"></div>
                                     </div>
                                 </div>
                                  <div class="card">
@@ -370,7 +236,7 @@
                                         <div class="card-header">
                                             <h4 for="">Descripción</h4>
                                         </div>
-                                        <div v-text="descripcion_orden" class="card"></div>
+                                        <div v-text="arrayOrdenes.observaciones" class="card"></div>
                                     </div>
                                  </div>
                             </div>
@@ -380,12 +246,12 @@
                                         <table class="table">
                                             <tbody>
                                                 <tr>
-                                                <td v-text="`VALOR ORDEN: $${valor}`"></td>
-                                                <td v-text="`IVA: $${totalImpuesto}`"></td>
-                                                <td v-text="`TOTAL: $${total}`"></td>
-                                                <td v-text="`DESCUENTO: $${descuento}`"></td>
-                                                <td v-text="`ABONO: $${abono}`"></td>
-                                                <th scope="row" v-text="`SALDO: $${saldo}`"></th>
+                                                <td v-text="`VALOR ORDEN: $${arrayOrdenes.valor}`"></td>
+                                                <td v-text="`IVA: $${arrayOrdenes.totalImpuesto}`"></td>
+                                                <td v-text="`TOTAL: $${arrayOrdenes.total}`"></td>
+                                                <td v-text="`DESCUENTO: $${arrayOrdenes.descuento}`"></td>
+                                                <td v-text="`ABONO: $${arrayOrdenes.abono}`"></td>
+                                                <th scope="row" v-text="`SALDO: $${arrayOrdenes.saldo}`"></th>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -431,7 +297,7 @@
                 fecha: `${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
                 fechaorden:'',
                 fecha_entrega:`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
-                arrayOrdenes:[],
+                arrayOrdenes:{},
                 arrayProcesos:[],
                 estadoc:'C',
                 estadop:'D',
@@ -524,7 +390,8 @@
                 topedit:0,
                 dominio:'',
                 diasfaltantes:0,
-                busquedaActual:''
+                busquedaActual:'',
+                ordenarFlecha:false
                
             }
         },
@@ -611,10 +478,68 @@
                 this.saldo=resultado
                 return resultado
             },
+            detalles(){
+                this.arrayDetalle=this.arrayOrdenes.detalles
+                var respuesta=this.arrayDetalle
+                return respuesta
+            },
+            costos(){
+                this.arrayCostos=this.arrayOrdenes.costos
+                var respuesta=this.arrayCostos
+                return respuesta
+            }
            
 
         },
         methods : {
+            ordenar(opcion){
+                this.ordenarFlecha=!this.ordenarFlecha
+                this.arrayProcesos.sort(function(a, b) {
+                    switch(opcion){
+                        case 'fecha':
+                            var textA = a.fecha;
+                            var textB = b.fecha;
+                            break;
+                        case 'cliente':
+                            var textA = a.cliente;
+                            var textB = b.cliente;
+                            break;
+                        case 'articulo':
+                            var textA = a.articulo;
+                            var textB = b.articulo;
+                            break;
+                        case 'nombre_insumo':
+                            var textA = a.nombre_insumo;
+                            var textB = b.nombre_insumo;
+                            break;
+                        case 'descripcion_costo':
+                            var textA = a.descripcion_costo;
+                            var textB = b.descripcion_costo;
+                            break;
+                        case 'cantidad':
+                            var textA = a.cantidad;
+                            var textB = b.cantidad;
+                            break;
+                        case 'completado':
+                            var textA = a.completado;
+                            var textB = b.completado;
+                            break;
+                        case 'fecha':
+                            var textA = a.fecha;
+                            var textB = b.fecha;
+                            break;
+                        case 'terminado':
+                            var textA = a.terminado;
+                            var textB = b.terminado;
+                            break;
+                    }
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    
+                });
+                if(!this.ordenarFlecha){
+                    this.arrayProcesos.reverse(); 
+                }
+            },
              calcularDias(index,proceso){
                 var fecha=new Date()
                 var fechaini = new Date(`${fecha.getFullYear()}-${(fecha.getMonth()+1)}-${fecha.getDate()}`)
@@ -645,7 +570,6 @@
                     'buscar':JSON.stringify(buscar),
                 }).then(function (response) {
                     var respuesta= response.data;
-                    console.log(respuesta)
                     me.arrayProcesos = respuesta.procesos;
                     me.busquedaActual=respuesta.buscar;
                 })
@@ -660,23 +584,74 @@
                     
                 }).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayOrdenes = respuesta.ordenes.data;
+                   
+                    me.arrayOrdenes = respuesta.ordenes.data[0];
                     me.pagination= respuesta.pagination;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+                me.verOrden();
+            },
+            selectArticulobyid(idarticulo){
+                let me=this;
+               
+                var url= me.dominio+'/articulo/selectArticulobyid?id='+idarticulo;
+                axios.get(url).then(function (response) {
+                    let respuesta = response.data[0];
+                    me.getDatosArticulo(respuesta,0)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            getDatosArticulo(val1, index){
+                let me = this;
+                me.loading = true;
+                me.idarticulo = val1.id;
+                me.nombre_articulo=val1.nombre;
+                me.precio=val1.precio_venta
+                me.articulo_seleccionado=val1;
+                me.buscar_articulo=val1.nombre
+                me.aseleccionado=true
+                me.arrayArticulo=[];
+                me.modala=0
             },
             getClientebyid(idcliente){
+                console.log(idcliente)
                 let me=this;
                 var url= me.dominio+'/cliente/selectCliente?id='+idcliente;
                 axios.get(url).then(function (response) {
                     let respuesta = response.data[0];
+                    
                     me.getDatosCliente(respuesta)
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            getDatosCliente(val1, index){
+                let me = this;
+                me.loading = true;
+                me.idcliente = val1.id;
+                me.nombre=val1.nombre;
+                me.tipo_documento=val1.tipo_documento
+                me.tipo_cliente=val1.tipo_cliente
+                me.num_documento=val1.num_documento
+                me.direccion=val1.direccion
+                me.pais=val1.pais
+                me.departamento=val1.departamento
+                me.ciudad=val1.ciudad
+                me.telefono=val1.telefono
+                me.email=val1.email
+                me.contacto=val1.contacto
+                me.telefono_contacto=val1.telefono_contacto
+                me.email_contacto=val1.email_contacto
+                me.cliente_seleccionado=val1;
+                me.buscar_cliente=val1.nombre
+                me.cseleccionado=true
+                me.arrayClientes=[];
+                me.modalc=0
             },
             cambiarProceso(proceso,columna,buscar){
                 let me=this;
@@ -772,36 +747,36 @@
                 let operador='='
                 this.listarOrdenes(1,buscar,operador,criterio)
             },
-            verOrden(orden){
+            imprimirOrden(){
+                window.print()
+            },
+            verOrden(){
+                this.idorden=this.arrayOrdenes.idorden
+                this.estadoc=this.arrayOrdenes.estadoc
+                this.estadop=this.arrayOrdenes.estadop
+                this.id_cliente=this.arrayOrdenes.idcliente
+                this.id_articulo=this.arrayOrdenes.idarticulo
+                this.fecha_entrega=this.arrayOrdenes.fecha_entrega
+                this.fecha=this.arrayOrdenes.fecha
+                this.carpeta_cliente=this.arrayOrdenes.carpeta_cliente
+                this.detalles_diseno=this.arrayOrdenes.detalle_diseno
+                this.observaciones=this.arrayOrdenes.observaciones
+                this.ancho_material= this.arrayOrdenes.ancho_material
+                this.largo_material= this.arrayOrdenes.largo_material
+                this.cantidad= this.arrayOrdenes.cantidad
+                this.subtotal_orden=this.arrayOrdenes.totalParcial
+                this.descuento=this.arrayOrdenes.descuento
+                this.impuesto=this.arrayOrdenes.impuesto
+                this.total=this.arrayOrdenes.total
+                this.abono=this.arrayOrdenes.abono
+                this.saldo=this.arrayOrdenes.saldo
+                this.arrayDetalle=this.arrayOrdenes.detalles
+                this.arrayCostos=this.arrayOrdenes.costos
                 this.listado = 2
-                this.idorden=orden.idorden
-                this.getClientebyid(orden.idcliente)
-                this.selectArticulobyid(orden.idarticulo)
-                this.estadoc=orden.estadoc
-                this.estadop=orden.estadop
-                this.id_cliente=orden.idcliente
-                this.id_articulo=orden.idarticulo
-                this.fecha_entrega=orden.fecha_entrega
-                this.fecha=orden.fecha
-                this.carpeta_cliente=orden.carpeta_cliente
-                this.detalles_diseno=orden.detalle_diseno
-                this.observaciones=orden.observaciones
-                this.ancho_material= orden.ancho_material
-                this.largo_material= orden.largo_material
-                this.cantidad= orden.cantidad
-                this.subtotal_orden=orden.totalParcial
-                this.descuento=orden.descuento
-                this.impuesto=orden.impuesto
-                this.total=orden.total
-                this.abono=orden.abono
-                this.saldo=orden.saldo
-                this.arrayDetalle=orden.detalles
-                this.arrayCostos=orden.costos
             },
           
         },
         mounted() {
-            this.listarOrdenes(1,this.buscar,'like',this.criterio);
             this.listarProcesos(['Papel'],'=');
         }
     }

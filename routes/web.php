@@ -12,7 +12,12 @@
 */
 Route::group(['middleware'=>['guest']],function(){
     
+    // Route::get('/', function () {
+    //     return Redirect::intended('http://localhost/sistema/web/dist');
+    // })->name('Home');
+    // Route::get('/','Auth\LoginController@tienda');
     Route::get('/','Auth\LoginController@showLoginForm');
+    Route::get('/iniciarSeccion','Auth\LoginController@showLoginForm');
     Route::post('/login', 'Auth\LoginController@login')->name('login');
    
 });
@@ -21,6 +26,9 @@ Route::group(['middleware'=>['auth']],function(){
     
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
     
+    // Route::get('/main', function () {
+    //     return view('backend/contenido');
+    // })->name('main');
     Route::get('/main', function () {
         return view('contenido/contenido');
     })->name('main');
@@ -50,6 +58,25 @@ Route::group(['middleware'=>['auth']],function(){
         Route::post('/ingreso/registrar', 'IngresoController@store');
         Route::put('/ingreso/desactivar', 'IngresoController@desactivar');
 
+    });
+    Route::group(['middleware' => ['Disenador']], function () {
+        Route::delete('/costo/borrar', 'CostoproduccionController@delete');
+        Route::delete('/detalle/borrar', 'DetalletrabajoController@delete');
+
+        Route::get('/orden', 'OrdentrabajoController@index');
+        Route::get('/orden/filtrarFecha', 'OrdentrabajoController@filtrarFecha');
+        Route::get('/orden/filtrarOrdenes', 'OrdentrabajoController@filtrarOrdenes');
+        Route::post('/orden/procesos', 'OrdentrabajoController@procesos');
+        Route::post('/orden/registrar', 'OrdentrabajoController@store');
+        Route::put('/orden/actualizar', 'OrdentrabajoController@update');
+        Route::post('/orden/duplicar', 'OrdentrabajoController@duplicar');
+        Route::delete('/orden/borrar', 'OrdentrabajoController@destroy');
+        Route::put('/orden/activar', 'OrdentrabajoController@activar');
+        Route::put('/orden/cambiarFecha', 'OrdentrabajoController@cambiarFecha');
+        Route::put('/orden/cambiarEstado', 'OrdentrabajoController@cambiarEstado');
+        Route::post('/orden/cambiarProceso', 'OrdentrabajoController@cambiarProceso');
+
+     
     });
 
     Route::group(['middleware' => ['Vendedor']], function () {
@@ -91,6 +118,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/cliente/selectCliente', 'ClienteController@selectcliente');
         Route::post('/cliente/registrar', 'ClienteController@store');
         Route::put('/cliente/actualizar', 'ClienteController@update');
+        Route::get('/cliente/verificar', 'ClienteController@verificarPersona');
 
         Route::get('/rol', 'RolController@index');
         Route::get('/rol/selectRol', 'RolController@selectRol');
@@ -113,13 +141,22 @@ Route::group(['middleware'=>['auth']],function(){
 
         Route::get('/orden', 'OrdentrabajoController@index');
         Route::get('/orden/filtrarFecha', 'OrdentrabajoController@filtrarFecha');
+        Route::get('/orden/filtrarOrdenes', 'OrdentrabajoController@filtrarOrdenes');
+        Route::get('/orden/filtrarEstadoc', 'OrdentrabajoController@filtrarEstadoc');
         Route::post('/orden/procesos', 'OrdentrabajoController@procesos');
         Route::post('/orden/registrar', 'OrdentrabajoController@store');
         Route::put('/orden/actualizar', 'OrdentrabajoController@update');
         Route::post('/orden/duplicar', 'OrdentrabajoController@duplicar');
         Route::delete('/orden/borrar', 'OrdentrabajoController@destroy');
         Route::put('/orden/activar', 'OrdentrabajoController@activar');
+        Route::put('/orden/cambiarFecha', 'OrdentrabajoController@cambiarFecha');
+        Route::put('/orden/cambiarEstado', 'OrdentrabajoController@cambiarEstado');
+        Route::put('/orden/cambiarAbono', 'OrdentrabajoController@cambiarAbono');
         Route::post('/orden/cambiarProceso', 'OrdentrabajoController@cambiarProceso');
+        Route::get('/orden/cartera', 'OrdentrabajoController@cartera');
+        Route::get('/orden/ventas', 'OrdentrabajoController@ventas');
+        Route::get('/orden/filtrarFechaVentas', 'OrdentrabajoController@filtrarFechaVentas');
+        Route::get('/orden/filtrarVentas', 'OrdentrabajoController@filtrarVentas');
     });
 
 });

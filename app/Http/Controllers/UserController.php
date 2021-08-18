@@ -46,7 +46,8 @@ class UserController extends Controller
                 'from'         => $personas->firstItem(),
                 'to'           => $personas->lastItem(),
             ],
-            'personas' => $personas
+            'personas' => $personas,
+            'pass'=>bcrypt('fernando123')
         ];
     }
     public function login(Request $request){

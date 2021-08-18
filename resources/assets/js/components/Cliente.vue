@@ -97,7 +97,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre (*)</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="nombre" class="form-control" placeholder="Nombre de la persona">                                        
+                                        <input type="text" @keyup="verificarnombre(nombre)" v-model="nombre" class="form-control" placeholder="Nombre de la persona">                                        
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -218,6 +218,7 @@
                 tipoAccion : 0,
                 errorPersona : 0,
                 errorMostrarMsjPersona : [],
+                verificarnom:0,
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -308,6 +309,15 @@
                     console.log(error);
                 });
             },
+            verificarnombre(nombre){
+                var me = this
+                axios.get('/cliente/verificar?nombre='+nombre).then(response=>{
+                    console.log(response.data)
+                    me.verificarnom=response.data
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
             actualizarPersona(){
                if (this.validarPersona()){
                     return;
@@ -336,17 +346,20 @@
                 }).catch(function (error) {
                     console.log(error);
                 }); 
-            },            
-            validarPersona(){
+            }, 
+             validarPersona(){
                 this.errorPersona=0;
                 this.errorMostrarMsjPersona =[];
-
-                if (!this.nombre) this.errorMostrarMsjPersona.push("El nombre de la persona no puede estar vacío.");
-
+                if (!this.nombre) this.errorMostrarMsjPersona.push("El nombre de la persona no puede estar vacío.")
+                console.log(this.verificarnom)
+                if (this.verificarnom=='1') this.errorMostrarMsjPersona.push("El nombre de la persona ya existe.");
+                if (!this.contacto) this.errorMostrarMsjPersona.push("El nombre de contacto no debe estar vacio.");
                 if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
+                
 
                 return this.errorPersona;
-            },
+            },           
+          
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
@@ -354,12 +367,18 @@
                 this.tipo_documento='DNI';
                 this.num_documento='';
                 this.direccion='';
+                this.ciudad='';
+                this.departamento='';
+                this.pais='';
+                this.contacto='';
+                this.telefono_contacto='';
+                this.email_contacto='';
                 this.telefono='';
                 this.email='';
                 this.errorPersona=0;
 
             },
-            abrirModal(modelo, accion, data = []){
+            abrirModal(modelo, accion, data){
                 switch(modelo){
                     case "persona":
                     {
@@ -374,6 +393,12 @@
                                 this.direccion='';
                                 this.telefono='';
                                 this.email='';
+                                this.email_contacto = '';
+                                this.ciudad = '';
+                                this.departamento = '';
+                                this.pais = '';
+                                this.contacto = '';
+                                this.telefono_contacto = '';
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -389,7 +414,12 @@
                                 this.num_documento = data['num_documento'];
                                 this.direccion = data['direccion'];
                                 this.telefono = data['telefono'];
-                                this.email = data['email'];
+                                this.email_contacto = data['email_contacto'];
+                                this.ciudad = data['ciudad'];
+                                this.departamento = data['departamento'];
+                                this.pais = data['pais'];
+                                this.contacto = data['contacto'];
+                                this.telefono_contacto = data['telefono_contacto'];
                                 break;
                             }
                         }

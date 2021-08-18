@@ -3377,7 +3377,8 @@ button.close {
   z-index: 1050;
   display: none;
   overflow: hidden;
-  outline: 0; }
+  outline: 0;
+  min-height:1000px;   }
   .modal.fade .modal-dialog {
     transition: -webkit-transform 0.3s ease-out;
     transition: transform 0.3s ease-out;
@@ -9394,7 +9395,8 @@ hr.transparent {
     display: flex;
     flex-direction: row;
   }
-  .fechatermina-procesos{
- 
+  .costos-semaforo{
+    display:flex;
+    flex-direction: row;
   }
 

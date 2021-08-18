@@ -11,12 +11,15 @@ class LoginController extends Controller
     public function showLoginForm(){
         return view('auth.login');
     }
+    public function tienda(){
+        return Redirect::intended('http://localhost/sistema/web/dist');
+    }
 
     public function login(Request $request){
         $this->validateLogin($request);        
 
         if (Auth::attempt(['usuario' => $request->usuario,'password' => $request->password,'condicion'=>1])){
-            return redirect()->route('main');
+            return redirect('/main');
         }
 
         return back()

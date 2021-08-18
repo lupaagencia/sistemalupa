@@ -22,15 +22,15 @@ class OrdentrabajoController extends Controller
         $criterio = $request->criterio;
         $operador=$request->operador;
         
-        if ($criterio==''){
+        if ($criterio=='' || $buscar==''){
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->orderBy('ordentrabajos.id', 'desc')->paginate(10);
+            ->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(30);
         }
         else{
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->where($criterio,$operador,$buscar)->orderBy('ordentrabajos.id', 'desc')->paginate(10);
+            ->where($criterio,$operador,$buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(30);
         }
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
@@ -51,6 +51,209 @@ class OrdentrabajoController extends Controller
             'ordenes' => $ordenes
         ];
     }
+    public function cartera(Request $request)
+    {
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        $operador=$request->operador;
+        
+        if ($criterio=='' || $buscar==''){
+            $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+            ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+            ->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(50);
+        }
+        else{
+            $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+            ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+            ->where($criterio,$operador,$buscar)->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(30);
+        }
+        foreach($ordenes as $orden){
+            $costos=CostoProduccion::select(DB::raw('SUM(total) as totalcosto'))->where('idorden','=', $orden->idorden)->get();
+            $orden->costos+=$costos[0]->totalcosto;
+        }
+        
+        return [
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function filtrarCartera(Request $request)
+    {
+        if($request->buscar=='todos'){
+            $buscar=['D','A','EP','ENP','E'];
+        }else{
+            $buscar = [$request->buscar];
+        }
+        $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+        ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(20);
+        foreach($ordenes as $orden){
+            $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
+            $orden->detalles=$detalles;
+            $costos=CostoProduccion::join('costois','costos.idcostois','=','costois.id')->where('idorden','=', $orden->idorden)->select('*','costos.titulo as titulo_costo','costos.idcostois as id_insumo','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','costos.id as idcosto','costos.valor as valor_costo','costos.orden as orden_costo','costos.cantidad as cantidad_costo','costos.total as subtotal_costo')->get();
+            $orden->costos=$costos;
+        }
+        
+        return [
+            'buscar'=>$buscar,
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function ventas(Request $request)
+    {
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        $operador=$request->operador;
+        $fechai = Carbon::now()->startOfMonth()->toDateString();
+        $fechaf = Carbon::now()->endOfMonth()->toDateString();
+        if ($criterio=='' || $buscar==''){
+            $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+            ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+            ->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(50);
+        }
+        else{
+            $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+            ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+            ->where($criterio,$operador,$buscar)->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(30);
+        }
+        foreach($ordenes as $orden){
+            $costos=CostoProduccion::select(DB::raw('SUM(total) as totalcosto'))->where('idorden','=', $orden->idorden)->get();
+            $orden->costos+=$costos[0]->totalcosto;
+        }
+        
+        return [
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function filtrarFechaVentas(Request $request)
+    {
+        $filtroFecha = $request->filtroFecha;
+        switch($filtroFecha){
+            case 'hoy':
+                $fechai=date('Y-m-d');
+                $fechaf=date('Y-m-d');
+            break;
+            case 'ayer':
+                $date=date('Y-m-d');
+                $mod_date = strtotime($date."- 1 days");
+                $fechai= date('Y-m-d',$mod_date);
+                $fechaf=date('Y-m-d',$mod_date);
+                break;
+            case 'ultimos7':
+                $date=date('Y-m-d');
+                $mod_date = strtotime($date."- 7 days");
+                $fechai= date('Y-m-d',$mod_date);
+                $fechaf=date('Y-m-d');
+                break;
+            case 'ultimos30':
+                $date=date('Y-m-d');
+                $mod_date = strtotime($date."- 30 days");
+                $fechai= date('Y-m-d',$mod_date);
+                $fechaf=date('Y-m-d');
+                break;
+            case 'mes':
+                $diaSemana = date("m");
+                # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
+                $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
+                # Y formateamos ese tiempo
+                $fechai= date("Y-m-d", $tiempoDeInicioDeSemana);
+                # Ahora para el fin, sumamos
+                $tiempoDeFinDeSemana = strtotime("+" . $diaSemana . " days", $tiempoDeInicioDeSemana); # Sumamos +X days, pero partiendo del tiempo de inicio
+                # Y formateamos
+                $fechaf = date("Y-m-d", $tiempoDeFinDeSemana);
+                break;
+            case 'semana':
+                $diaSemana = date("w");
+                # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
+                $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
+                # Y formateamos ese tiempo
+                $fechai= date("Y-m-d", $tiempoDeInicioDeSemana);
+                # Ahora para el fin, sumamos
+                $tiempoDeFinDeSemana = strtotime("+" . $diaSemana . " days", $tiempoDeInicioDeSemana); # Sumamos +X days, pero partiendo del tiempo de inicio
+                # Y formateamos
+                $fechaf = date("Y-m-d", $tiempoDeFinDeSemana);
+                break;
+                default:
+                $intervalo = explode(",", $filtroFecha);
+                $fechai=$intervalo[0];
+                $fechaf=$intervalo[1];;
+        }
+        $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+        ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(10);
+        foreach($ordenes as $orden){
+            $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
+            $orden->detalles=$detalles;
+            $costos=CostoProduccion::join('costois','costos.idcostois','=','costois.id')->where('idorden','=', $orden->idorden)->select('*','costos.titulo as titulo_costo','costos.idcostois as id_insumo','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','costos.id as idcosto','costos.valor as valor_costo','costos.orden as orden_costo','costos.cantidad as cantidad_costo','costos.total as subtotal_costo')->get();
+            $orden->costos=$costos;
+        }
+        
+        return [
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function filtrarVentas(Request $request)
+    {
+        if($request->buscar=='todos'){
+            $buscar=['D','A','EP','ENP','E'];
+        }else{
+            $buscar = [$request->buscar];
+        }
+        $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+        ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(20);
+        foreach($ordenes as $orden){
+            $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
+            $orden->detalles=$detalles;
+            $costos=CostoProduccion::join('costois','costos.idcostois','=','costois.id')->where('idorden','=', $orden->idorden)->select('*','costos.titulo as titulo_costo','costos.idcostois as id_insumo','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','costos.id as idcosto','costos.valor as valor_costo','costos.orden as orden_costo','costos.cantidad as cantidad_costo','costos.total as subtotal_costo')->get();
+            $orden->costos=$costos;
+        }
+        
+        return [
+            'buscar'=>$buscar,
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    
     public function filtrarFecha(Request $request)
     {
         $filtroFecha = $request->filtroFecha;
@@ -106,7 +309,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.id', 'desc')->paginate(10);
+        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(10);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
@@ -115,6 +318,65 @@ class OrdentrabajoController extends Controller
         }
         
         return [
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function filtrarOrdenes(Request $request)
+    {   
+        if($request->buscar=='todos'){
+            $buscar=['D','A','EP','ENP','E'];
+        }else{
+            $buscar = [$request->buscar];
+        }
+        $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+        ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(50);
+        foreach($ordenes as $orden){
+            $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
+            $orden->detalles=$detalles;
+            $costos=CostoProduccion::join('costois','costos.idcostois','=','costois.id')->where('idorden','=', $orden->idorden)->select('*','costos.titulo as titulo_costo','costos.idcostois as id_insumo','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','costos.id as idcosto','costos.valor as valor_costo','costos.orden as orden_costo','costos.cantidad as cantidad_costo','costos.total as subtotal_costo')->get();
+            $orden->costos=$costos;
+        }
+        
+        return [
+            'pagination' => [
+                'total'        => $ordenes->total(),
+                'current_page' => $ordenes->currentPage(),
+                'per_page'     => $ordenes->perPage(),
+                'last_page'    => $ordenes->lastPage(),
+                'from'         => $ordenes->firstItem(),
+                'to'           => $ordenes->lastItem(),
+            ],
+            'ordenes' => $ordenes
+        ];
+    }
+    public function filtrarEstadoc(Request $request)
+    {
+        if($request->buscar=='todos'){
+            $buscar=['C','PC','PA','VC','P','A'];
+        }else{
+            $buscar = [$request->buscar];
+        }
+        $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
+        ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+        ->whereIn('ordentrabajos.estado', $buscar)->orderBy('ordentrabajos.created_at', 'ASC')->paginate(20);
+        foreach($ordenes as $orden){
+            $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
+            $orden->detalles=$detalles;
+            $costos=CostoProduccion::join('costois','costos.idcostois','=','costois.id')->where('idorden','=', $orden->idorden)->select('*','costos.titulo as titulo_costo','costos.idcostois as id_insumo','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','costos.id as idcosto','costos.valor as valor_costo','costos.orden as orden_costo','costos.cantidad as cantidad_costo','costos.total as subtotal_costo')->get();
+            $orden->costos=$costos;
+        }
+        
+        return [
+            'buscar'=>$buscar,
             'pagination' => [
                 'total'        => $ordenes->total(),
                 'current_page' => $ordenes->currentPage(),
@@ -135,13 +397,13 @@ class OrdentrabajoController extends Controller
         for($i=0; $i<count($buscar);$i++){
             
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')->join('costos','ordentrabajos.id','=','costos.idorden')->join('costois','costos.idcostois','=','costois.id')->join('articulos','ordentrabajos.idarticulo','=','articulos.id')
-            ->select('*','articulos.nombre as articulo','personas.nombre as cliente','costos.id as idcosto','costois.nombre as nombre_insumo','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->whereNotIn('costos.terminado',[1, true])->where('ordentrabajos.produccion', 'EP')->where('costos.titulo',$buscar[$i])->orderBy('ordentrabajos.id', 'desc')->get();
+            ->select('*','articulos.nombre as articulo','personas.nombre as cliente','costos.id as idcosto','costos.descripcion as descripcion_costo','costois.nombre as nombre_insumo','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
+            ->whereNotIn('costos.terminado',[1, true])->whereIn('ordentrabajos.produccion', ['EP','ENP'])->where('costos.titulo',$buscar[$i])->orderBy('ordentrabajos.id', 'desc')->get();
             array_push($procesos, $ordenes );
         }
         return ['procesos'=>$procesos[0],'buscar'=>$buscar];
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -177,7 +439,7 @@ class OrdentrabajoController extends Controller
                 $orden->observaciones = $request->observaciones;
                 $orden->unidad_medida = $request->unidad_medida;
                 $orden->ancho_material = $request->ancho_material;
-                $orden->largo_material = $request->largo_amterial;
+                $orden->largo_material = $request->largo_material;
                 $orden->cantidad = $request->cantidad;
                 $orden->descuento = $request->descuento;
                 $orden->impuesto = $request->impuesto;
@@ -245,7 +507,7 @@ class OrdentrabajoController extends Controller
                 $orden->observaciones = $request->observaciones;
                 $orden->unidad_medida = $request->unidad_medida;
                 $orden->ancho_material = $request->ancho_material;
-                $orden->largo_material = $request->largo_amterial;
+                $orden->largo_material = $request->largo_material;
                 $orden->cantidad = $request->cantidad;
                 $orden->descuento = $request->descuento;
                 $orden->impuesto = $request->impuesto;
@@ -300,7 +562,26 @@ class OrdentrabajoController extends Controller
                 DB::rollBack();
             }
     }
-
+    public function cambiarFecha(Request $request){
+        $orden = Ordentrabajo::find($request->id);
+        $orden->fecha_entrega=$request->fecha_entrega;
+        $orden->save();
+        
+    }
+    public function cambiarEstado(Request $request){
+        $orden = Ordentrabajo::find($request->id);
+        $orden->estado=$request->estadoc;
+        $orden->produccion=$request->estadop;
+        $orden->save();
+        
+    }
+    public function cambiarAbono(Request $request){
+        $orden = Ordentrabajo::find($request->id);
+        $orden->abono=$request->abono;
+        $orden->saldo=$request->saldo;
+        $orden->save();
+        
+    }
     public function cambiarProceso(Request $request)
     {
         // if (!$request->ajax()) return redirect('/');

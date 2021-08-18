@@ -65,13 +65,13 @@
                                         <div class="col-xl-12">
                                         <div class="input-group">
                                             <div class="alert alert-primary mb-0 p-1" ><strong>Estado</strong> </div>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('')">Todos</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('D')">Diseño</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('A')">Aprobación</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('EP')">Enviar a producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('ENP')">En producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('E')">Por entregar</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes('T')">Terminada</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'todos')">Todos</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'D')">Diseño</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'A')">Aprobación</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'EP')">Enviar a producción</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'ENP')">En producción</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'E')">Por entregar</button>
+                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'T')">Terminada</button>
                                         </div>
                                     </div>
                                 </div>
@@ -82,17 +82,18 @@
                                     <thead>
                                         <tr>
                                             <th>Opciones</th>
-                                            <th>Fecha</th>
-                                            <th>Fecha de cierre</th>
-                                            <th>Trabajo</th>
-                                            <th>Cliente</th>
-                                            <th>Nombre contacto</th>
-                                            <th>Teléfono</th>
-                                            <th>Carpeta</th>
-                                            <th>Estado Comerical</th>
-                                            <th>Estado Producción</th>
-                                            <th>Valor orden</th>
-                                            <th>Fecha de entrega</th>
+                                            <th @click="ordenar('idorden')">No. orden <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('fechaorden')">Fecha <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('fecha')">Fecha de cierre <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('articulo')">Trabajo <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('cliente')">Cliente <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('detalles_diseno')">Detalles del diseño <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('observaciones')">Observaciones <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th >Producción </th>
+                                            <th @click="ordenar('estadoc')">Estado Comerical <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('estadop')">Estado Producción <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('total')">Valor orden <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th @click="ordenar('fecha_entrega')">Fecha de entrega <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="arrayOrdenes.length">
@@ -113,18 +114,32 @@
                                                     <i class="icon-trash"></i>
                                                 </button>
                                             </td>
+                                            <td v-text="orden.idorden"></td>
                                             <td v-text="orden.fechaorden"></td>
                                             <td v-text="orden.fecha"></td>
-                                            <td v-text="orden.articulo"></td>
+                                            <td>{{orden.cantidad}} {{orden.articulo}} {{orden.ancho_material}}</td>
                                             <td v-text="orden.rasonsocial"></td>
-                                            <td v-text="orden.contacto"></td>
-                                            <td v-text="orden.telefono_contacto"></td>
-                                            <td v-text="orden.carpeta_cliente"></td>
-                                            <td v-text="estadocomercial[orden.estadoc]"></td>
-                                            <td v-text="estadoproduccion[orden.estadop]"></td>
+                                            <td style="color:red" v-text="orden.detalles_diseno"></td>
+                                            <td style="color:red" v-text="orden.observaciones"></td>
+                                            <td>
+                                                <ul v-if="orden.costos.length" class="costos-semaforo">
+                                                    <li v-for="costo in orden.costos" :key="costo.id" v-text="costo.tipo_costo.charAt(0)" :class="[ costo.terminado==1 ? 'bg-success': costo.completado==1 ? 'bg-warning': 'bg-danger']" >
+                                                    </li>
+                                                </ul>  
+                                            </td>
+                                            <td>
+                                                <select v-model="orden.estadoc" id="" class="bg-primary" @change="cambiarEstado(orden)" >
+                                                    <option v-for="(estadoc, key) in estadocomercial" :key="key" :value="key" v-text="estadocomercial[key]"></option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select v-model="orden.estadop" id="" class="bg-success" @change="cambiarEstado(orden)">
+                                                    <option v-for="(estadop, key) in estadoproduccion" :key="key" :value="key" v-text="estadoproduccion[key]"></option>
+                                                </select>
+                                            </td>
                                             <td v-text="orden.total"></td>
-                                            <td :style="`background:hsl(${calcularDias(index,orden)*15}deg 100% 44%)`">
-                                                {{orden.fecha_entrega}}
+                                            <td >
+                                                <input type="date" v-model="orden.fecha_entrega" @change="cambiarFecha(orden)" :style="`background:hsl(${calcularDias(index,orden)*15}deg 100% 44%)`">
                                             </td>
                                             <table>
 
@@ -274,7 +289,7 @@
                                         <div class="card-header">
                                             <h4 for="">Detalles de diseño</h4> 
                                         </div>
-                                        <div v-text="detalle_diseno" class="card"></div>
+                                        <div style="color:red" v-text="detalles_diseno" class="card"></div>
                                     </div>
                                 </div>
                                  <div class="card">
@@ -282,7 +297,7 @@
                                         <div class="card-header">
                                             <h4 for="">Descripción</h4>
                                         </div>
-                                        <div v-text="descripcion_orden" class="card"></div>
+                                        <div style="color:red" v-text="observaciones" class="card"></div>
                                     </div>
                                  </div>
                             </div>
@@ -545,7 +560,7 @@
                                                         v-for="(articulo,index) in arrayArticulos" 
                                                         :key="articulo.id" 
                                                         v-text="articulo.nombre"
-                                                        @click="getDatosArticulo(articulo,index)">
+                                                        @click="getDatosArticulo(articulo,index), getPrecioUnitario(articulo)">
                                                         </a> 
                                                     </div>
                                                 </template>
@@ -579,12 +594,12 @@
                                                     <label for="">Producto</label>
                                                     <input type="text" class="form-control" v-model="nombre_articulo">
                                                 </div>
-                                               
                                                 <div class="col-md-3">
                                                     <label for="">Valor producto</label>
                                                     <input type="text" class="form-control" v-model="precio">
                                                 </div>
-                                                 <div class="col-md-3">
+                                                
+                                                <div class="col-md-3">
                                                     <label for="">IVA</label>
                                                     <input type="text" class="form-control" v-model="impuesto">
                                                 </div>
@@ -600,16 +615,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label for="">Cantidad</label>
                                 <input type="text" class="form-control" v-model="cantidad">
                             </div>
-                            <div class="col-md-1">
-                                <label for="">Ancho material</label>
+                            <div class="col-md-2">
+                                <label for="">Medida del trabajo</label>
                                 <input type="text" class="form-control" v-model="ancho_material">
                             </div>
-                            <div class="col-md-1">
-                                <label for="">Largo material</label>
+                            <div class="col-md-2">
+                                <label for="">Medida material</label>
                                 <input type="text" class="form-control" v-model="largo_material">
                             </div>
                             <div class="col-md-2">
@@ -623,11 +638,11 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="">Detalles de diseño</label>
-                                <textarea class="form-control" v-model="detalle_diseno">  </textarea>
+                                <textarea style="color:red" class="form-control" v-model="detalles_diseno">  </textarea>
                             </div>
                             <div class="col-md-12">
                                 <label for="">Observaciones</label>
-                                <textarea class="form-control" v-model="observaciones">  </textarea>
+                                <textarea style="color:red" class="form-control" v-model="observaciones">  </textarea>
                             </div>
                             <div class="col-md-12 mt-4">
                               <div class="form-group row border p-4">
@@ -635,7 +650,8 @@
                                         <table class="table table-bordered table-striped table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th>Valor</th>
+                                                    <th>Valor unitario</th>
+                                                    <th>Cantidad</th>
                                                     <th>Descuento</th>
                                                     <th>Subtotal</th>
                                                     <th>Impuesto</th>
@@ -646,7 +662,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr style="background-color: #CEECF5;">
-                                                    <td>$ {{this.calcularValor}}</td>
+                                                    <td>$ <input type="text" v-model="precio_producto"> </td>
+                                                    <td><input type="text" v-model="cantidad"> </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <input type="number" class="form-control" v-model="descuento" placeholder="Descuento">
@@ -676,30 +693,26 @@
                             <div class="col-md-12 mt-2">
                                 <h4>Detalles del trabajo</h4>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-inline">
-                                    <input type="text" class="form-control" v-model="buscar_detalle" @keyup="selectInsumos('detalle')" placeholder="Ingrese costos del trabajo">
-                                </div>  
-                            </div>
-                            <div class="col-md-2">
+                           
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label>Tipo Detalle <span style="color:red" v-show="titulo_detalle==0">(*Ingrese)</span></label>
                                     <input type="text" class="form-control" v-model="titulo_detalle" placeholder="Tinta, Papel, tamaño, etc">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label>Detalle<span style="color:red" v-show="valor_detalle==0">(*Ingrese)</span></label>
                                     <input type="text" class="form-control" v-model="valor_detalle" placeholder="Cual es el detalle">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Descripción<span style="color:red" v-show="descripcion_detalle==0">(*Ingrese)</span></label>
                                     <input type="text"  class="form-control" v-model="descripcion_detalle" placeholder="Descripción o datos adicionales">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
                                 </div>
@@ -767,16 +780,7 @@
                                                                 @click="getDatosInsumos(insumo,index)">
                                                                 </a> 
                                                             </div>
-                                                            <div v-else class="list-group">
-                                                                <a href="#" 
-                                                                class="list-group-item list-group-item-action" 
-                                                                :class="{'active' : insumo_seleccionado}" 
-                                                                v-for="(insumo,index) in arrayInsumos" 
-                                                                :key="insumo.id" 
-                                                                v-text="insumo.nombre"
-                                                                @click="getDatosDetalles(insumo,index)">
-                                                                </a> 
-                                                            </div>
+                                                           
                                                         </template>
                                                     </div>
                                                     <div class="modal-footer">
@@ -791,16 +795,16 @@
                                             <h4>Costos del trabajo</h4>
                                         </div>
                                     
-                                        <div class="col-md-4">
+                                        <div class="col-lg-7 col-xl-6">
                                             <div class="form-group">
                                                 <label>Seleccione Insumo o servicio <span style="color:red" v-show="idcosto==0">(*Seleccione)</span> </label>
                                                 <div class="form-group row">
-                                                    <div class="col-md-3">
+                                                    <div class="col-lg-3">
                                                         <div class="form-inline">
                                                             <input type="text" class="form-control" v-model="buscar_insumo" @keyup="selectInsumos('costo')" placeholder="Ingrese costos del trabajo">
                                                         </div>  
                                                     </div>
-                                                    <div class="col-md-12" v-if="insumo_seleccionado!=null">
+                                                    <div class="col-lg-12" v-if="insumo_seleccionado!=null">
                                                         <div class="form-group row border p-4 subform">
                                                             <div class="col-md-3">
                                                                 <label for="">Insumo</label>
@@ -820,39 +824,39 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2" v-if="insumo_seleccionado!=null">
+                                        <div class="col-lg-5 col-xl-4" v-if="insumo_seleccionado!=null">
                                             <div class="form-group">
                                                 <label>Titulo <span style="color:red" v-show="tipo_costo==0">(*Ingrese)</span></label>
                                                 <div  class="form-control" v-text="tipo_costo" ></div>
                                             </div>
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-lg-4 col-xl-2">
                                             <div class="form-group">
                                                 <label>Cantidad costo<span style="color:red"  v-show="cantidad_costo==0">(*Ingrese)</span></label>
                                                 <input type="number" value="0" step="any" class="form-control" @keyup="calcularCosto()" v-model="cantidad_costo" placeholder="Cantidad del costo">
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-lg-4 col-xl-3">
                                             <div class="form-group">
                                                 <label>Orden de producción<span style="color:red"  v-show="orden==0">(*Ingrese)</span></label>
                                                 <input type="text" class="form-control" v-model="orden_costo" placeholder="Orden de producción">
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-lg-4 col-xl-3">
                                             <div class="form-group">
                                                 <label>Valor costo<span style="color:red" v-show="valor_costo==0">(*Ingrese)</span></label>
                                                 <input type="number" value="" step="any" class="form-control" v-model="valor_costo" placeholder="Valor del costo">
                                                 <!-- {{calcularCosto2}} -->
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-lg-10 col-xl-3">
                                             <div class="form-group">
                                                 <label>Descripcion<span style="color:red" v-show="descripcion_costo==0">(*Ingrese)</span></label>
-                                                <input type="number" value="0" step="any" class="form-control" v-model="descripcion_costo" placeholder="Descripción del costo">
+                                                <input type="text" value="0" step="any" class="form-control" v-model="descripcion_costo" placeholder="Descripción del costo">
                                             </div>
                                         </div>
                                     
-                                        <div class="col-md-1">
+                                        <div class="col-lg-2 col-xl-3">
                                             <div class="form-group">
                                                 <button @click="agregarCosto()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
                                             </div>
@@ -967,7 +971,7 @@
                 buscare:'',
                 buscarc:'',
                 buscarv:'',
-                buscar:'',
+                buscar:'todos',
                 fechaI:'',
                 fechaF:'',
                 filtroFecha:'1',
@@ -975,7 +979,7 @@
                 buscarFechaf:`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
                 action:'',
                 idorden:0,
-                estadocomercial:{AN:'Analizar', C:'Cotizar', CE:'Cotización Enviada', NR:'Negociación/Revisión', PA:'Pendiente Abono', PC:'Por Concretar',VC:'Venta Cerrada', P:'Perdida y Cerrada'},
+                estadocomercial:{C:'Por Cotizar', PC:'Por Concretar', PA:'Pendiente Abono', VC:'Venta Cerrada', P:'No Comprar', A:'Aplazada'},
                 estadoproduccion:{D:'Diseño', A:'Aprobación',EP:'Enviar a producción',ENP:'En Producción', E:'Para Entrega',T:'Terminada'},
                 unidad:'',
                 fecha: `${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
@@ -986,7 +990,7 @@
                 estadoc:'C',
                 estadop:'',
                 carpeta_cliente:'',
-                detalle_diseno:'',
+                detalles_diseno:'',
                 observaciones:'',
                 largo_material:0,
                 ancho_material:0,
@@ -1031,6 +1035,7 @@
                 aseleccionado:false,
                 nombre_articulo:'',
                 precio:0,
+                precio_producto:0,
                 cantidad:1000,
                 vieworden:0,
                 listado:1,
@@ -1074,7 +1079,8 @@
                 dominio:'',
                 msjCliente:'',
                 msjArticulo:'',
-                seccion:''
+                seccion:'',
+                ordenarFlecha:false
                
             }
         },
@@ -1130,16 +1136,10 @@
                 }
                 return resultado
             },
-            calcularValor(){
-                var resultado=0
-                resultado=this.precio*this.cantidad
-                this.valor=resultado
-                return resultado
-                
-            },
+           
             calcularTotalParcial(){
-                var resultado=0;
-                resultado=this.valor-this.descuento
+                var resultado=0
+                resultado=(this.precio_producto*this.cantidad)-this.descuento
                 this.totalParcial=resultado
                 return resultado
             },
@@ -1165,6 +1165,7 @@
 
         },
         methods : {
+           
             asignarFecha(){
                 this.modalfecha=1
             },
@@ -1201,6 +1202,7 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+               
             },
             getClientebyid(idcliente){
                 let me=this;
@@ -1346,6 +1348,7 @@
                 .catch(function (error) {
                     console.log(error);
                 }); 
+                this.precio_producto=this.precio
             },
             selectArticulobyid(idarticulo){
                 let me=this;
@@ -1371,6 +1374,10 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+             getPrecioUnitario(val){
+                let me=this
+                me.precio_producto=val.precio_venta
             },
             getDatosArticulo(val1, index){
                 let me = this;
@@ -1537,7 +1544,7 @@
                 orden1.set('fecha' , this.fecha)
                 orden1.set('fechaorden' , this.fechaorden)
                 orden1.set('carpeta_cliente' , this.carpeta_cliente)
-                orden1.set('detalles_diseno' , this.detalle_diseno)
+                orden1.set('detalles_diseno' , this.detalles_diseno)
                 orden1.set('observaciones' , this.observaciones)
                 orden1.set('unidad' , this.unidad)
                 orden1.set('ancho_material', this.ancho_material)
@@ -1573,13 +1580,13 @@
                 orden1.set('fecha' , this.fecha)
                 orden1.set('fechaorden' , this.fechaorden)
                 orden1.set('carpeta_cliente' , this.carpeta_cliente)
-                orden1.set('detalles_diseno' , this.detalle_diseno)
+                orden1.set('detalles_diseno' , this.detalles_diseno)
                 orden1.set('observaciones' , this.observaciones)
                 orden1.set('unidad' , this.unidad)
                 orden1.set('ancho_material', this.ancho_material)
                 orden1.set('largo_material', this.largo_material)
                 orden1.set('cantidad', this.cantidad)
-                orden1.set('subtotal_orden',this.totalParcial)
+                orden1.set('totalParcial',this.totalParcial)
                 orden1.set('descuento',this.descuento)
                 orden1.set('impuesto',this.impuesto)
                 orden1.set('total',this.total)
@@ -1596,6 +1603,34 @@
                 });
                 this.listarOrdenes(1,this.buscar,'like',this.criterio);
                 
+            },
+            cambiarEstado(orden){
+                var me=this
+                axios.put(me.dominio+'/orden/cambiarEstado',{
+                    'id':orden.idorden,
+                    'estadoc':orden.estadoc,
+                    'estadop':orden.estadop
+                })
+                .then(function (response) {
+                   
+                   
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                this.filtrarOrdenes(1,this.buscar);
+            },
+            cambiarFecha(orden){
+                var me=this
+                 axios.put(me.dominio+'/orden/cambiarFecha',{
+                     'id':orden.idorden,
+                     'fecha_entrega':orden.fecha_entrega
+                 })
+                .then(function (response) {
+                   
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                this.filtrarOrdenes(1,this.buscar);
             },
            
             copiarOrden(orden){
@@ -1629,6 +1664,27 @@
             },
             ocultarDetalle(){
                 this.listado=1;
+                this.articulo_seleccionado=''
+                this.insumo_seleccionado=''
+                this.cliente_seleccionado=''
+                this.abono=0
+                this.ancho_material=''
+                this.largo_material=''
+                this.detalles_diseno=''
+                this.observaciones=''
+                this.cantidad=1000
+                this.unidad=''
+                this.carpeta_cliente=''
+                this.descuento=0
+                this.saldo=0
+                this.precio_producto=0
+                this.precio=0
+                this.idarticulo=0
+                this.fecha_entrega=`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`
+                this.fechaorden=`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`
+                this.fecha=`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`
+                this.estadoc='C'
+                this.estadop=''
             },
             cerrarModal(){
                 this.modal=0;
@@ -1637,6 +1693,66 @@
                 this.arrayArticulos=[]
                 this.modal = 1;
                 this.tituloModal = 'Seleccione 1 o varios artículos';
+            },
+             ordenar(opcion){
+                this.ordenarFlecha=!this.ordenarFlecha
+                this.arrayOrdenes.sort(function(a, b) {
+                    switch(opcion){
+                        case 'idorden':
+                            var textA = a.idorden;
+                            var textB = b.idorden;
+                            break;
+                        case 'fechaorden':
+                            var textA = a.fechaorden;
+                            var textB = b.fechaorden;
+                            break;
+                        case 'fecha':
+                            var textA = a.fecha;
+                            var textB = b.fecha;
+                            break;
+                        case 'articulo':
+                            var textA = a.articulo;
+                            var textB = b.articulo;
+                            break;
+                        case 'rasonsocial':
+                            var textA = a.rasonsocial;
+                            var textB = b.rasonsocial;
+                            break;
+                        case 'contacto':
+                            var textA = a.contacto;
+                            var textB = b.contacto;
+                            break;
+                        case 'telefono_contacto':
+                            var textA = a.telefono_contacto;
+                            var textB = b.telefono_contacto;
+                            break;
+                        case 'carpeta_cliente':
+                            var textA = a.carpeta_cliente;
+                            var textB = b.carpeta_cliente;
+                            break;
+                        case 'estadoc':
+                            var textA = a.estadoc;
+                            var textB = b.estadoc;
+                            break;
+                        case 'estadop':
+                            var textA = a.estadop;
+                            var textB = b.estadop;
+                            break;
+                        case 'total':
+                            var textA = a.total;
+                            var textB = b.total;
+                            break;
+                        case 'fecha_entrega':
+                            var textA = a.fecha_entrega;
+                            var textB = b.fecha_entrega;
+                            break;
+                    }
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    
+                });
+                if(!this.ordenarFlecha){
+                    this.arrayOrdenes.reverse(); 
+                }
             },
             filtrarFecha(){
                 var me=this;
@@ -1655,10 +1771,17 @@
                 });
             },
             
-            filtrarOrdenes(buscar){
-                let criterio='ordentrabajos.produccion'
-                let operador='='
-                this.listarOrdenes(1,buscar,operador,criterio)
+            filtrarOrdenes(page,buscar){
+                var me=this
+                me.buscar=buscar
+                var url= me.dominio+'/orden/filtrarOrdenes?page='+page+'&buscar='+buscar;
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.arrayOrdenes = respuesta.ordenes.data;
+                    me.pagination= respuesta.pagination
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             verOrden(orden){
                 this.listado = 2
@@ -1672,7 +1795,7 @@
                 this.fecha_entrega=orden.fecha_entrega
                 this.fecha=orden.fecha
                 this.carpeta_cliente=orden.carpeta_cliente
-                this.detalles_diseno=orden.detalle_diseno
+                this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
                 this.ancho_material= orden.ancho_material
                 this.largo_material= orden.largo_material
@@ -1709,12 +1832,13 @@
                 this.fecha=orden.fecha
                 this.fechaorden=orden.fechaorden
                 this.carpeta_cliente=orden.carpeta_cliente
-                this.detalles_diseno=orden.detalle_diseno
+                this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
                 this.ancho_material= orden.ancho_material
                 this.largo_material= orden.largo_material
                 this.cantidad= orden.cantidad
                 this.subtotal_orden=orden.totalParcial
+                this.precio_producto=orden.totalParcial/orden.cantidad
                 this.descuento=orden.descuento
                 this.impuesto=orden.impuesto
                 this.total=orden.total

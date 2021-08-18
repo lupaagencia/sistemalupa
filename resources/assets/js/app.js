@@ -25,6 +25,9 @@ Vue.component('ingreso', require('./components/Ingreso.vue'));
 Vue.component('costop', require('./components/Costop.vue'));
 Vue.component('orden', require('./components/Orden.vue'));
 Vue.component('programa', require('./components/Programaprod.vue'));
+Vue.component('cartera', require('./components/Cartera.vue'));
+Vue.component('ventas', require('./components/Ventas.vue'));
+Vue.component('seguimientov', require('./components/SeguimientoVenta.vue'));
 Vue.component('nuevoproducto', require('./components/partes/NuevoProducto.vue'));
 
 const app = new Vue({

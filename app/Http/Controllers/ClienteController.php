@@ -77,27 +77,30 @@ class ClienteController extends Controller
         if (!$request->ajax()) return redirect('/');
         try{
             DB::beginTransaction();
-            $persona = new Persona();
-            $persona->nombre = $request->nombre;
-            $persona->tipo_documento = $request->tipo_documento;
-            $persona->num_documento = $request->num_documento;
-            $persona->direccion = $request->direccion;
-            $persona->telefono = $request->telefono;
-            $persona->email = $request->email;
-            $persona->save();
+               
+                $persona = new Persona();
+                $persona->nombre = $request->nombre;
+                $persona->tipo_documento = $request->tipo_documento;
+                $persona->num_documento = $request->num_documento;
+                $persona->direccion = $request->direccion;
+                $persona->telefono = $request->telefono;
+                $persona->email = $request->email;
+                $persona->save();
+                
+                $cliente = new Cliente();
+                $cliente->id = $persona->id;
+                $cliente->tipo_cliente = $request->tipo_cliente;
+                $cliente->ciudad = $request->ciudad;
+                $cliente->departamento = $request->departamento;
+                $cliente->pais = $request->pais;
+                $cliente->contacto = $request->contacto;
+                $cliente->telefono_contacto = $request->telefono_contacto;
+                $cliente->email_contacto = $request->email_contacto;
+                $cliente->save();
+                DB::commit();
+                return 0;
+         
 
-            $cliente = new Cliente();
-            $cliente->id = $persona->id;
-            $cliente->tipo_cliente = $request->tipo_cliente;
-            $cliente->ciudad = $request->ciudad;
-            $cliente->departamento = $request->departamento;
-            $cliente->pais = $request->pais;
-            $cliente->contacto = $request->contacto;
-            $cliente->telefono_contacto = $request->telefono_contacto;
-            $cliente->email_contacto = $request->email_contacto;
-            $cliente->save();
-
-            DB::commit();
         } catch (Exception $e){
             DB::rollBack();
         }
@@ -105,6 +108,18 @@ class ClienteController extends Controller
         
     }
     
+    public function verificarPersona(Request $request){
+        $nombre=$request->nombre;
+        $persona = Persona::where('nombre', $nombre)->get();
+        $resultado=0;
+        if(count($persona)>0){
+            $resultado=1;
+            return $resultado;
+        }else{
+            $resultado=0;
+            return $resultado;
+        }
+    }
     public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
