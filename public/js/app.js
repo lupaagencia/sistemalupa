@@ -35784,6 +35784,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -35900,7 +35909,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var url = '/articulo?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
-                console.log(respuesta.articulos);
                 me.arrayArticulo = respuesta.articulos;
                 me.pagination = respuesta.pagination;
             }).catch(function (error) {
@@ -36164,6 +36172,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             datos.set('descripcion', this.descripcion);
             datos.set('atributos', JSON.stringify(this.arrayAtributo));
             axios.post('/articulo/registrar', datos).then(function (response) {
+                console.log(response);
                 me.arrayAtributo = [];
                 me.arrayOpAtributo = [];
                 me.rangos = [];
@@ -36203,7 +36212,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        desactivarArticulo: function desactivarArticulo(id) {
+        eliminarArticulo: function eliminarArticulo(id) {
             var _this2 = this;
 
             var swalWithBootstrapButtons = Swal.mixin({
@@ -36224,12 +36233,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 if (result.value) {
                     var me = _this2;
-                    var datos = new FormData();
-                    datos.set('_method', 'DELETE');
-                    datos.set('id', id);
-                    axios.post('/articulo/desactivar', datos).then(function (response) {
+                    var url = '/articulo/eliminar?id=' + id;
+                    axios.delete(url, { '_method': 'DELETE' }).then(function (response) {
                         me.listarArticulo(1, '', 'nombre');
-                        swal('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
+                        console.log(response);
+                        swal('Eliminado!', 'El registro ha sido eliminado con éxito.', 'success');
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -39221,7 +39229,7 @@ var render = function() {
                                     attrs: { type: "button" },
                                     on: {
                                       click: function($event) {
-                                        _vm.desactivarArticulo(articulo.id)
+                                        _vm.eliminarArticulo(articulo.id)
                                       }
                                     }
                                   },
@@ -39306,7 +39314,7 @@ var render = function() {
                                                     attrs: { type: "button" },
                                                     on: {
                                                       click: function($event) {
-                                                        _vm.desactivarArticulo(
+                                                        _vm.eliminarArticulo(
                                                           sarticulo.id
                                                         )
                                                       }
@@ -39814,6 +39822,56 @@ var render = function() {
                                 "\n                                    Este producto no tiene padre\n                                "
                               )
                             ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-2" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Tipo Producto(*)")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.atributo.tipo_producto,
+                                  expression: "atributo.tipo_producto"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.atributo,
+                                    "tipo_producto",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Producto Simple")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Producto Variable")
+                              ])
+                            ]
+                          )
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group col-md-2" }, [

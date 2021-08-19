@@ -12,11 +12,11 @@
 */
 Route::group(['middleware'=>['guest']],function(){
     
-    // Route::get('/', function () {
-    //     return Redirect::intended('http://localhost/sistema/web/dist');
-    // })->name('Home');
+    Route::get('/', function () {
+        return Redirect::intended('http://localhost/sistema/web/dist');
+    })->name('Home');
     // Route::get('/','Auth\LoginController@tienda');
-    Route::get('/','Auth\LoginController@showLoginForm');
+    // Route::get('/','Auth\LoginController@showLoginForm');
     Route::get('/iniciarSeccion','Auth\LoginController@showLoginForm');
     Route::post('/login', 'Auth\LoginController@login')->name('login');
    
@@ -26,12 +26,12 @@ Route::group(['middleware'=>['auth']],function(){
     
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
     
-    // Route::get('/main', function () {
-    //     return view('backend/contenido');
-    // })->name('main');
     Route::get('/main', function () {
-        return view('contenido/contenido');
+        return view('backend/contenido');
     })->name('main');
+    // Route::get('/main', function () {
+    //     return view('contenido/contenido');
+    // })->name('main');
 
     Route::group(['middleware' => ['Almacenero']], function () {
         Route::get('/categoria', 'CategoriaController@index');
@@ -97,7 +97,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/articulo', 'ArticuloController@index');
         Route::post('/articulo/registrar', 'ArticuloController@store');
         Route::put('/articulo/actualizar', 'ArticuloController@update');
-        Route::put('/articulo/desactivar', 'ArticuloController@desactivar');
+        Route::delete('/articulo/eliminar', 'ArticuloController@eliminar');
         Route::put('/articulo/activar', 'ArticuloController@activar');
         Route::get('/articulo/buscarArticulo', 'ArticuloController@buscarArticulo');
         Route::get('/articulo/selectArticulo', 'ArticuloController@selectArticulo');

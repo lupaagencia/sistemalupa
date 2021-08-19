@@ -41,7 +41,7 @@
                                           <i class="icon-pencil"></i>
                                         </div> &nbsp;
                                         <template v-if="articulo.condicion">
-                                            <div type="button" class="btn btn-danger btn-sm" @click="desactivarArticulo(articulo.id)">
+                                            <div type="button" class="btn btn-danger btn-sm" @click="eliminarArticulo(articulo.id)">
                                                 <i class="icon-trash"></i>
                                             </div>
                                         </template>
@@ -74,7 +74,7 @@
                                                         <i class="icon-pencil"></i>
                                                         </div> &nbsp;
                                                         <template v-if="sarticulo.condicion">
-                                                            <div type="button" class="btn btn-danger btn-sm" @click="desactivarArticulo(sarticulo.id)">
+                                                            <div type="button" class="btn btn-danger btn-sm" @click="eliminarArticulo(sarticulo.id)">
                                                                 <i class="icon-trash"></i>
                                                             </div>
                                                         </template>
@@ -191,6 +191,15 @@
                                         </div>
                                         <div v-else>
                                             Este producto no tiene padre
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Tipo Producto(*)</label>
+                                            <select class="form-control" v-model="atributo.tipo_producto" >
+                                                <option value="1">Producto Simple</option>
+                                                <option value="2">Producto Variable</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2">
@@ -723,7 +732,6 @@
                 var url= '/articulo?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    console.log(respuesta.articulos)
                     me.arrayArticulo = respuesta.articulos;
                     me.pagination= respuesta.pagination;
                 })
@@ -1013,6 +1021,7 @@
                 datos.set( 'atributos',JSON.stringify(this.arrayAtributo))
                 axios.post('/articulo/registrar',datos)
                 .then(function (response) {
+                    console.log(response)
                     me.arrayAtributo=[];
                     me.arrayOpAtributo=[];
                     me.rangos=[];
@@ -1053,7 +1062,7 @@
                     console.log(error);
                 })
             },
-            desactivarArticulo(id){
+            eliminarArticulo(id){
                const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -1072,15 +1081,14 @@
                 }).then((result) => {
                 if (result.value) {
                     let me = this;
-                    const datos = new FormData()
-                    datos.set('_method', 'DELETE')
-                    datos.set('id',id)
-                    axios.post('/articulo/desactivar',datos)
+                    var url= '/articulo/eliminar?id='+ id;
+                    axios.delete(url,{'_method': 'DELETE'})
                     .then(function (response) {
                         me.listarArticulo(1,'','nombre');
+                        console.log(response)
                         swal(
-                        'Desactivado!',
-                        'El registro ha sido desactivado con éxito.',
+                        'Eliminado!',
+                        'El registro ha sido eliminado con éxito.',
                         'success'
                         )
                     }).catch(function (error) {

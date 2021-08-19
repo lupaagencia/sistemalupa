@@ -3478,7 +3478,7 @@ button.close {
 
 @media (min-width: 992px) {
   .modal-lg {
-    max-width: 800px; } }
+    max-width: 95%; } }
 
 .tooltip {
   position: absolute;
@@ -9402,6 +9402,69 @@ hr.transparent {
     flex-direction: row;
   }
   .costos-semaforo{
+    display:flex;
+    flex-direction: row;
+  }
+  .title-secundario{
+    font-size: 20px;
+    color:#2a7fff;
+    font-weight: bold;
+  }
+  .atributo-item{
+    display:flex;
+    flex-direction: row;
+    background:#e7ecfa;
+    padding:2px 2px;
+    border:solid 1px rgb(111, 144, 182);
+    cursor:pointer;
+  }
+  .atributo-editado{
+    display:flex;
+    margin-bottom: 10px;
+  }
+  .botones-atributo{
+    padding: 3px;
+    border: solid 1px #ccc;
+    background: #fff;
+    margin-right: 5px;
+  }
+  .atributo-nombre{
+    padding:0.36rem 0.75rem;
+    margin-right:2px;
+  }
+  .list-atributos{
+    list-style: none;
+    margin-bottom:0;
+    padding-left: 0;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top:10px;
+  }
+  .opciones-atributo{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    
+  }
+  .opciones-atributo .btn{
+    height:35px;
+  }
+  .opciones-atributo .col-md-12{
+    padding:0;
+  }
+  .titulo-3{
+    font-size: 16px;
+    background: #999;
+    padding: 10px 10px;
+  }
+  .titulo-4{
+    font-weight: bold;
+    color:#666;
+    border-bottom: #ccc solid 1px;
+    margin:10px;
+  }
+  .rangos{
     display:flex;
     flex-direction: row;
   }

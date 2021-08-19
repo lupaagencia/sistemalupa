@@ -35,7 +35,7 @@ export const store = new Vuex.Store({
     shipping:0,
 
     formato:{ style: 'currency', currency: 'USD' },
-    dominio:'',
+    dominio:'http://127.0.0.1:8000',
     directory:'shop2'
   },
 
@@ -206,16 +206,15 @@ export const store = new Vuex.Store({
 
   actions: {
     setUpStore(context) {
-      var url= 'http://cms.alainimpresores.com/api/articulo';
+      var url= 'http://127.0.0.1:8000/api/articulo';
       //var url= dom+'/api/articulo';
       axios.get(url).then(function (response) {
           var respuesta= response.data.articulos;
-          
           context.commit('setUpProducts', respuesta)
           
       })
       
-      var url2= 'http://cms.alainimpresores.com/api/categoria';
+      var url2= 'http://cms.lupaweb.com/api/categoria';
       //var url2= dom+'/api/categoria/';
       axios.get(url2).then(function (response) {
           var respuesta= response.data.categorias.data;

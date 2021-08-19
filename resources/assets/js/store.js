@@ -35,7 +35,7 @@ export const store = new Vuex.Store({
     shipping:0,
 
     formato:{ style: 'currency', currency: 'USD' },
-    dominio:'http://cms.alainimpresores.com/',
+    dominio:'http://cms.lupaweb.com/',
     directory:'shop2'
   },
 
@@ -206,7 +206,7 @@ export const store = new Vuex.Store({
 
   actions: {
     setUpStore(context) {
-      var url= 'http://cms.alainimpresores.com/api/articulo';
+      var url= 'http://cms.lupaweb.com/api/articulo';
       //var url= dom+'/api/articulo';
       axios.get(url).then(function (response) {
           var respuesta= response.data.articulos;
@@ -215,7 +215,7 @@ export const store = new Vuex.Store({
           
       })
       
-      var url2= 'http://cms.alainimpresores.com/api/categoria';
+      var url2= 'http://cms.lupaweb.com/api/categoria';
       //var url2= dom+'/api/categoria/';
       axios.get(url2).then(function (response) {
           var respuesta= response.data.categorias.data;

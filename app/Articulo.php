@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Articulo extends Model
 {
-    protected $fillable =['id_item_padre','idcategoria','codigo','nombre','imagen','rangos','precio_venta','iva','stock','descripcion','condicion'];
+    protected $fillable =['id_item_padre','idcategoria','codigo','tipo_producto','nombre','imagen','rangos','precio_venta','iva','stock','descripcion','condicion'];
     public function categoria(){
         return $this->belongsTo('App\Categoria');
     }

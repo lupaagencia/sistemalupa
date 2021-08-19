@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <div class="row">
-      hola
       <div class="col-sm-12 padding-right">
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img :src="`${dominio}/img/productos/${producto.imagen}`" alt="" />
+								<img :src="`${dominio}/img/${producto.imagen}`" alt="" />
 							</div>
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
 								
@@ -46,8 +45,8 @@
 								<h2>{{producto.nombre}}</h2>
 								<p v-if="producto.descripcion!='null'">{{producto.descripcion}}</p>
 								<!-- <img src="images/product-details/rating.png" alt="" /> -->
-                <span class="left-sidebar flex">
-                    <div>
+                <span v-if="producto.tipo_producto==2" class="left-sidebar flex">
+                    <div >
                       <ul class="radio">
                         <li v-for="sub in subproductos" :key="sub.id">
                           <label>
@@ -65,6 +64,7 @@
                                <label>
                                 <input class="" type="radio" name="atributo" @change="mostrarOpciones(atr.id)" :value="atr.nombre" >
                                   {{atr.nombre}}
+                                 
                                 </label>
                                 
                             </h4>
@@ -98,6 +98,59 @@
                             </h4>
                             <ul class="opcioneAtri">
                               <li v-for="op in atr.opciones_atributo" :key="op.id" @click="obtenerOpcion(op.id)" styles="display:inline-block" :class="op.open ? 'opactive' : '' " class="opciones" >
+                                  <p>{{op.label}}</p> <span>${{op.valor}}</span>
+                              </li>
+                            </ul>
+                          </div>
+                          
+                        </li>
+                      </ul>  
+                    </div>
+                    
+                </span>
+                <span v-else class="left-sidebar flex">
+                    <div v-if="producto.atributos.length">
+                      <ul class="radio ul-atributos">
+                        <li  v-for="atributo in producto.atributos" :key="atributo.id"  >
+                          <div v-if="atributo.tipo_campo==1">
+                            <h4 for="">
+                               <label>
+                                <input class="" type="radio" name="atributo" @change="mostrarOpciones(atributo.id)" :value="atributo.nombre" >
+                                  {{atributo.nombre}}
+                                   hola
+                                </label>
+                                
+                            </h4>
+                            <ul v-show="atributo.nota" class="opcioneAtri">
+                              <li v-for="op in atributo.opciones_atributo" :key="op.id" @click="obtenerOpcion(op.id)" styles="display:inline-block" :class="op.open ? 'opactive' : '' " class="opciones" >
+                                  <p>{{op.label}}</p> <span>${{op.valor}}</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div v-else-if="atributo.tipo_campo==2">
+                            <div v-if="cantidadCom>=atributo.minimo && cantidadCom<=atributo.maximo">
+                              <h4 for="">{{`${atributo.nombre}:`}} 
+                                <div v-if="atributo.valor>0" >
+                                  <span v-if="atributo.tipo_campo==6" style="font-size:18px !important">$ {{atributo.valor}}</span>
+                                  <span v-else-if="atributo.tipo_campo==7" style="font-size:18px !important">$ {{atributo.valor}}</span>
+                                </div>
+                              </h4>
+                              <ul class="opcioneAtri">
+                                <li v-for="op in atributo.opciones_atributo" :key="op.id" @click="obtenerOpcion(op.id)" styles="display:inline-block" :class="op.open ? 'opactive' : '' " class="opciones" >
+                                    <p>{{op.label}}</p> <span>${{op.valor}}</span>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div v-else>
+                            <h4 for="">{{`${atributo.nombre}:`}} 
+                              <div v-if="atributo.valor>0" >
+                                <span v-if="atributo.tipo_campo==6" style="font-size:18px !important">$ {{atributo.valor}}</span>
+                                <span v-else-if="atributo.tipo_campo==7" style="font-size:18px !important">$ {{atributo.valor}}</span>
+                              </div>
+                            </h4>
+                            <ul class="opcioneAtri">
+                              <li v-for="op in atributo.opciones_atributo" :key="op.id" @click="obtenerOpcion(op.id)" styles="display:inline-block" :class="op.open ? 'opactive' : '' " class="opciones" >
                                   <p>{{op.label}}</p> <span>${{op.valor}}</span>
                               </li>
                             </ul>
@@ -311,6 +364,7 @@ export default {
       },
       obtenerProducto(id){
         let arrayp=this.productos.filter(p => p.id==id)
+        console.log(arrayp);
         this.producto=arrayp[0]
         this.subproductos=this.producto.subproductos
       },
@@ -329,7 +383,7 @@ export default {
         })
       },
       mostrarOpciones(id){
-        this.atributosOpciones.forEach((i,index)=>{
+        this.atributosOpciones.forEach((i)=>{
           if(i.id==id){
             i.nota=true
           }else{

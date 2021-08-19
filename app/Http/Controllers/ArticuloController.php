@@ -25,17 +25,55 @@ class ArticuloController extends Controller
         
         if ($buscar==''){
             $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','articulos.imagen','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
+            ->select('*','articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','articulos.imagen','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
             ->where('articulos.id_item_padre','=',0)->orderBy('articulos.id', 'desc')->paginate(10);
         }
         else{
             $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','articulos.imagen','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
+            ->select('*','articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','articulos.imagen','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
             ->where('articulos.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('articulos.id', 'desc')->paginate(10);
         }
         $items = array();
         for($i=0;count($articulos)>$i;$i++){
+                $at=Atributo::where('id_articulo','=',$articulos[$i]['id'])->get();
+                $atributos=array();
+                foreach($at as $a){
+                    $op=OpcionAtributo::where('id_atributo','=',$a['id'])->get();
+                    $opciones=array();
+                    foreach($op as $o){
+                        $opcion=[
+                            'id'=>$o['id'],
+                            'id_atributo'=>$o['id_atributo'],
+                            'label'=>$o['label'],
+                            'valor'=>$o['valor'],
+                            'opciones'=>$o['opciones'],
+                            'descripcion'=>$o['descripcion'],
+                            'alerta'=>$o['alerta'],
+                            'open'=>false,
+                            'orden'=>$o['orden'],
+                        ];
+                        array_push($opciones,$opcion);
+                    }
+                    $atributo=[
+                        'id'=>$a['id'],
+                        'id_articulo'=>$a['id_articulo'],
+                        'valor'=>$a['valor'],
+                        'tipo_campo'=>$a['tipo_campo'],
+                        'nombre'=>$a['nombre'],
+                        'nota'=>$a['nota'],
+                        'descripcion'=>$a['descripcion'],
+                        'alerta'=>$a['alerta'],
+                        'operacion'=>$a['operacion'],
+                        'unidad_medida'=>$a['unidad_medida'],
+                        'minimo'=>$a['minimo'],
+                        'maximo'=>$a['maximo'],
+                        'orden'=>$a['orden'],
+                        'open'=>false,
+                        'opciones_atributo'=>$opciones
+                    ];
+                    array_push($atributos,$atributo);
+                }
             $subarticulos = self::getSubproducto($articulos[$i]['id']);
             $item=[
                 'id'=>$articulos[$i]['id'],
@@ -51,6 +89,8 @@ class ArticuloController extends Controller
                 'descripcion'=>$articulos[$i]['descripcion'],
                 'condicion'=>$articulos[$i]['condicion'],
                 'subproductos'=>$subarticulos['subproductos'],
+                'atributos'=>$atributos,
+                'tipo_producto'=>$articulos[$i]['tipo_producto'],
                 'open'=>false
             ];
             array_push($items, $item);
@@ -283,7 +323,7 @@ class ArticuloController extends Controller
             $articulo = new Articulo();
             if($request->file('imagen')!=null){
                 $img=$request->file('imagen');
-                $nombreImg=time().'.'.$img->getClientOriginalExtension();
+                $nombreImg=time().'_'.$img->getclientoriginalname().'.'.$img->getClientOriginalExtension();
                 $articulo->imagen=$nombreImg;
                 $ruta=public_path('img');
                 $request->imagen->move($ruta, $nombreImg);
@@ -305,7 +345,6 @@ class ArticuloController extends Controller
             $articulo->stock = $request->stock;
             $articulo->descripcion = $request->descripcion;
             $articulo->condicion = 1;
-            return $request->rangos;
             $articulo->save();
             $atributos=json_decode($request->atributos);
             foreach($atributos as $atr){
@@ -419,11 +458,13 @@ class ArticuloController extends Controller
         
     }
 
-    public function borrar(Request $request)
+    public function eliminar(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
         $articulo = Articulo::findOrFail($request->id);
         $articulo->delete();
+        $subarticulo=Articulo::where('id_item_padre',$articulo->id);
+        $subarticulo->delete();
         return $request->id;
     }
 
