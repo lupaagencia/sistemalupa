@@ -549,7 +549,7 @@
                 if(this.modalIntervalo){
                     me.filtroFecha=`${this.fechaI},${this.fechaF}`
                 }
-                var url= me.dominio+'/orden/filtrarFecha?filtroFecha='+ me.filtroFecha;
+                var url= me.dominio+'/orden/filtrarFechaVentas?filtroFecha='+ me.filtroFecha;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayOrdenes = respuesta.ordenes.data;

@@ -60,12 +60,12 @@ class OrdentrabajoController extends Controller
         if ($criterio=='' || $buscar==''){
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(50);
+            ->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(500);
         }
         else{
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->where($criterio,$operador,$buscar)->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(30);
+            ->where($criterio,$operador,$buscar)->where('ordentrabajos.saldo', '>', 0)->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(500);
         }
         foreach($ordenes as $orden){
             $costos=CostoProduccion::select(DB::raw('SUM(total) as totalcosto'))->where('idorden','=', $orden->idorden)->get();
@@ -124,12 +124,12 @@ class OrdentrabajoController extends Controller
         if ($criterio=='' || $buscar==''){
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(50);
+            ->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'desc')->paginate(500);
         }
         else{
             $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
             ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-            ->where($criterio,$operador,$buscar)->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(30);
+            ->where($criterio,$operador,$buscar)->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado', ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha', 'ASC')->paginate(500);
         }
         foreach($ordenes as $orden){
             $costos=CostoProduccion::select(DB::raw('SUM(total) as totalcosto'))->where('idorden','=', $orden->idorden)->get();
@@ -175,15 +175,11 @@ class OrdentrabajoController extends Controller
                 $fechaf=date('Y-m-d');
                 break;
             case 'mes':
-                $diaSemana = date("m");
-                # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
-                $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
-                # Y formateamos ese tiempo
-                $fechai= date("Y-m-d", $tiempoDeInicioDeSemana);
-                # Ahora para el fin, sumamos
-                $tiempoDeFinDeSemana = strtotime("+" . $diaSemana . " days", $tiempoDeInicioDeSemana); # Sumamos +X days, pero partiendo del tiempo de inicio
-                # Y formateamos
-                $fechaf = date("Y-m-d", $tiempoDeFinDeSemana);
+                $diaMes = date("t")-1;
+                $fechai=date('Y').'-'.date('m').'-1';
+                $tiempoDeInicioDeMes = strtotime($fechai); # Restamos -X days
+                $tiempoDeFinDeMes = strtotime("+" . $diaMes . " days", $tiempoDeInicioDeMes); # Sumamos +X days, pero partiendo del tiempo de inicio
+                $fechaf = date("Y-m-d", $tiempoDeFinDeMes);
                 break;
             case 'semana':
                 $diaSemana = date("w");
@@ -203,7 +199,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(10);
+        ->whereBetween('ordentrabajos.fecha', [$fechai, $fechaf])->whereNotIn('ordentrabajos.estado',  ['C','PC','PA','P','AN'])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(1000);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
@@ -232,7 +228,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(20);
+        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(2000);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
@@ -281,15 +277,11 @@ class OrdentrabajoController extends Controller
                 $fechaf=date('Y-m-d');
                 break;
             case 'mes':
-                $diaSemana = date("m");
-                # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
-                $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
-                # Y formateamos ese tiempo
-                $fechai= date("Y-m-d", $tiempoDeInicioDeSemana);
-                # Ahora para el fin, sumamos
-                $tiempoDeFinDeSemana = strtotime("+" . $diaSemana . " days", $tiempoDeInicioDeSemana); # Sumamos +X days, pero partiendo del tiempo de inicio
-                # Y formateamos
-                $fechaf = date("Y-m-d", $tiempoDeFinDeSemana);
+                $diaMes = date("t")-1;
+                $fechai=date('Y').'-'.date('m').'-1';
+                $tiempoDeInicioDeMes = strtotime($fechai); # Restamos -X days
+                $tiempoDeFinDeMes = strtotime("+" . $diaMes . " days", $tiempoDeInicioDeMes); # Sumamos +X days, pero partiendo del tiempo de inicio
+                $fechaf = date("Y-m-d", $tiempoDeFinDeMes);
                 break;
             case 'semana':
                 $diaSemana = date("w");
@@ -309,7 +301,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(10);
+        ->whereBetween('ordentrabajos.created_at', [$fechai, $fechaf])->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(1000);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
@@ -338,7 +330,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(50);
+        ->whereIn('ordentrabajos.produccion', $buscar)->orderBy('ordentrabajos.fecha_entrega', 'ASC')->paginate(1000);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
@@ -367,7 +359,7 @@ class OrdentrabajoController extends Controller
         }
         $ordenes = Ordentrabajo::join('clientes','ordentrabajos.idcliente','=','clientes.id')->join('personas','clientes.id','=','personas.id')
         ->join('articulos','ordentrabajos.idarticulo','=','articulos.id')->select('*','articulos.nombre as articulo','personas.nombre as rasonsocial','ordentrabajos.created_at as fechaorden','ordentrabajos.updated_at as updateorden','ordentrabajos.id as idorden','ordentrabajos.estado as estadoc','ordentrabajos.produccion as estadop')
-        ->whereIn('ordentrabajos.estado', $buscar)->orderBy('ordentrabajos.created_at', 'ASC')->paginate(20);
+        ->whereIn('ordentrabajos.estado', $buscar)->orderBy('ordentrabajos.created_at', 'ASC')->paginate(50);
         foreach($ordenes as $orden){
             $detalles=Detalletrabajo::where('idorden','=', $orden['idorden'])->select('*','detalletrabajos.titulo as titulo_detalle','detalletrabajos.descripcion as descripcion_detalle','detalletrabajos.valor as valor_detalle')->get();
             $orden->detalles=$detalles;
