@@ -303,6 +303,14 @@ class ArticuloController extends Controller
 
         return ['articulos' => $articulos];
     }
+    public function selectArticulobyid(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $articulos = Articulo::where('id','=', $id)
+        ->select('*')->get();
+        return $articulos;
+    }
     public function selectArticulo(Request $request){
         if (!$request->ajax()) return redirect('/');
 
@@ -339,6 +347,7 @@ class ArticuloController extends Controller
             
             $articulo->idcategoria = $request->idcategoria;
             $articulo->codigo = 1;
+            $articulo->tipo_producto=$request->tipo_producto;
             $articulo->rangos=$request->rangos;
             $articulo->nombre = $request->nombre;
             $articulo->precio_venta = $request->precio_venta;
@@ -397,6 +406,7 @@ class ArticuloController extends Controller
             }
             $articulo->idcategoria = $request->idcategoria;
             $articulo->codigo = 1;
+            $articulo->tipo_producto=$request->tipo_producto;
             $articulo->rangos=$request->rangos;
             $articulo->nombre = $request->nombre;
             $articulo->precio_venta = $request->precio_venta;

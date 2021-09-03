@@ -196,7 +196,7 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Tipo Producto(*)</label>
-                                            <select class="form-control" v-model="atributo.tipo_producto" >
+                                            <select class="form-control" v-model="tipo_producto" >
                                                 <option value="1">Producto Simple</option>
                                                 <option value="2">Producto Variable</option>
                                             </select>
@@ -627,6 +627,7 @@
                 idcategoria : 0,
                 nombre_categoria : '',
                 codigo : '',
+                tipo_producto:1,
                 nombre : '',
                 imagen:'',
                 imagenMin:'',
@@ -1012,6 +1013,7 @@
                 datos.set('idcategoria',this.idcategoria)
                 datos.set('idarticulo_padre',this.idarticulo_padre)
                 datos.set('codigo',this.codigo)
+                datos.set('tipo_producto',this.tipo_producto)
                 datos.set('nombre',this.nombre)
                 datos.set('imagen',this.imagen)
                 datos.set('rangos',JSON.stringify(this.rangos))
@@ -1043,6 +1045,7 @@
                 datos.set('idcategoria',this.idcategoria)
                 datos.set('idarticulo_padre',this.idarticulo_padre)
                 datos.set('codigo',this.codigo)
+                datos.set('tipo_producto',this.tipo_producto)
                 datos.set('nombre',this.nombre)
                 datos.set('imagen',this.imagen)
                 datos.set('rangos',JSON.stringify(this.rangos))

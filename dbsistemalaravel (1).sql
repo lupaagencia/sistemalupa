@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2021 a las 13:56:36
+-- Tiempo de generación: 25-08-2021 a las 16:32:06
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.3.18
 
@@ -51,8 +51,7 @@ CREATE TABLE `articulos` (
 --
 
 INSERT INTO `articulos` (`id`, `id_item_padre`, `idcategoria`, `codigo`, `tipo_producto`, `nombre`, `imagen`, `rangos`, `precio_venta`, `iva`, `stock`, `descripcion`, `condicion`, `created_at`, `updated_at`) VALUES
-(22, 0, 1, '1', 1, 'Caja L12', '1629367592_L12.jpg', '[{\"de\":\"1\",\"hasta\":\"1000\",\"descuento\":\"0\",\"rangoEdit\":0}]', '420.00', 0, 1000, 'null', 1, '2021-08-19 15:06:32', '2021-08-19 16:15:29'),
-(23, 0, 1, '1', 1, 'caja 456', 'noimagen', '[]', '456.00', 0, 1000, NULL, 1, '2021-08-26 05:44:56', '2021-08-26 05:44:56');
+(22, 0, 1, '1', 1, 'Caja L12', '1629367592_L12.jpg', '[{\"de\":\"1\",\"hasta\":\"1000\",\"descuento\":\"0\",\"rangoEdit\":0}]', '420.00', 0, 1000, 'null', 1, '2021-08-19 15:06:32', '2021-08-19 16:15:29');
 
 -- --------------------------------------------------------
 
@@ -155,29 +154,6 @@ INSERT INTO `clientes` (`id`, `tipo_cliente`, `ciudad`, `departamento`, `pais`, 
 (44, NULL, NULL, NULL, NULL, 'Didier Valderrama', NULL, NULL),
 (80, 'Jurídica', NULL, NULL, NULL, 'sdfa', NULL, NULL),
 (99, 'Jurídica', NULL, NULL, NULL, 'sfad', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `comprobates`
---
-
-CREATE TABLE `comprobates` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `num_comprobante` int(11) NOT NULL,
-  `id_cliente` int(10) UNSIGNED NOT NULL,
-  `id_user` int(10) UNSIGNED NOT NULL,
-  `fecha` date NOT NULL,
-  `forma_pago` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subtotal` decimal(20,2) NOT NULL,
-  `descuento` decimal(20,2) NOT NULL,
-  `total` decimal(20,2) NOT NULL,
-  `impuestos` decimal(20,2) NOT NULL,
-  `fuente` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estado` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -365,13 +341,6 @@ CREATE TABLE `costos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `costos`
---
-
-INSERT INTO `costos` (`id`, `idorden`, `idcostois`, `titulo`, `descripcion`, `cantidad`, `valor`, `total`, `orden`, `completado`, `fecha_termina`, `terminado`, `created_at`, `updated_at`) VALUES
-(1, 1, 141, 'Papel', '', '1', '790.00', '790.00', 0, 0, '2021-08-26', 0, '2021-08-26 04:59:33', '2021-08-26 05:55:35');
-
 -- --------------------------------------------------------
 
 --
@@ -387,13 +356,6 @@ CREATE TABLE `detalletrabajos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detalletrabajos`
---
-
-INSERT INTO `detalletrabajos` (`id`, `idorden`, `titulo`, `descripcion`, `valor`, `created_at`, `updated_at`) VALUES
-(1, 1, 'sdaf', '', 'sdfa', '2021-08-26 04:59:25', '2021-08-26 04:59:25');
 
 -- --------------------------------------------------------
 
@@ -412,27 +374,6 @@ CREATE TABLE `detalle_ingresos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `egresos`
---
-
-CREATE TABLE `egresos` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `cuenta_contable` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_documento` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_egreso` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `forma_pago` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subtotal` decimal(20,2) NOT NULL,
-  `total` decimal(4,2) NOT NULL,
-  `iva` decimal(4,2) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fecha` date NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `ingresos`
 --
 
@@ -446,28 +387,6 @@ CREATE TABLE `ingresos` (
   `fecha_hora` datetime NOT NULL,
   `impuesto` decimal(4,2) NOT NULL,
   `total` decimal(11,2) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `linea_comprobantes`
---
-
-CREATE TABLE `linea_comprobantes` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `id_comprobante` int(10) UNSIGNED NOT NULL,
-  `id_articulo` int(10) UNSIGNED NOT NULL,
-  `fecha` date NOT NULL,
-  `fecha_entrega` date NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `valor_unitario` decimal(20,0) NOT NULL,
-  `descuento` decimal(20,0) NOT NULL,
-  `impuesto` decimal(20,0) NOT NULL,
-  `valor_total` decimal(20,0) NOT NULL,
   `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -504,11 +423,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2020_11_05_001007_create_costois_table', 4),
 (19, '2020_11_06_013122_create_costos_table', 5),
 (20, '2020_11_06_013228_create_detalletrabajos_table', 5),
-(21, '2020_11_06_161836_create_clientes_table', 6),
-(22, '2020_11_07_232449_create_ordentrabajos_table', 6),
-(23, '2021_08_13_114355_create_ingresos_table', 6),
-(24, '2021_08_13_122730_create_egresos_table', 6),
-(25, '2021_09_03_091112_create_comprobates_table', 7);
+(21, '2020_11_06_161836_create_clientes_table', 6);
 
 -- --------------------------------------------------------
 
@@ -566,13 +481,6 @@ CREATE TABLE `ordentrabajos` (
   `created_at` date DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `ordentrabajos`
---
-
-INSERT INTO `ordentrabajos` (`id`, `idcliente`, `idarticulo`, `idcostois`, `cantidad`, `ancho_material`, `largo_material`, `impuesto`, `produccion`, `fecha`, `unidad_medida`, `detalles_diseno`, `carpeta_cliente`, `observaciones`, `totalParcial`, `descuento`, `abono`, `saldo`, `total`, `estado`, `fecha_entrega`, `created_at`, `updated_at`) VALUES
-(1, 16, 23, NULL, '1000.00', '0', '0', '0.19', 'null', '2021-08-25', NULL, 'null', 'null', 'null', '456000.00', '0.00', '0.00', '542640.00', '542640.00', 'C', '2021-08-25', '2021-08-25', '2021-08-26 05:55:35');
 
 -- --------------------------------------------------------
 
@@ -753,15 +661,6 @@ ALTER TABLE `clientes`
   ADD KEY `clientes_id_foraing` (`id`) USING BTREE;
 
 --
--- Indices de la tabla `comprobates`
---
-ALTER TABLE `comprobates`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `comprobates_num_comprobante_unique` (`num_comprobante`),
-  ADD KEY `comprobates_id_cliente_foreign` (`id_cliente`),
-  ADD KEY `comprobates_id_user_foreign` (`id_user`);
-
---
 -- Indices de la tabla `costois`
 --
 ALTER TABLE `costois`
@@ -793,26 +692,12 @@ ALTER TABLE `detalle_ingresos`
   ADD KEY `detalle_ingresos_idarticulo_foreign` (`idarticulo`);
 
 --
--- Indices de la tabla `egresos`
---
-ALTER TABLE `egresos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ingresos_idproveedor_foreign` (`idproveedor`),
   ADD KEY `ingresos_idusuario_foreign` (`idusuario`);
-
---
--- Indices de la tabla `linea_comprobantes`
---
-ALTER TABLE `linea_comprobantes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `comprobantes_foreign` (`id_comprobante`),
-  ADD KEY `articulos_foreign` (`id_articulo`);
 
 --
 -- Indices de la tabla `migrations`
@@ -877,7 +762,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `atributos`
@@ -898,12 +783,6 @@ ALTER TABLE `clientes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
--- AUTO_INCREMENT de la tabla `comprobates`
---
-ALTER TABLE `comprobates`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `costois`
 --
 ALTER TABLE `costois`
@@ -913,24 +792,18 @@ ALTER TABLE `costois`
 -- AUTO_INCREMENT de la tabla `costos`
 --
 ALTER TABLE `costos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalletrabajos`
 --
 ALTER TABLE `detalletrabajos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_ingresos`
 --
 ALTER TABLE `detalle_ingresos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `egresos`
---
-ALTER TABLE `egresos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -940,16 +813,10 @@ ALTER TABLE `ingresos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `linea_comprobantes`
---
-ALTER TABLE `linea_comprobantes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `opcion_atributos`
@@ -961,7 +828,7 @@ ALTER TABLE `opcion_atributos`
 -- AUTO_INCREMENT de la tabla `ordentrabajos`
 --
 ALTER TABLE `ordentrabajos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `personas`
@@ -990,13 +857,6 @@ ALTER TABLE `articulos`
 --
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_id_foreign` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `comprobates`
---
-ALTER TABLE `comprobates`
-  ADD CONSTRAINT `comprobates_id_cliente_foreign` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`),
-  ADD CONSTRAINT `comprobates_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
 
 --
 -- Filtros para la tabla `costois`
@@ -1031,13 +891,6 @@ ALTER TABLE `detalle_ingresos`
 ALTER TABLE `ingresos`
   ADD CONSTRAINT `ingresos_idproveedor_foreign` FOREIGN KEY (`idproveedor`) REFERENCES `proveedores` (`id`),
   ADD CONSTRAINT `ingresos_idusuario_foreign` FOREIGN KEY (`idusuario`) REFERENCES `users` (`id`);
-
---
--- Filtros para la tabla `linea_comprobantes`
---
-ALTER TABLE `linea_comprobantes`
-  ADD CONSTRAINT `articulos_foreign` FOREIGN KEY (`id_articulo`) REFERENCES `articulos` (`id`),
-  ADD CONSTRAINT `comprobantes_foreign` FOREIGN KEY (`id_comprobante`) REFERENCES `comprobates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `opcion_atributos`

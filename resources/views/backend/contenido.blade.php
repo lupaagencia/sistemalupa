@@ -26,6 +26,11 @@
                 <template v-if="menu==14">
                     <orden></orden>
                 </template>
+
+                <template v-if="menu==18">
+                    <nuevocomprobante></nuevocomprobante>
+                </template>
+        
                 <template v-if="menu==15">
                     <programa></programa>
                 </template>

@@ -19,7 +19,7 @@
                     </ul>
                 </li>
                 <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> Produccion</a>
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> Producción</a>
                     <ul class="nav-dropdown-items">
                         <li @click="menu=14" class="nav-item">
                             <a class="nav-link" href="#"><i class="icon-wallet"></i> Ordenes de trabajo</a>
@@ -29,6 +29,26 @@
                         </li>
                         <li @click="menu=13" class="nav-item">
                             <a class="nav-link" href="#"><i class="icon-wallet"></i> Insumos y Servicios</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> Comprobantes</a>
+                    <ul class="nav-dropdown-items">
+                        <li @click="menu=18" class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon-wallet"></i> Nuevo comprobante</a>
+                        </li>
+                        <li @click="" class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon-wallet"></i> Pedidos</a>
+                        </li>
+                        <li @click="" class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon-wallet"></i> Facturas</a>
+                        </li>
+                        <li @click="" class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon-wallet"></i> Remisiones</a>
+                        </li>
+                        <li @click="" class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon-wallet"></i> Recibos</a>
                         </li>
                     </ul>
                 </li>

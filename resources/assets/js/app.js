@@ -29,6 +29,7 @@ Vue.component('cartera', require('./components/Cartera.vue'));
 Vue.component('ventas', require('./components/Ventas.vue'));
 Vue.component('seguimientov', require('./components/SeguimientoVenta.vue'));
 Vue.component('nuevoproducto', require('./components/partes/NuevoProducto.vue'));
+Vue.component('nuevocomprobante', require('./components/NuevoComprobante.vue'));
 
 const app = new Vue({
     el: '#app',
