@@ -150,9 +150,25 @@ class SuperadminIdeController extends Controller
 
         File::put($fullPath, $content);
 
+        // Auto-commit & push to GitHub repository
+        try {
+            $commitMsg = "Web IDE: Auto-commit cambio en " . $relativePath . " [" . date('Y-m-d H:i:s') . "]";
+            $gitRepoPath = base_path();
+            $escapedFile = escapeshellarg($relativePath);
+            $escapedMsg = escapeshellarg($commitMsg);
+            
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                pclose(popen("start /B git -C " . escapeshellarg($gitRepoPath) . " add " . $escapedFile . " && git -C " . escapeshellarg($gitRepoPath) . " commit -m " . $escapedMsg . " && git -C " . escapeshellarg($gitRepoPath) . " push origin main", "r"));
+            } else {
+                exec("git -C " . escapeshellarg($gitRepoPath) . " add " . $escapedFile . " && git -C " . escapeshellarg($gitRepoPath) . " commit -m " . $escapedMsg . " && git -C " . escapeshellarg($gitRepoPath) . " push origin main > /dev/null 2>&1 &");
+            }
+        } catch (\Exception $e) {
+            Log::warning("Git auto-push from Web IDE failed: " . $e->getMessage());
+        }
+
         return response()->json([
             'status' => 'success',
-            'message' => 'Archivo guardado correctamente.',
+            'message' => 'Archivo guardado correctamente y sincronizado en GitHub.',
             'path' => $relativePath,
             'mtime' => date('Y-m-d H:i:s')
         ]);

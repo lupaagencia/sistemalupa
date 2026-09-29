@@ -36,6 +36,8 @@ files_to_upload = [
     r"resources\assets\js\components\partes\CotizadorG.vue",
     r"resources\assets\js\components\partes\CotizadorM.vue",
     r"resources\assets\js\components\partes\CotizadorS.vue",
+    r"app\Http\Controllers\SuperadminIdeController.php",
+    r"AGENTS.md",
     r"public\js\app.js",
     r"public\0.js",
     r"public\1.js",
