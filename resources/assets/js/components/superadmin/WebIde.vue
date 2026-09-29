@@ -444,15 +444,16 @@ export default {
       })
       .then(res => {
         if (res.data.status === 'success') {
-          if (res.data.applied && res.data.modified_code) {
-            if (this.editor && res.data.target_file === this.activeFilePath) {
-              this.editor.setValue(res.data.modified_code);
-              this.isModified = false;
-              this.syntaxStatus = { type: 'success', message: 'IA: Auto-aplicado & Guardado' };
-            }
-            if (typeof toast !== 'undefined' && toast.fire) {
-              toast.fire({ type: 'success', title: 'Antigravity IA aplicó y guardó los cambios' });
-            }
+          if (res.data.target_file && res.data.target_file !== this.activeFilePath) {
+            this.openFile(res.data.target_file);
+          } else if (res.data.applied && res.data.modified_code && this.editor) {
+            this.editor.setValue(res.data.modified_code);
+            this.isModified = false;
+            this.syntaxStatus = { type: 'success', message: 'IA: Auto-aplicado & Guardado' };
+          }
+
+          if (res.data.applied && typeof toast !== 'undefined' && toast.fire) {
+            toast.fire({ type: 'success', title: 'Antigravity IA localizó, modificó y guardó los cambios automáticamente' });
           }
 
           this.chatMessages.push({
