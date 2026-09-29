@@ -51,11 +51,11 @@ class SuperadminIdeController extends Controller
 
         $tree = $this->buildTree($targetDir, $basePath, 0, 3);
 
-        return response()->json([
+        return response()->json($this->sanitizeUtf8([
             'status' => 'success',
             'base_path' => $basePath,
             'tree' => $tree
-        ]);
+        ]));
     }
 
     /**
@@ -78,17 +78,33 @@ class SuperadminIdeController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Acceso denegado fuera de la raíz del proyecto.'], 403);
         }
 
-        $content = File::get($fullPath);
-        $extension = File::extension($fullPath);
+        $extension = strtolower(File::extension($fullPath));
+        $binaryExtensions = ['png', 'jpg', 'jpeg', 'gif', 'ico', 'pdf', 'zip', 'tar', 'gz', 'rar', 'exe', 'dll', 'so', 'woff', 'woff2', 'ttf', 'eot', 'mp3', 'mp4', 'xlsx', 'xls', 'doc', 'docx', 'bak', 'pyc', 'phar'];
+        
+        if (in_array($extension, $binaryExtensions)) {
+            return response()->json([
+                'status' => 'success',
+                'path' => $relativePath,
+                'extension' => $extension,
+                'content' => "// Archivo binario o multimedia ({$extension}). No se puede editar en formato texto.",
+                'size' => filesize($fullPath),
+                'mtime' => date('Y-m-d H:i:s', filemtime($fullPath))
+            ]);
+        }
 
-        return response()->json([
+        $content = File::get($fullPath);
+        if (!mb_check_encoding($content, 'UTF-8')) {
+            $content = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1, Windows-1252, ASCII');
+        }
+
+        return response()->json($this->sanitizeUtf8([
             'status' => 'success',
             'path' => $relativePath,
-            'extension' => strtolower($extension),
+            'extension' => $extension,
             'content' => $content,
             'size' => filesize($fullPath),
             'mtime' => date('Y-m-d H:i:s', filemtime($fullPath))
-        ]);
+        ]));
     }
 
     /**
@@ -357,6 +373,25 @@ class SuperadminIdeController extends Controller
         });
 
         return $result;
+    }
+
+    private function sanitizeUtf8($data)
+    {
+        if (is_string($data)) {
+            if (!mb_check_encoding($data, 'UTF-8')) {
+                return mb_convert_encoding($data, 'UTF-8', 'ISO-8859-1, Windows-1252, ASCII');
+            }
+            return $data;
+        }
+        if (is_array($data)) {
+            $clean = [];
+            foreach ($data as $key => $value) {
+                $cleanKey = is_string($key) && !mb_check_encoding($key, 'UTF-8') ? mb_convert_encoding($key, 'UTF-8', 'ISO-8859-1') : $key;
+                $clean[$cleanKey] = $this->sanitizeUtf8($value);
+            }
+            return $clean;
+        }
+        return $data;
     }
 
     private function generateAgentResponseFallback($prompt, $activeFile, $fileContent, $selectedCode)

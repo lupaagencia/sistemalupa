@@ -296412,7 +296412,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.web-ide-container[data-v-118189b7] {\n  height: 100vh;\n  background-color: #1e1e1e;\n  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n}\n.hover-bg[data-v-118189b7]:hover {\n  background-color: #2a2d2e;\n}\n.cursor-pointer[data-v-118189b7] {\n  cursor: pointer;\n}\n.chat-history[data-v-118189b7] {\n  background-color: #181818 !important;\n}\n.btn-xs[data-v-118189b7] {\n  padding: 0.25rem 0.4rem;\n  font-size: 0.75rem;\n}\n", ""]);
+exports.push([module.i, "\n.web-ide-wrapper[data-v-118189b7] {\n  width: 100%;\n  height: calc(100vh - 65px);\n  background-color: #0b0f19;\n  padding: 8px;\n  box-sizing: border-box;\n}\n.web-ide-container[data-v-118189b7] {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  width: 100%;\n  background: #0f172a;\n  border-radius: 12px;\n  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);\n  border: 1px solid #1e293b;\n  overflow: hidden;\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n}\n\n/* Header Bar */\n.ide-header[data-v-118189b7] {\n  height: 52px;\n  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 16px;\n  border-bottom: 1px solid #334155;\n}\n.header-left[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n.brand-badge[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: rgba(99, 102, 241, 0.15);\n  border: 1px solid rgba(99, 102, 241, 0.4);\n  padding: 4px 10px;\n  border-radius: 20px;\n}\n.brand-icon[data-v-118189b7] {\n  font-size: 14px;\n}\n.brand-title[data-v-118189b7] {\n  font-size: 0.75rem;\n  font-weight: 700;\n  letter-spacing: 0.05em;\n  color: #818cf8;\n}\n.active-file-indicator[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: #1e293b;\n  padding: 4px 12px;\n  border-radius: 6px;\n  font-size: 0.82rem;\n  color: #f1f5f9;\n  border: 1px solid #334155;\n}\n.active-file-indicator.empty[data-v-118189b7] {\n  color: #64748b;\n}\n.file-icon[data-v-118189b7] {\n  color: #38bdf8;\n}\n.dot-modified[data-v-118189b7] {\n  width: 8px;\n  height: 8px;\n  background-color: #f59e0b;\n  border-radius: 50%;\n  box-shadow: 0 0 8px #f59e0b;\n}\n.status-pill[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  padding: 4px 10px;\n  border-radius: 6px;\n  font-size: 0.75rem;\n  font-weight: 600;\n}\n.status-pill.success[data-v-118189b7] {\n  background: rgba(16, 185, 129, 0.15);\n  color: #34d399;\n  border: 1px solid rgba(16, 185, 129, 0.3);\n}\n.status-pill.error[data-v-118189b7] {\n  background: rgba(239, 68, 68, 0.15);\n  color: #f87171;\n  border: 1px solid rgba(239, 68, 68, 0.3);\n}\n.header-right[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n.btn-ide[data-v-118189b7] {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 6px 14px;\n  border-radius: 6px;\n  font-size: 0.8rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  border: none;\n}\n.btn-save[data-v-118189b7] {\n  background: linear-gradient(135deg, #059669 0%, #10b981 100%);\n  color: #ffffff;\n  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);\n}\n.btn-save[data-v-118189b7]:hover:not(:disabled) {\n  background: linear-gradient(135deg, #047857 0%, #059669 100%);\n}\n.btn-save[data-v-118189b7]:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.btn-deploy[data-v-118189b7] {\n  background: #1e293b;\n  color: #38bdf8;\n  border: 1px solid #0284c7;\n}\n.btn-deploy[data-v-118189b7]:hover:not(:disabled) {\n  background: #0284c7;\n  color: #ffffff;\n}\n.btn-icon[data-v-118189b7] {\n  background: #1e293b;\n  color: #94a3b8;\n  border: 1px solid #334155;\n  padding: 6px 10px;\n}\n.btn-icon[data-v-118189b7]:hover {\n  color: #ffffff;\n  background: #334155;\n}\n\n/* Main Workspace */\n.ide-workspace[data-v-118189b7] {\n  display: flex;\n  flex: 1;\n  overflow: hidden;\n}\n\n/* Sidebar Explorer */\n.explorer-sidebar[data-v-118189b7] {\n  width: 270px;\n  min-width: 240px;\n  background: #0f172a;\n  border-right: 1px solid #1e293b;\n  display: flex;\n  flex-direction: column;\n}\n.explorer-title[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  font-size: 0.7rem;\n  font-weight: 700;\n  letter-spacing: 0.08em;\n  color: #64748b;\n  border-bottom: 1px solid #1e293b;\n}\n.file-count[data-v-118189b7] {\n  background: #1e293b;\n  color: #94a3b8;\n  padding: 2px 6px;\n  border-radius: 10px;\n}\n.search-box[data-v-118189b7] {\n  position: relative;\n  padding: 8px;\n}\n.search-box input[data-v-118189b7] {\n  width: 100%;\n  background: #1e293b;\n  border: 1px solid #334155;\n  color: #f8fafc;\n  padding: 6px 28px 6px 28px;\n  border-radius: 6px;\n  font-size: 0.8rem;\n  outline: none;\n}\n.search-box input[data-v-118189b7]:focus {\n  border-color: #6366f1;\n}\n.search-icon[data-v-118189b7] {\n  position: absolute;\n  left: 16px;\n  top: 16px;\n  font-size: 0.8rem;\n  color: #64748b;\n}\n.clear-search[data-v-118189b7] {\n  position: absolute;\n  right: 16px;\n  top: 16px;\n  font-size: 0.8rem;\n  color: #64748b;\n  cursor: pointer;\n}\n.tree-viewport[data-v-118189b7] {\n  flex: 1;\n  overflow-y: auto;\n  padding: 4px;\n}\n\n/* Tree Nodes */\n.tree-node[data-v-118189b7] {\n  user-select: none;\n}\n.node-row[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 5px 8px;\n  border-radius: 4px;\n  cursor: pointer;\n  font-size: 0.82rem;\n  color: #cbd5e1;\n  transition: background 0.15s ease;\n}\n.node-row[data-v-118189b7]:hover {\n  background: #1e293b;\n  color: #ffffff;\n}\n.node-row.active[data-v-118189b7] {\n  background: rgba(99, 102, 241, 0.25);\n  color: #818cf8;\n  font-weight: 600;\n}\n.node-name[data-v-118189b7] {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.node-children[data-v-118189b7] {\n  padding-left: 14px;\n}\n.text-emerald[data-v-118189b7] { color: #10b981;\n}\n.text-amber[data-v-118189b7] { color: #f59e0b;\n}\n.text-cyan[data-v-118189b7] { color: #06b6d4;\n}\n.text-slate[data-v-118189b7] { color: #64748b;\n}\n\n/* Editor Viewport */\n.editor-viewport[data-v-118189b7] {\n  flex: 1;\n  background: #1e1e1e;\n  position: relative;\n  display: flex;\n  flex-direction: column;\n}\n.monaco-canvas[data-v-118189b7] {\n  width: 100%;\n  height: 100%;\n}\n.editor-loading-overlay[data-v-118189b7] {\n  position: absolute;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.85);\n  backdrop-filter: blur(4px);\n  z-index: 20;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 12px;\n  color: #38bdf8;\n  font-weight: 600;\n}\n.welcome-screen[data-v-118189b7] {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 70%);\n  color: #f8fafc;\n  padding: 20px;\n}\n.welcome-card[data-v-118189b7] {\n  text-align: center;\n  max-width: 420px;\n}\n.welcome-logo[data-v-118189b7] {\n  font-size: 3rem;\n  margin-bottom: 12px;\n}\n.welcome-card h2[data-v-118189b7] {\n  font-size: 1.4rem;\n  font-weight: 700;\n  margin-bottom: 8px;\n  color: #818cf8;\n}\n.welcome-card p[data-v-118189b7] {\n  color: #94a3b8;\n  font-size: 0.9rem;\n  line-height: 1.5;\n  margin-bottom: 20px;\n}\n.shortcuts[data-v-118189b7] {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n.shortcut[data-v-118189b7] {\n  background: rgba(255, 255, 255, 0.05);\n  padding: 8px 12px;\n  border-radius: 6px;\n  font-size: 0.8rem;\n  color: #cbd5e1;\n}\n.shortcut code[data-v-118189b7] {\n  background: #6366f1;\n  color: #ffffff;\n  padding: 2px 6px;\n  border-radius: 4px;\n  font-size: 0.75rem;\n  margin-right: 6px;\n}\n\n/* AI Sidebar */\n.ai-sidebar[data-v-118189b7] {\n  width: 360px;\n  min-width: 310px;\n  background: #0f172a;\n  border-left: 1px solid #1e293b;\n  display: flex;\n  flex-direction: column;\n}\n.ai-header[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 14px;\n  background: #1e293b;\n  border-bottom: 1px solid #334155;\n}\n.agent-info[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n.agent-avatar[data-v-118189b7] {\n  width: 32px;\n  height: 32px;\n  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 16px;\n  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);\n}\n.agent-name[data-v-118189b7] {\n  font-size: 0.85rem;\n  font-weight: 700;\n  color: #f8fafc;\n}\n.agent-status[data-v-118189b7] {\n  font-size: 0.7rem;\n  color: #34d399;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n}\n.pulse-dot[data-v-118189b7] {\n  width: 6px;\n  height: 6px;\n  background-color: #34d399;\n  border-radius: 50%;\n  box-shadow: 0 0 8px #34d399;\n}\n.btn-icon-subtle[data-v-118189b7] {\n  background: transparent;\n  border: none;\n  color: #64748b;\n  cursor: pointer;\n  padding: 4px 8px;\n  border-radius: 4px;\n}\n.btn-icon-subtle[data-v-118189b7]:hover {\n  color: #ef4444;\n  background: rgba(239, 68, 68, 0.1);\n}\n.chat-viewport[data-v-118189b7] {\n  flex: 1;\n  overflow-y: auto;\n  padding: 12px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  background: #0b0f19;\n}\n.chat-bubble[data-v-118189b7] {\n  max-width: 90%;\n  padding: 10px 12px;\n  border-radius: 10px;\n  font-size: 0.82rem;\n  line-height: 1.45;\n}\n.chat-bubble.user[data-v-118189b7] {\n  align-self: flex-end;\n  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);\n  color: #ffffff;\n  border-bottom-right-radius: 2px;\n}\n.chat-bubble.agent[data-v-118189b7] {\n  align-self: flex-start;\n  background: #1e293b;\n  color: #e2e8f0;\n  border: 1px solid #334155;\n  border-bottom-left-radius: 2px;\n}\n.bubble-header[data-v-118189b7] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 4px;\n  font-size: 0.7rem;\n  opacity: 0.75;\n}\n.bubble-content[data-v-118189b7] {\n  word-break: break-word;\n}\n.btn-apply-code[data-v-118189b7] {\n  margin-top: 8px;\n  width: 100%;\n  background: rgba(16, 185, 129, 0.2);\n  color: #34d399;\n  border: 1px solid rgba(16, 185, 129, 0.4);\n  padding: 6px;\n  border-radius: 6px;\n  font-size: 0.75rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s;\n}\n.btn-apply-code[data-v-118189b7]:hover {\n  background: #10b981;\n  color: #ffffff;\n}\n\n/* Prompt Box */\n.prompt-container[data-v-118189b7] {\n  padding: 12px;\n  background: #0f172a;\n  border-top: 1px solid #1e293b;\n}\n.context-pills[data-v-118189b7] {\n  display: flex;\n  gap: 6px;\n}\n.pill[data-v-118189b7] {\n  background: #1e293b;\n  color: #94a3b8;\n  padding: 2px 8px;\n  border-radius: 12px;\n  font-size: 0.7rem;\n  border: 1px solid #334155;\n}\n.pill.purple[data-v-118189b7] {\n  color: #c084fc;\n  border-color: rgba(192, 132, 252, 0.3);\n}\n.input-wrapper[data-v-118189b7] {\n  position: relative;\n  display: flex;\n  gap: 8px;\n}\n.input-wrapper textarea[data-v-118189b7] {\n  flex: 1;\n  background: #1e293b;\n  border: 1px solid #334155;\n  border-radius: 8px;\n  color: #f8fafc;\n  padding: 8px 10px;\n  font-size: 0.82rem;\n  resize: none;\n  height: 60px;\n  outline: none;\n}\n.input-wrapper textarea[data-v-118189b7]:focus {\n  border-color: #6366f1;\n}\n.btn-send[data-v-118189b7] {\n  width: 44px;\n  height: 60px;\n  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);\n  color: #ffffff;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 1rem;\n  transition: opacity 0.2s;\n}\n.btn-send[data-v-118189b7]:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.spinner-neon[data-v-118189b7] {\n  width: 24px;\n  height: 24px;\n  border: 3px solid rgba(56, 189, 248, 0.2);\n  border-top-color: #38bdf8;\n  border-radius: 50%;\n  animation: spin-data-v-118189b7 0.8s linear infinite;\n}\n@keyframes spin-data-v-118189b7 {\nto { transform: rotate(360deg);\n}\n}\n", ""]);
 
 // exports
 
@@ -296548,10 +296548,45 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
-// Recursive Tree Item Component
+// Recursive Tree Component
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
   name: 'tree-item',
   props: ['item', 'activePath'],
@@ -296561,7 +296596,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
     };
   },
 
-  template: '\n    <div class="tree-item">\n      <div class="d-flex align-items-center py-1 px-2 rounded hover-bg cursor-pointer"\n           :class="{\'bg-secondary text-white font-weight-bold\': activePath === item.path}"\n           @click="toggle">\n        <i v-if="item.is_dir" class="fa mr-2 text-warning" :class="isOpen ? \'fa-folder-open\' : \'fa-folder\'"></i>\n        <i v-else class="fa mr-2" :class="getFileIcon(item.name)"></i>\n        <span class="text-truncate" style="max-width: 200px;">{{ item.name }}</span>\n      </div>\n      <div v-if="item.is_dir && isOpen" class="pl-3">\n        <tree-item v-for="child in item.children" :key="child.path" :item="child" :active-path="activePath" @open-file="$emit(\'open-file\', $event)"></tree-item>\n      </div>\n    </div>\n  ',
+  template: '\n    <div class="tree-node">\n      <div class="node-row" :class="{\'active\': activePath === item.path}" @click="toggle">\n        <i v-if="item.is_dir" class="fa icon-folder" :class="isOpen ? \'fa-folder-open text-warning\' : \'fa-folder text-warning\'"></i>\n        <i v-else class="fa icon-file" :class="getFileIcon(item.name)"></i>\n        <span class="node-name">{{ item.name }}</span>\n      </div>\n      <div v-if="item.is_dir && isOpen" class="node-children">\n        <tree-item v-for="child in item.children" :key="child.path" :item="child" :active-path="activePath" @open-file="$emit(\'open-file\', $event)"></tree-item>\n      </div>\n    </div>\n  ',
   methods: {
     toggle: function toggle() {
       if (this.item.is_dir) {
@@ -296572,12 +296607,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
     },
     getFileIcon: function getFileIcon(filename) {
       if (filename.endsWith('.php')) return 'fa-file-code-o text-info';
-      if (filename.endsWith('.vue')) return 'fa-file-code-o text-success';
-      if (filename.endsWith('.js')) return 'fa-file-code-o text-warning';
-      if (filename.endsWith('.json')) return 'fa-file-text-o text-warning';
-      if (filename.endsWith('.css') || filename.endsWith('.scss')) return 'fa-css3 text-primary';
-      if (filename.endsWith('.md')) return 'fa-book text-light';
-      return 'fa-file-o text-muted';
+      if (filename.endsWith('.vue')) return 'fa-file-code-o text-emerald';
+      if (filename.endsWith('.js')) return 'fa-file-code-o text-amber';
+      if (filename.endsWith('.json')) return 'fa-file-text-o text-amber';
+      if (filename.endsWith('.css') || filename.endsWith('.scss')) return 'fa-css3 text-cyan';
+      if (filename.endsWith('.md')) return 'fa-book text-slate';
+      return 'fa-file-o text-slate';
     }
   }
 });
@@ -296601,7 +296636,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
       syntaxStatus: null,
       chatMessages: [{
         role: 'agent',
-        text: '¡Hola Superadministrador! Soy Antigravity IA Agent. Estoy listo para asistirte y pair-programar contigo directamente en la web.',
+        text: '¡Hola Superadministrador! Soy Antigravity IA Agent. Estoy listo para ayudarte a auditar, editar y optimizar el sistema en tiempo real.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }],
       userPrompt: '',
@@ -296785,7 +296820,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
       axios.post('/superadmin/ide/save', { path: this.activeFilePath, content: content }).then(function (res) {
         if (res.data.status === 'success') {
           _this5.isModified = false;
-          _this5.syntaxStatus = { type: 'success', message: 'Guardado & Sintaxis OK' };
+          _this5.syntaxStatus = { type: 'success', message: 'Sintaxis OK & Guardado' };
           toast && toast.fire ? toast.fire({ type: 'success', title: 'Archivo guardado correctamente' }) : swal('Éxito', 'Archivo guardado', 'success');
         }
       }).catch(function (err) {
@@ -296808,7 +296843,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
         text: 'Se subirán todos los archivos modificados a sistema.empaqueslupa.com mediante FTP.',
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#28a745',
+        confirmButtonColor: '#10b981',
         confirmButtonText: 'Sí, Desplegar Ahora',
         cancelButtonText: 'Cancelar'
       }).then(function (result) {
@@ -296891,6 +296926,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tree-item', {
         text: 'Conversación reiniciada. ¿En qué te ayudo ahora?',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }];
+    },
+    formatMessageText: function formatMessageText(text) {
+      if (!text) return '';
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>').replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
     }
   }
 });
@@ -296903,545 +296942,394 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "web-ide-container d-flex flex-column h-100" },
-    [
-      _c(
-        "div",
-        {
-          staticClass:
-            "ide-header bg-dark text-white px-3 py-2 d-flex align-items-center justify-content-between border-bottom border-secondary"
-        },
-        [
-          _c("div", { staticClass: "d-flex align-items-center" }, [
+  return _c("div", { staticClass: "web-ide-wrapper" }, [
+    _c("div", { staticClass: "web-ide-container" }, [
+      _c("div", { staticClass: "ide-header" }, [
+        _c(
+          "div",
+          { staticClass: "header-left" },
+          [
             _vm._m(0),
             _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass: "text-light font-weight-bold mr-3",
-                staticStyle: { "font-size": "0.9rem" }
-              },
-              [
-                _c("i", { staticClass: "fa fa-folder-open text-warning mr-1" }),
-                _vm._v(
-                  " " +
-                    _vm._s(
-                      _vm.activeFilePath || "Selecciona un archivo del proyecto"
-                    ) +
-                    "\n      "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _vm.isModified
-              ? _c("span", { staticClass: "badge badge-warning" }, [
-                  _vm._v("Modificado")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.syntaxStatus
-              ? _c(
-                  "span",
-                  {
-                    class: [
-                      "badge mr-2",
-                      _vm.syntaxStatus.type === "error"
-                        ? "badge-danger"
-                        : "badge-success"
-                    ]
-                  },
-                  [
-                    _vm._v(
-                      "\n        " +
-                        _vm._s(_vm.syntaxStatus.message) +
-                        "\n      "
-                    )
-                  ]
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-center" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm btn-success mr-2 font-weight-bold",
-                attrs: { disabled: _vm.saving || !_vm.activeFilePath },
-                on: { click: _vm.saveActiveFile }
-              },
-              [
-                _c("i", {
-                  staticClass: "fa",
-                  class: _vm.saving ? "fa-spinner fa-spin" : "fa-save"
-                }),
-                _vm._v(
-                  " " +
-                    _vm._s(_vm.saving ? "Guardando..." : "Guardar (Ctrl+S)") +
-                    "\n      "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass:
-                  "btn btn-sm btn-outline-info mr-2 font-weight-bold",
-                attrs: { disabled: _vm.deploying },
-                on: { click: _vm.deployFtp }
-              },
-              [
-                _c("i", {
-                  staticClass: "fa",
-                  class: _vm.deploying
-                    ? "fa-spinner fa-spin"
-                    : "fa-cloud-upload"
-                }),
-                _vm._v(
-                  " " +
-                    _vm._s(
-                      _vm.deploying ? "Desplegando..." : "Desplegar a FTP"
-                    ) +
-                    "\n      "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm btn-outline-light",
-                attrs: { title: "Recargar Árbol" },
-                on: { click: _vm.reloadTree }
-              },
-              [_c("i", { staticClass: "fa fa-refresh" })]
-            )
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "ide-body d-flex flex-row flex-grow-1",
-          staticStyle: { height: "calc(100vh - 120px)", overflow: "hidden" }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass:
-                "file-explorer bg-dark text-light border-right border-secondary p-2 d-flex flex-column",
-              staticStyle: { width: "280px", "min-width": "250px" }
-            },
-            [
-              _c("div", { staticClass: "explorer-header mb-2" }, [
-                _c("div", { staticClass: "input-group input-group-sm" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.fileSearch,
-                        expression: "fileSearch"
-                      }
-                    ],
-                    staticClass:
-                      "form-control bg-secondary text-white border-0",
-                    attrs: { type: "text", placeholder: "Buscar archivo..." },
-                    domProps: { value: _vm.fileSearch },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.fileSearch = $event.target.value
-                      }
-                    }
-                  }),
+            _vm.activeFilePath
+              ? _c("div", { staticClass: "active-file-indicator" }, [
+                  _c("i", { staticClass: "fa fa-code file-icon" }),
                   _vm._v(" "),
-                  _vm._m(1)
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "tree-container flex-grow-1 overflow-auto small"
-                },
-                [
-                  _vm.loadingTree
-                    ? _c(
-                        "div",
-                        { staticClass: "text-center py-4 text-muted" },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-spinner fa-spin fa-2x"
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "mt-2" }, [
-                            _vm._v("Cargando proyecto...")
-                          ])
-                        ]
-                      )
-                    : _c(
-                        "div",
-                        _vm._l(_vm.filteredTree, function(node) {
-                          return _c("tree-item", {
-                            key: node.path,
-                            attrs: {
-                              item: node,
-                              "active-path": _vm.activeFilePath
-                            },
-                            on: { "open-file": _vm.openFile }
-                          })
-                        })
-                      )
-                ]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "editor-container flex-grow-1 d-flex flex-column bg-dark",
-              staticStyle: { position: "relative" }
-            },
-            [
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.loadingFile,
-                      expression: "loadingFile"
-                    }
-                  ],
-                  staticClass:
-                    "editor-loader position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark text-light",
-                  staticStyle: { "z-index": "10", opacity: "0.9" }
-                },
-                [
-                  _c("i", {
-                    staticClass: "fa fa-spinner fa-spin fa-3x text-info mb-2"
-                  }),
+                  _c("span", { staticClass: "file-path" }, [
+                    _vm._v(_vm._s(_vm.activeFilePath))
+                  ]),
                   _vm._v(" "),
-                  _c("div", [
-                    _vm._v("Abriendo " + _vm._s(_vm.activeFilePath) + "...")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", {
-                staticClass: "w-100 h-100",
-                attrs: { id: "monaco-editor-canvas" }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "ai-agent-panel bg-dark text-light border-left border-secondary d-flex flex-column p-2",
-              staticStyle: { width: "380px", "min-width": "320px" }
-            },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "agent-header d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-secondary"
-                },
-                [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-link text-light p-0",
-                      attrs: { title: "Limpiar conversación" },
-                      on: { click: _vm.clearChat }
-                    },
-                    [_c("i", { staticClass: "fa fa-trash" })]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  ref: "chatHistoryRef",
-                  staticClass:
-                    "chat-history flex-grow-1 overflow-auto mb-2 p-2 rounded bg-dark border border-secondary"
-                },
-                [
-                  _vm._l(_vm.chatMessages, function(msg, idx) {
-                    return _c(
-                      "div",
-                      {
-                        key: idx,
-                        class: [
-                          "chat-bubble mb-3 p-2 rounded small",
-                          msg.role === "user"
-                            ? "bg-primary text-white ml-4"
-                            : "bg-secondary text-light mr-4"
-                        ]
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "d-flex align-items-center justify-content-between font-weight-bold mb-1",
-                            staticStyle: {
-                              "font-size": "0.75rem",
-                              opacity: "0.8"
-                            }
-                          },
-                          [
-                            _c("span", [
-                              _vm._v(
-                                _vm._s(
-                                  msg.role === "user"
-                                    ? "Superadministrador"
-                                    : "⚡ Antigravity Agent"
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("span", [_vm._v(_vm._s(msg.time))])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "chat-text",
-                            staticStyle: {
-                              "white-space": "pre-wrap",
-                              "word-break": "break-word"
-                            }
-                          },
-                          [_vm._v(_vm._s(msg.text))]
-                        ),
-                        _vm._v(" "),
-                        msg.code
-                          ? _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-xs btn-success mt-2 font-weight-bold w-100",
-                                on: {
-                                  click: function($event) {
-                                    _vm.applyCodeToEditor(msg.code)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "fa fa-paste" }),
-                                _vm._v(" Aplicar Código en Editor\n          ")
-                              ]
-                            )
-                          : _vm._e()
-                      ]
-                    )
-                  }),
-                  _vm._v(" "),
-                  _vm.aiThinking
-                    ? _c(
-                        "div",
-                        { staticClass: "text-info small p-2 text-center" },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-spinner fa-spin mr-1"
-                          }),
-                          _vm._v(
-                            " Antigravity IA está analizando tu código...\n        "
-                          )
-                        ]
-                      )
+                  _vm.isModified
+                    ? _c("span", {
+                        staticClass: "dot-modified",
+                        attrs: { title: "Cambios sin guardar" }
+                      })
                     : _vm._e()
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "mb-2 d-flex flex-wrap align-items-center",
-                  staticStyle: { gap: "4px" }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "badge badge-pill badge-secondary",
-                      staticStyle: { "font-size": "0.7rem" }
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-file-text-o" }),
-                      _vm._v(
-                        " " +
-                          _vm._s(
-                            _vm.activeFilePath
-                              ? _vm.activeFilePath.split("/").pop()
-                              : "Sin archivo"
-                          ) +
-                          "\n        "
-                      )
-                    ]
-                  ),
+                ])
+              : _c("div", { staticClass: "active-file-indicator empty" }, [
+                  _c("i", { staticClass: "fa fa-folder-open-o" }),
                   _vm._v(" "),
-                  _vm._m(3)
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "prompt-area" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.userPrompt,
-                      expression: "userPrompt"
-                    }
-                  ],
-                  staticClass:
-                    "form-control bg-secondary text-white border-0 mb-2 small",
-                  attrs: {
-                    rows: "3",
-                    placeholder:
-                      "Pídele algo a Antigravity IA (ej: 'Agrega un método para exportar a PDF', 'Corrige errores en este archivo')..."
-                  },
-                  domProps: { value: _vm.userPrompt },
-                  on: {
-                    keydown: function($event) {
-                      if (
-                        !("button" in $event) &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key)
-                      ) {
-                        return null
-                      }
-                      $event.preventDefault()
-                      _vm.sendPrompt($event)
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.userPrompt = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-info btn-block font-weight-bold text-white btn-sm",
-                    attrs: {
-                      disabled: _vm.aiThinking || !_vm.userPrompt.trim()
-                    },
-                    on: { click: _vm.sendPrompt }
-                  },
-                  [
+                  _c("span", [_vm._v("Selecciona un archivo para editar")])
+                ]),
+            _vm._v(" "),
+            _c("transition", { attrs: { name: "fade" } }, [
+              _vm.syntaxStatus
+                ? _c("div", { class: ["status-pill", _vm.syntaxStatus.type] }, [
                     _c("i", {
                       staticClass: "fa",
-                      class: _vm.aiThinking
-                        ? "fa-spinner fa-spin"
-                        : "fa-paper-plane"
+                      class:
+                        _vm.syntaxStatus.type === "error"
+                          ? "fa-exclamation-triangle"
+                          : "fa-check-circle"
                     }),
-                    _vm._v(
-                      " " +
-                        _vm._s(
-                          _vm.aiThinking
-                            ? "Procesando..."
-                            : "Enviar a Antigravity IA"
-                        ) +
-                        "\n        "
-                    )
-                  ]
+                    _vm._v(" "),
+                    _c("span", [_vm._v(_vm._s(_vm.syntaxStatus.message))])
+                  ])
+                : _vm._e()
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "header-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn-ide btn-save",
+              attrs: { disabled: _vm.saving || !_vm.activeFilePath },
+              on: { click: _vm.saveActiveFile }
+            },
+            [
+              _c("i", {
+                staticClass: "fa",
+                class: _vm.saving ? "fa-spinner fa-spin" : "fa-save"
+              }),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v(_vm._s(_vm.saving ? "Guardando..." : "Guardar (Ctrl+S)"))
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn-ide btn-deploy",
+              attrs: { disabled: _vm.deploying },
+              on: { click: _vm.deployFtp }
+            },
+            [
+              _c("i", {
+                staticClass: "fa",
+                class: _vm.deploying ? "fa-spinner fa-spin" : "fa-cloud-upload"
+              }),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v(
+                  _vm._s(_vm.deploying ? "Desplegando..." : "Desplegar FTP")
                 )
               ])
             ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn-ide btn-icon",
+              attrs: { title: "Actualizar Explorador" },
+              on: { click: _vm.reloadTree }
+            },
+            [
+              _c("i", {
+                staticClass: "fa fa-refresh",
+                class: { "fa-spin": _vm.loadingTree }
+              })
+            ]
           )
-        ]
-      )
-    ]
-  )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "ide-workspace" }, [
+        _c("div", { staticClass: "explorer-sidebar" }, [
+          _c("div", { staticClass: "explorer-title" }, [
+            _c("span", [_vm._v("EXPLORADOR DE ARCHIVOS")]),
+            _vm._v(" "),
+            _vm.filteredTree.length
+              ? _c("span", { staticClass: "file-count" }, [
+                  _vm._v(_vm._s(_vm.filteredTree.length) + " ítems")
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "search-box" }, [
+            _c("i", { staticClass: "fa fa-search search-icon" }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.fileSearch,
+                  expression: "fileSearch"
+                }
+              ],
+              attrs: {
+                type: "text",
+                placeholder: "Buscar archivo o carpeta..."
+              },
+              domProps: { value: _vm.fileSearch },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.fileSearch = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.fileSearch
+              ? _c("i", {
+                  staticClass: "fa fa-times clear-search",
+                  on: {
+                    click: function($event) {
+                      _vm.fileSearch = ""
+                    }
+                  }
+                })
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "tree-viewport" }, [
+            _vm.loadingTree
+              ? _c("div", { staticClass: "loading-state" }, [
+                  _c("div", { staticClass: "spinner-neon" }),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("Cargando directorio del proyecto...")])
+                ])
+              : _vm.filteredTree.length === 0
+                ? _c("div", { staticClass: "empty-state" }, [
+                    _c("i", { staticClass: "fa fa-search-minus" }),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("No se encontraron archivos")])
+                  ])
+                : _c(
+                    "div",
+                    { staticClass: "tree-list" },
+                    _vm._l(_vm.filteredTree, function(node) {
+                      return _c("tree-item", {
+                        key: node.path,
+                        attrs: {
+                          item: node,
+                          "active-path": _vm.activeFilePath
+                        },
+                        on: { "open-file": _vm.openFile }
+                      })
+                    })
+                  )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "editor-viewport" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.loadingFile,
+                  expression: "loadingFile"
+                }
+              ],
+              staticClass: "editor-loading-overlay"
+            },
+            [
+              _c("div", { staticClass: "spinner-neon" }),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("Abriendo " + _vm._s(_vm.activeFilePath) + "...")
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          !_vm.activeFilePath
+            ? _c("div", { staticClass: "welcome-screen" }, [_vm._m(1)])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "monaco-canvas",
+            style: { display: _vm.activeFilePath ? "block" : "none" },
+            attrs: { id: "monaco-editor-canvas" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "ai-sidebar" }, [
+          _c("div", { staticClass: "ai-header" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn-icon-subtle",
+                attrs: { title: "Limpiar chat" },
+                on: { click: _vm.clearChat }
+              },
+              [_c("i", { staticClass: "fa fa-trash-o" })]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { ref: "chatHistoryRef", staticClass: "chat-viewport" },
+            [
+              _vm._l(_vm.chatMessages, function(msg, idx) {
+                return _c(
+                  "div",
+                  { key: idx, class: ["chat-bubble", msg.role] },
+                  [
+                    _c("div", { staticClass: "bubble-header" }, [
+                      _c("span", { staticClass: "sender" }, [
+                        _vm._v(
+                          _vm._s(
+                            msg.role === "user"
+                              ? "Superadministrador"
+                              : "⚡ Antigravity Agent"
+                          )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "time" }, [
+                        _vm._v(_vm._s(msg.time))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "bubble-content",
+                      domProps: {
+                        innerHTML: _vm._s(_vm.formatMessageText(msg.text))
+                      }
+                    }),
+                    _vm._v(" "),
+                    msg.code
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn-apply-code",
+                            on: {
+                              click: function($event) {
+                                _vm.applyCodeToEditor(msg.code)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-code" }),
+                            _vm._v(" Insertar en Editor\n            ")
+                          ]
+                        )
+                      : _vm._e()
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm.aiThinking
+                ? _c("div", { staticClass: "chat-bubble agent thinking" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "thinking-text" }, [
+                      _vm._v("Analizando código con Antigravity IA...")
+                    ])
+                  ])
+                : _vm._e()
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "prompt-container" }, [
+            _c("div", { staticClass: "context-pills mb-2" }, [
+              _c("span", { staticClass: "pill" }, [
+                _c("i", { staticClass: "fa fa-file-code-o" }),
+                _vm._v(
+                  " " +
+                    _vm._s(
+                      _vm.activeFilePath
+                        ? _vm.activeFilePath.split("/").pop()
+                        : "General"
+                    )
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(4)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-wrapper" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.userPrompt,
+                    expression: "userPrompt"
+                  }
+                ],
+                attrs: {
+                  placeholder:
+                    "Instruye a Antigravity IA (ej: 'Corrige este método', 'Optimiza esta consulta SQL')..."
+                },
+                domProps: { value: _vm.userPrompt },
+                on: {
+                  keydown: function($event) {
+                    if (
+                      !("button" in $event) &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key)
+                    ) {
+                      return null
+                    }
+                    $event.preventDefault()
+                    _vm.sendPrompt($event)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.userPrompt = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn-send",
+                  attrs: { disabled: _vm.aiThinking || !_vm.userPrompt.trim() },
+                  on: { click: _vm.sendPrompt }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fa",
+                    class: _vm.aiThinking
+                      ? "fa-spinner fa-spin"
+                      : "fa-paper-plane"
+                  })
+                ]
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "span",
-      {
-        staticClass: "badge badge-info mr-2 px-2 py-1 font-weight-bold",
-        staticStyle: { "font-size": "0.85rem" }
-      },
-      [
-        _c("i", { staticClass: "fa fa-code" }),
-        _vm._v(" WEB IDE & AI AGENT\n      ")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-append" }, [
-      _c(
-        "span",
-        { staticClass: "input-group-text bg-secondary text-light border-0" },
-        [_c("i", { staticClass: "fa fa-search" })]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "agent-avatar mr-2 rounded-circle bg-info text-white d-flex align-items-center justify-content-center",
-          staticStyle: { width: "32px", height: "32px", "font-size": "14px" }
-        },
-        [_vm._v("\n            ⚡\n          ")]
-      ),
+    return _c("div", { staticClass: "brand-badge" }, [
+      _c("span", { staticClass: "brand-icon" }, [_vm._v("⚡")]),
       _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass: "font-weight-bold",
-            staticStyle: { "font-size": "0.9rem" }
-          },
-          [_vm._v("Antigravity IA Agent")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "text-success small",
-            staticStyle: { "font-size": "0.75rem" }
-          },
-          [
-            _c("i", { staticClass: "fa fa-circle" }),
-            _vm._v(" Pair Programmer Activo")
-          ]
-        )
+      _c("span", { staticClass: "brand-title" }, [
+        _vm._v("ANTIGRAVITY WEB STUDIO")
       ])
     ])
   },
@@ -297449,14 +297337,67 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "span",
-      {
-        staticClass: "badge badge-pill badge-info",
-        staticStyle: { "font-size": "0.7rem" }
-      },
-      [_c("i", { staticClass: "fa fa-book" }), _vm._v(" AGENTS.md\n        ")]
-    )
+    return _c("div", { staticClass: "welcome-card" }, [
+      _c("div", { staticClass: "welcome-logo" }, [_vm._v("⚡")]),
+      _vm._v(" "),
+      _c("h2", [_vm._v("Bienvenido a Antigravity Web Studio")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "Selecciona un archivo del explorador lateral para editar su código en tiempo real."
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "shortcuts" }, [
+        _c("span", { staticClass: "shortcut" }, [
+          _c("code", [_vm._v("Ctrl + S")]),
+          _vm._v(" Guardar y verificar sintaxis")
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "shortcut" }, [
+          _c("code", [_vm._v("Auto Sync")]),
+          _vm._v(" Sincronización automática con GitHub")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "agent-info" }, [
+      _c("div", { staticClass: "agent-avatar" }, [_vm._v("⚡")]),
+      _vm._v(" "),
+      _c("div", [
+        _c("div", { staticClass: "agent-name" }, [
+          _vm._v("Antigravity IA Agent")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "agent-status" }, [
+          _c("span", { staticClass: "pulse-dot" }),
+          _vm._v(" Pair Programmer Activo")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "typing-indicator" }, [
+      _c("span"),
+      _c("span"),
+      _c("span")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "pill purple" }, [
+      _c("i", { staticClass: "fa fa-shield" }),
+      _vm._v(" AGENTS.md")
+    ])
   }
 ]
 render._withStripped = true

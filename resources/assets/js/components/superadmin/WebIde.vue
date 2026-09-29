@@ -1,120 +1,155 @@
 <template>
-  <div class="web-ide-container d-flex flex-column h-100">
-    <!-- Header Bar -->
-    <div class="ide-header bg-dark text-white px-3 py-2 d-flex align-items-center justify-content-between border-bottom border-secondary">
-      <div class="d-flex align-items-center">
-        <span class="badge badge-info mr-2 px-2 py-1 font-weight-bold" style="font-size: 0.85rem;">
-          <i class="fa fa-code"></i> WEB IDE & AI AGENT
-        </span>
-        <span class="text-light font-weight-bold mr-3" style="font-size: 0.9rem;">
-          <i class="fa fa-folder-open text-warning mr-1"></i> {{ activeFilePath || 'Selecciona un archivo del proyecto' }}
-        </span>
-        <span v-if="isModified" class="badge badge-warning">Modificado</span>
-        <span v-if="syntaxStatus" :class="['badge mr-2', syntaxStatus.type === 'error' ? 'badge-danger' : 'badge-success']">
-          {{ syntaxStatus.message }}
-        </span>
-      </div>
-
-      <div class="d-flex align-items-center">
-        <button class="btn btn-sm btn-success mr-2 font-weight-bold" :disabled="saving || !activeFilePath" @click="saveActiveFile">
-          <i class="fa" :class="saving ? 'fa-spinner fa-spin' : 'fa-save'"></i> {{ saving ? 'Guardando...' : 'Guardar (Ctrl+S)' }}
-        </button>
-        <button class="btn btn-sm btn-outline-info mr-2 font-weight-bold" :disabled="deploying" @click="deployFtp">
-          <i class="fa" :class="deploying ? 'fa-spinner fa-spin' : 'fa-cloud-upload'"></i> {{ deploying ? 'Desplegando...' : 'Desplegar a FTP' }}
-        </button>
-        <button class="btn btn-sm btn-outline-light" @click="reloadTree" title="Recargar Árbol">
-          <i class="fa fa-refresh"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Main Workspace Layout -->
-    <div class="ide-body d-flex flex-row flex-grow-1" style="height: calc(100vh - 120px); overflow: hidden;">
-      
-      <!-- Left Panel: File Explorer -->
-      <div class="file-explorer bg-dark text-light border-right border-secondary p-2 d-flex flex-column" style="width: 280px; min-width: 250px;">
-        <div class="explorer-header mb-2">
-          <div class="input-group input-group-sm">
-            <input type="text" v-model="fileSearch" class="form-control bg-secondary text-white border-0" placeholder="Buscar archivo..." />
-            <div class="input-group-append">
-              <span class="input-group-text bg-secondary text-light border-0"><i class="fa fa-search"></i></span>
-            </div>
+  <div class="web-ide-wrapper">
+    <div class="web-ide-container">
+      <!-- Top Navigation Header -->
+      <div class="ide-header">
+        <div class="header-left">
+          <div class="brand-badge">
+            <span class="brand-icon">⚡</span>
+            <span class="brand-title">ANTIGRAVITY WEB STUDIO</span>
           </div>
+
+          <div class="active-file-indicator" v-if="activeFilePath">
+            <i class="fa fa-code file-icon"></i>
+            <span class="file-path">{{ activeFilePath }}</span>
+            <span v-if="isModified" class="dot-modified" title="Cambios sin guardar"></span>
+          </div>
+          <div class="active-file-indicator empty" v-else>
+            <i class="fa fa-folder-open-o"></i>
+            <span>Selecciona un archivo para editar</span>
+          </div>
+
+          <transition name="fade">
+            <div v-if="syntaxStatus" :class="['status-pill', syntaxStatus.type]">
+              <i class="fa" :class="syntaxStatus.type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle'"></i>
+              <span>{{ syntaxStatus.message }}</span>
+            </div>
+          </transition>
         </div>
 
-        <div class="tree-container flex-grow-1 overflow-auto small">
-          <div v-if="loadingTree" class="text-center py-4 text-muted">
-            <i class="fa fa-spinner fa-spin fa-2x"></i>
-            <div class="mt-2">Cargando proyecto...</div>
-          </div>
-          <div v-else>
-            <tree-item v-for="node in filteredTree" :key="node.path" :item="node" :active-path="activeFilePath" @open-file="openFile"></tree-item>
-          </div>
-        </div>
-      </div>
+        <div class="header-right">
+          <button class="btn-ide btn-save" :disabled="saving || !activeFilePath" @click="saveActiveFile">
+            <i class="fa" :class="saving ? 'fa-spinner fa-spin' : 'fa-save'"></i>
+            <span>{{ saving ? 'Guardando...' : 'Guardar (Ctrl+S)' }}</span>
+          </button>
+          
+          <button class="btn-ide btn-deploy" :disabled="deploying" @click="deployFtp">
+            <i class="fa" :class="deploying ? 'fa-spinner fa-spin' : 'fa-cloud-upload'"></i>
+            <span>{{ deploying ? 'Desplegando...' : 'Desplegar FTP' }}</span>
+          </button>
 
-      <!-- Center Panel: Monaco Editor -->
-      <div class="editor-container flex-grow-1 d-flex flex-column bg-dark" style="position: relative;">
-        <div v-show="loadingFile" class="editor-loader position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-dark text-light" style="z-index: 10; opacity: 0.9;">
-          <i class="fa fa-spinner fa-spin fa-3x text-info mb-2"></i>
-          <div>Abriendo {{ activeFilePath }}...</div>
-        </div>
-        <div id="monaco-editor-canvas" class="w-100 h-100"></div>
-      </div>
-
-      <!-- Right Panel: Antigravity AI Agent Chat -->
-      <div class="ai-agent-panel bg-dark text-light border-left border-secondary d-flex flex-column p-2" style="width: 380px; min-width: 320px;">
-        <div class="agent-header d-flex align-items-center justify-content-between p-2 mb-2 rounded bg-secondary">
-          <div class="d-flex align-items-center">
-            <div class="agent-avatar mr-2 rounded-circle bg-info text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 14px;">
-              ⚡
-            </div>
-            <div>
-              <div class="font-weight-bold" style="font-size: 0.9rem;">Antigravity IA Agent</div>
-              <div class="text-success small" style="font-size: 0.75rem;"><i class="fa fa-circle"></i> Pair Programmer Activo</div>
-            </div>
-          </div>
-          <button class="btn btn-sm btn-link text-light p-0" @click="clearChat" title="Limpiar conversación">
-            <i class="fa fa-trash"></i>
+          <button class="btn-ide btn-icon" @click="reloadTree" title="Actualizar Explorador">
+            <i class="fa fa-refresh" :class="{'fa-spin': loadingTree}"></i>
           </button>
         </div>
+      </div>
 
-        <!-- Chat History -->
-        <div class="chat-history flex-grow-1 overflow-auto mb-2 p-2 rounded bg-dark border border-secondary" ref="chatHistoryRef">
-          <div v-for="(msg, idx) in chatMessages" :key="idx" :class="['chat-bubble mb-3 p-2 rounded small', msg.role === 'user' ? 'bg-primary text-white ml-4' : 'bg-secondary text-light mr-4']">
-            <div class="d-flex align-items-center justify-content-between font-weight-bold mb-1" style="font-size: 0.75rem; opacity: 0.8;">
-              <span>{{ msg.role === 'user' ? 'Superadministrador' : '⚡ Antigravity Agent' }}</span>
-              <span>{{ msg.time }}</span>
+      <!-- Main Workspace -->
+      <div class="ide-workspace">
+        
+        <!-- File Explorer Sidebar -->
+        <div class="explorer-sidebar">
+          <div class="explorer-title">
+            <span>EXPLORADOR DE ARCHIVOS</span>
+            <span class="file-count" v-if="filteredTree.length">{{ filteredTree.length }} ítems</span>
+          </div>
+
+          <div class="search-box">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text" v-model="fileSearch" placeholder="Buscar archivo o carpeta..." />
+            <i v-if="fileSearch" class="fa fa-times clear-search" @click="fileSearch = ''"></i>
+          </div>
+
+          <div class="tree-viewport">
+            <div v-if="loadingTree" class="loading-state">
+              <div class="spinner-neon"></div>
+              <span>Cargando directorio del proyecto...</span>
             </div>
-            <div class="chat-text" style="white-space: pre-wrap; word-break: break-word;">{{ msg.text }}</div>
-            <button v-if="msg.code" class="btn btn-xs btn-success mt-2 font-weight-bold w-100" @click="applyCodeToEditor(msg.code)">
-              <i class="fa fa-paste"></i> Aplicar Código en Editor
+            <div v-else-if="filteredTree.length === 0" class="empty-state">
+              <i class="fa fa-search-minus"></i>
+              <span>No se encontraron archivos</span>
+            </div>
+            <div v-else class="tree-list">
+              <tree-item v-for="node in filteredTree" :key="node.path" :item="node" :active-path="activeFilePath" @open-file="openFile"></tree-item>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor Center -->
+        <div class="editor-viewport">
+          <div v-show="loadingFile" class="editor-loading-overlay">
+            <div class="spinner-neon"></div>
+            <span>Abriendo {{ activeFilePath }}...</span>
+          </div>
+          
+          <div v-if="!activeFilePath" class="welcome-screen">
+            <div class="welcome-card">
+              <div class="welcome-logo">⚡</div>
+              <h2>Bienvenido a Antigravity Web Studio</h2>
+              <p>Selecciona un archivo del explorador lateral para editar su código en tiempo real.</p>
+              <div class="shortcuts">
+                <span class="shortcut"><code>Ctrl + S</code> Guardar y verificar sintaxis</span>
+                <span class="shortcut"><code>Auto Sync</code> Sincronización automática con GitHub</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="monaco-editor-canvas" class="monaco-canvas" :style="{ display: activeFilePath ? 'block' : 'none' }"></div>
+        </div>
+
+        <!-- AI Agent Side Panel -->
+        <div class="ai-sidebar">
+          <div class="ai-header">
+            <div class="agent-info">
+              <div class="agent-avatar">⚡</div>
+              <div>
+                <div class="agent-name">Antigravity IA Agent</div>
+                <div class="agent-status"><span class="pulse-dot"></span> Pair Programmer Activo</div>
+              </div>
+            </div>
+            <button class="btn-icon-subtle" @click="clearChat" title="Limpiar chat">
+              <i class="fa fa-trash-o"></i>
             </button>
           </div>
-          <div v-if="aiThinking" class="text-info small p-2 text-center">
-            <i class="fa fa-spinner fa-spin mr-1"></i> Antigravity IA está analizando tu código...
+
+          <!-- Messages Stream -->
+          <div class="chat-viewport" ref="chatHistoryRef">
+            <div v-for="(msg, idx) in chatMessages" :key="idx" :class="['chat-bubble', msg.role]">
+              <div class="bubble-header">
+                <span class="sender">{{ msg.role === 'user' ? 'Superadministrador' : '⚡ Antigravity Agent' }}</span>
+                <span class="time">{{ msg.time }}</span>
+              </div>
+              <div class="bubble-content" v-html="formatMessageText(msg.text)"></div>
+              <button v-if="msg.code" class="btn-apply-code" @click="applyCodeToEditor(msg.code)">
+                <i class="fa fa-code"></i> Insertar en Editor
+              </button>
+            </div>
+            <div v-if="aiThinking" class="chat-bubble agent thinking">
+              <div class="typing-indicator">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="thinking-text">Analizando código con Antigravity IA...</span>
+            </div>
           </div>
+
+          <!-- Prompt Box -->
+          <div class="prompt-container">
+            <div class="context-pills mb-2">
+              <span class="pill"><i class="fa fa-file-code-o"></i> {{ activeFilePath ? activeFilePath.split('/').pop() : 'General' }}</span>
+              <span class="pill purple"><i class="fa fa-shield"></i> AGENTS.md</span>
+            </div>
+
+            <div class="input-wrapper">
+              <textarea v-model="userPrompt" @keydown.enter.prevent="sendPrompt" placeholder="Instruye a Antigravity IA (ej: 'Corrige este método', 'Optimiza esta consulta SQL')..."></textarea>
+              <button class="btn-send" :disabled="aiThinking || !userPrompt.trim()" @click="sendPrompt">
+                <i class="fa" :class="aiThinking ? 'fa-spinner fa-spin' : 'fa-paper-plane'"></i>
+              </button>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Context Badges -->
-        <div class="mb-2 d-flex flex-wrap align-items-center" style="gap: 4px;">
-          <span class="badge badge-pill badge-secondary" style="font-size: 0.7rem;">
-            <i class="fa fa-file-text-o"></i> {{ activeFilePath ? activeFilePath.split('/').pop() : 'Sin archivo' }}
-          </span>
-          <span class="badge badge-pill badge-info" style="font-size: 0.7rem;">
-            <i class="fa fa-book"></i> AGENTS.md
-          </span>
-        </div>
-
-        <!-- Prompt Input Area -->
-        <div class="prompt-area">
-          <textarea v-model="userPrompt" @keydown.enter.prevent="sendPrompt" class="form-control bg-secondary text-white border-0 mb-2 small" rows="3" placeholder="Pídele algo a Antigravity IA (ej: 'Agrega un método para exportar a PDF', 'Corrige errores en este archivo')..."></textarea>
-          <button class="btn btn-info btn-block font-weight-bold text-white btn-sm" :disabled="aiThinking || !userPrompt.trim()" @click="sendPrompt">
-            <i class="fa" :class="aiThinking ? 'fa-spinner fa-spin' : 'fa-paper-plane'"></i> {{ aiThinking ? 'Procesando...' : 'Enviar a Antigravity IA' }}
-          </button>
-        </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -122,7 +157,7 @@
 <script>
 import Vue from 'vue';
 
-// Recursive Tree Item Component
+// Recursive Tree Component
 Vue.component('tree-item', {
   name: 'tree-item',
   props: ['item', 'activePath'],
@@ -132,15 +167,13 @@ Vue.component('tree-item', {
     };
   },
   template: `
-    <div class="tree-item">
-      <div class="d-flex align-items-center py-1 px-2 rounded hover-bg cursor-pointer"
-           :class="{'bg-secondary text-white font-weight-bold': activePath === item.path}"
-           @click="toggle">
-        <i v-if="item.is_dir" class="fa mr-2 text-warning" :class="isOpen ? 'fa-folder-open' : 'fa-folder'"></i>
-        <i v-else class="fa mr-2" :class="getFileIcon(item.name)"></i>
-        <span class="text-truncate" style="max-width: 200px;">{{ item.name }}</span>
+    <div class="tree-node">
+      <div class="node-row" :class="{'active': activePath === item.path}" @click="toggle">
+        <i v-if="item.is_dir" class="fa icon-folder" :class="isOpen ? 'fa-folder-open text-warning' : 'fa-folder text-warning'"></i>
+        <i v-else class="fa icon-file" :class="getFileIcon(item.name)"></i>
+        <span class="node-name">{{ item.name }}</span>
       </div>
-      <div v-if="item.is_dir && isOpen" class="pl-3">
+      <div v-if="item.is_dir && isOpen" class="node-children">
         <tree-item v-for="child in item.children" :key="child.path" :item="child" :active-path="activePath" @open-file="$emit('open-file', $event)"></tree-item>
       </div>
     </div>
@@ -155,12 +188,12 @@ Vue.component('tree-item', {
     },
     getFileIcon(filename) {
       if (filename.endsWith('.php')) return 'fa-file-code-o text-info';
-      if (filename.endsWith('.vue')) return 'fa-file-code-o text-success';
-      if (filename.endsWith('.js')) return 'fa-file-code-o text-warning';
-      if (filename.endsWith('.json')) return 'fa-file-text-o text-warning';
-      if (filename.endsWith('.css') || filename.endsWith('.scss')) return 'fa-css3 text-primary';
-      if (filename.endsWith('.md')) return 'fa-book text-light';
-      return 'fa-file-o text-muted';
+      if (filename.endsWith('.vue')) return 'fa-file-code-o text-emerald';
+      if (filename.endsWith('.js')) return 'fa-file-code-o text-amber';
+      if (filename.endsWith('.json')) return 'fa-file-text-o text-amber';
+      if (filename.endsWith('.css') || filename.endsWith('.scss')) return 'fa-css3 text-cyan';
+      if (filename.endsWith('.md')) return 'fa-book text-slate';
+      return 'fa-file-o text-slate';
     }
   }
 });
@@ -185,7 +218,7 @@ export default {
       chatMessages: [
         {
           role: 'agent',
-          text: '¡Hola Superadministrador! Soy Antigravity IA Agent. Estoy listo para asistirte y pair-programar contigo directamente en la web.',
+          text: '¡Hola Superadministrador! Soy Antigravity IA Agent. Estoy listo para ayudarte a auditar, editar y optimizar el sistema en tiempo real.',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ],
@@ -334,7 +367,7 @@ export default {
         .then(res => {
           if (res.data.status === 'success') {
             this.isModified = false;
-            this.syntaxStatus = { type: 'success', message: 'Guardado & Sintaxis OK' };
+            this.syntaxStatus = { type: 'success', message: 'Sintaxis OK & Guardado' };
             toast && toast.fire ? toast.fire({ type: 'success', title: 'Archivo guardado correctamente' }) : swal('Éxito', 'Archivo guardado', 'success');
           }
         })
@@ -357,7 +390,7 @@ export default {
         text: 'Se subirán todos los archivos modificados a sistema.empaqueslupa.com mediante FTP.',
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#28a745',
+        confirmButtonColor: '#10b981',
         confirmButtonText: 'Sí, Desplegar Ahora',
         cancelButtonText: 'Cancelar'
       }).then((result) => {
@@ -446,28 +479,609 @@ export default {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ];
+    },
+    formatMessageText(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br/>')
+        .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
     }
   }
 };
 </script>
 
 <style scoped>
+.web-ide-wrapper {
+  width: 100%;
+  height: calc(100vh - 65px);
+  background-color: #0b0f19;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
 .web-ide-container {
-  height: 100vh;
-  background-color: #1e1e1e;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #0f172a;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid #1e293b;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
-.hover-bg:hover {
-  background-color: #2a2d2e;
+
+/* Header Bar */
+.ide-header {
+  height: 52px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #334155;
 }
-.cursor-pointer {
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.brand-icon {
+  font-size: 14px;
+}
+
+.brand-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #818cf8;
+}
+
+.active-file-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #f1f5f9;
+  border: 1px solid #334155;
+}
+
+.active-file-indicator.empty {
+  color: #64748b;
+}
+
+.file-icon {
+  color: #38bdf8;
+}
+
+.dot-modified {
+  width: 8px;
+  height: 8px;
+  background-color: #f59e0b;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-pill.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-pill.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-ide {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+.btn-save:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-deploy {
+  background: #1e293b;
+  color: #38bdf8;
+  border: 1px solid #0284c7;
+}
+
+.btn-deploy:hover:not(:disabled) {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.btn-icon {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  padding: 6px 10px;
+}
+
+.btn-icon:hover {
+  color: #ffffff;
+  background: #334155;
+}
+
+/* Main Workspace */
+.ide-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar Explorer */
+.explorer-sidebar {
+  width: 270px;
+  min-width: 240px;
+  background: #0f172a;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  border-bottom: 1px solid #1e293b;
+}
+
+.file-count {
+  background: #1e293b;
+  color: #94a3b8;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.search-box {
+  position: relative;
+  padding: 8px;
+}
+
+.search-box input {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 6px 28px 6px 28px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: #6366f1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.clear-search {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
   cursor: pointer;
 }
-.chat-history {
-  background-color: #181818 !important;
+
+.tree-viewport {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px;
 }
-.btn-xs {
-  padding: 0.25rem 0.4rem;
+
+/* Tree Nodes */
+.tree-node {
+  user-select: none;
+}
+
+.node-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  transition: background 0.15s ease;
+}
+
+.node-row:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.node-row.active {
+  background: rgba(99, 102, 241, 0.25);
+  color: #818cf8;
+  font-weight: 600;
+}
+
+.node-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.node-children {
+  padding-left: 14px;
+}
+
+.text-emerald { color: #10b981; }
+.text-amber { color: #f59e0b; }
+.text-cyan { color: #06b6d4; }
+.text-slate { color: #64748b; }
+
+/* Editor Viewport */
+.editor-viewport {
+  flex: 1;
+  background: #1e1e1e;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.monaco-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.editor-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.welcome-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 70%);
+  color: #f8fafc;
+  padding: 20px;
+}
+
+.welcome-card {
+  text-align: center;
+  max-width: 420px;
+}
+
+.welcome-logo {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.welcome-card h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #818cf8;
+}
+
+.welcome-card p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shortcut {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.shortcut code {
+  background: #6366f1;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
   font-size: 0.75rem;
+  margin-right: 6px;
+}
+
+/* AI Sidebar */
+.ai-sidebar {
+  width: 360px;
+  min-width: 310px;
+  background: #0f172a;
+  border-left: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+.agent-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agent-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+}
+
+.agent-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.agent-status {
+  font-size: 0.7rem;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.btn-icon-subtle {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.btn-icon-subtle:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.chat-viewport {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #0b0f19;
+}
+
+.chat-bubble {
+  max-width: 90%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-bubble.agent {
+  align-self: flex-start;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-bottom-left-radius: 2px;
+}
+
+.bubble-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+.bubble-content {
+  word-break: break-word;
+}
+
+.btn-apply-code {
+  margin-top: 8px;
+  width: 100%;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-apply-code:hover {
+  background: #10b981;
+  color: #ffffff;
+}
+
+/* Prompt Box */
+.prompt-container {
+  padding: 12px;
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+}
+
+.context-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.pill {
+  background: #1e293b;
+  color: #94a3b8;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  border: 1px solid #334155;
+}
+
+.pill.purple {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.3);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+.input-wrapper textarea {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #f8fafc;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  resize: none;
+  height: 60px;
+  outline: none;
+}
+
+.input-wrapper textarea:focus {
+  border-color: #6366f1;
+}
+
+.btn-send {
+  width: 44px;
+  height: 60px;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: opacity 0.2s;
+}
+
+.btn-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner-neon {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(56, 189, 248, 0.2);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>
