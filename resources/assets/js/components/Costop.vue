@@ -91,6 +91,10 @@
                                 <label for="">Nombre(*)</label>
                                 <input type="text" class="form-control" v-model="nombre" placeholder="Nombre del insumo o servicio">
                             </div>
+                            <div class="col-md-7">
+                                <label for="">Descripción</label>
+                                <input type="text" class="form-control" v-model="descripcion" placeholder="Descripción detallada (ej: especificaciones del papel)">
+                            </div>
                             
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -174,36 +178,6 @@
                     </div>
                     </template>
                     <!-- Fin Detalle-->
-                    <!-- Listado de proveedores-->
-                    <div class="modal fade" tabindex="-1" :class="{'mostrar' : modalp}" role="dialog" aria-labelledby="myModalLabel" style="display: none; z-index:10000" aria-hidden="true">
-                        <div class="modal-dialog" :class="{'modal-bajo':topedit}">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Seleccione un proveedor</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cerrarModalp()">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <template v-if="arrayProveedor">
-                                            <div class="list-group">
-                                                <a href="#" 
-                                                class="list-group-item list-group-item-action" 
-                                                :class="{'active' : seleccionado}" 
-                                                v-for="(proveedor,index) in arrayProveedor" 
-                                                :key="proveedor.id" 
-                                                v-text="proveedor.nombre"
-                                                @click="getDatosProveedor(proveedor,index)">
-                                               </a> 
-                                            </div>
-                                        </template>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" @click="cerrarModalp()" data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- fin listado proveedores -->
                     <!--Inicio del modal actualizar-->
                     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -248,6 +222,12 @@
                                                 <input type="text" v-model="nombre" class="form-control" placeholder="Nombre del insumo o servicio">                                        
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 form-control-label" for="text-input">Descripción</label>
+                                            <div class="col-md-9">
+                                                <input type="text" v-model="descripcion" class="form-control" placeholder="Descripción detallada">                                        
+                                            </div>
+                                        </div>
                                         
                                         <div class="form-group row">
                                             <label class="col-md-3 form-control-label" for="text-input">Valor(*)</label>
@@ -268,13 +248,27 @@
                                                 <select class="form-control" v-model="tipo_costo">
                                                     <option value="0">Seleccione</option>
                                                     <option value="Papel">Papel</option>
-                                                    <option value="placha">Plancha</option>
-                                                    <option value="tiraje">Tiraje</option>
-                                                    <option value="montaje">Montajes</option>
-                                                    <option value="retablo">Retablo</option>
-                                                    <option value="camisetas">Camiseta sublimación</option>
-                                                    <option value="impresionf">Impresion gran formato</option>
-                                                    <option value="telas">Tela para sublimación</option>
+                                                    <option value="Corte material">Corte material</option>
+                                                    <option value="Placha">Plancha</option>
+                                                    <option value="Cirel">Cirel</option>
+                                                    <option value="Marco screen">Marco screen</option>
+                                                    <option value="Clise">Clise</option>
+                                                    <option value="Tiraje">Tiraje</option>
+                                                    <option value="Refile">Refile y corte</option>
+                                                    <option value="Corte laser">Corte laser</option>
+                                                    <option value="Transporte">Transporte y carreteo</option>
+                                                    <option value="Montaje">Montaje</option>
+                                                    <option value="Retablos">Retablos</option>
+                                                    <option value="Camisetas">Camiseta sublimación</option>
+                                                    <option value="Impresionf">Impresion gran formato</option>
+                                                    <option value="Telas">Telas</option>
+                                                    <option value="Troquelado">Troquelado</option>
+                                                    <option value="Terminado">Terminado</option>
+                                                    <option value="Acabado">Acabado</option>
+                                                    <option value="Numeración">Numeración</option>
+                                                    <option value="Medio corte">Medio corte</option>
+                                                    <option value="Estampado">Estampado</option>
+                                                    <option value="Otros">Otros costos</option>
                                                 </select>
                                                                           
                                             </div>
@@ -301,6 +295,37 @@
                         <!-- /.modal-dialog -->
                     </div>
                     <!--Fin del modal-->
+                    <!-- Listado de proveedores-->
+                    <div class="modal fade" tabindex="-1" :class="{'mostrar' : modalp}" role="dialog" aria-labelledby="myModalLabel" style="display: none; z-index:11000" aria-hidden="true">
+                        <div class="modal-dialog" :class="{'modal-bajo':topedit}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Seleccione un proveedor</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cerrarModalp()">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <template v-if="arrayProveedor">
+                                            <div class="list-group">
+                                                <a href="#" 
+                                                class="list-group-item list-group-item-action" 
+                                                :class="{'active' : seleccionado}" 
+                                                v-for="(proveedor,index) in arrayProveedor" 
+                                                :key="proveedor.id" 
+                                                v-text="proveedor.nombre"
+                                                @click="getDatosProveedor(proveedor,index)">
+                                               </a> 
+                                            </div>
+                                        </template>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" @click="cerrarModalp()" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin listado proveedores -->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
             </div>
@@ -317,6 +342,7 @@
                 insumo_id: 0,
                 idproveedor:0,
                 nombre : '',
+                descripcion: '',
                 proveedor_seleccionado:{},
                 modalp:0,
                 tipo_costo : 0,
@@ -457,17 +483,16 @@
                 if (this.validarInsumo()){
                     return;
                 }
-                
                 let me = this;
-
                 axios.post('/costop/registrar',{
                     'nombre': this.nombre,
+                    'descripcion': this.descripcion,
                     'tipo_costo': this.tipo_costo,
                     'valor' : this.valor,
                     'unidad' : this.unidad,
                     'idproveedor' : this.idproveedor,
-
                 }).then(function (response) {
+                    console.log(response)
                     me.ocultarDetalle();
                     me.listarInsumo(1,'','tipo_costo');
                     me.proveedor_seleccionado={}
@@ -480,11 +505,10 @@
                if (this.validarInsumo()){
                     return;
                 }
-                
                 let me = this;
-
                 axios.put('/costop/actualizar',{
                     'nombre': this.nombre,
+                    'descripcion': this.descripcion,
                     'tipo_costo': this.tipo_costo,
                     'valor' : this.valor,
                     'unidad' : this.unidad,
@@ -561,8 +585,9 @@
                                 this.tipoAccion=2
                                 this.insumo_id=data['id']
                                 this.idproveedor=data['idproveedor']
-                                this.unidad=data['unidad_medida']
+                                this.unidad=data['cabida']
                                 this.nombre = data['nombre']
+                                this.descripcion = data['descripcion']
                                 this.valor=data['valor']
                                 this.tipo_costo=data['tipo_costo']
                                 this.obtenerProveedor(data['nombre_proveedor']);
@@ -687,3 +712,4 @@
     }
 
 </style>
+

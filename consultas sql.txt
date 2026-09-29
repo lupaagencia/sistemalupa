@@ -1,0 +1,1 @@
+SELECT articulos.nombre, costos.cantidad, ordentrabajos.fecha, personas.nombre FROM `costos` JOIN ordentrabajos on costos.idorden = ordentrabajos.id JOIN articulos ON ordentrabajos.idarticulo = articulos.id JOIN clientes ON ordentrabajos.idcliente=clientes.id JOIN personas ON clientes.id=personas.id WHERE `titulo` LIKE 'Troquelado' ORDER BY `costos`.`created_at` DESC

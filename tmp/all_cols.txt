@@ -1,0 +1,45 @@
+=== costois ===
+id | int(10) unsigned
+idproveedor | int(10) unsigned
+idpersona | int(10) unsigned
+tipo_costo | varchar(20)
+nombre | varchar(100)
+unidad_medida | varchar(50)
+valor | decimal(11,2)
+total | decimal(11,2)
+estado | varchar(20)
+created_at | timestamp
+updated_at | timestamp
+
+=== ordentrabajos ===
+id | int(10) unsigned
+cliente_id | int(10) unsigned
+articulo_id | int(10) unsigned
+medida_final | varchar(50)
+cantidad | decimal(20,0)
+cantidad_entregada | int(11)
+tamano | decimal(20,2)
+medida_material | varchar(50)
+valor_unitario | decimal(20,0)
+impuesto | decimal(30,2)
+valor_impuesto | decimal(20,2)
+produccion | varchar(20)
+fecha | date
+cabida | varchar(20)
+detalles_diseno | varchar(3000)
+carpeta_cliente | varchar(50)
+observaciones | varchar(3000)
+totalParcial | decimal(30,0)
+descuento | decimal(20,0)
+abono | decimal(20,0)
+saldo | decimal(20,0)
+total | decimal(20,0)
+estado | varchar(20)
+prioridad | varchar(50)
+impresa | int(1)
+plancha | int(11)
+pago | int(11)
+fecha_entrega | date
+created_at | date
+updated_at | timestamp
+cantidad_original | int(11)

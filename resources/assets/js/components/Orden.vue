@@ -7,79 +7,104 @@
             <div class="container-fluid">
                 <!-- Ejemplo de tabla Listado -->
                 <div class="card">
-                    <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Orden de trabajo
-                        <button type="button" @click="mostrarDetalle('nuevo')" class="btn btn-success">
-                            <i class="icon-plus"></i>&nbsp;Nuevo
-                        </button>
+                    <div class="card-header" style="border-bottom: 1px solid #ccc; padding: 10px 15px;">
+                        <i class="fa fa-align-justify"></i> <strong style="font-size: 16px;">Orden de trabajo</strong>
                     </div>
                     <!-- Listado-->
 
                     <template v-if="listado===1">
-                        <div class="card-body">
+                        <div class="card-body" style="padding: 15px;">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <div class="col-xl-12">
-                                        <div class="input-group">
-                                            <input type="text" v-model="buscare" @keyup="listarOrdenes(1,`%${buscare}%`,'like','personas.nombre')"  placeholder="Empresa">
-                                            <input type="text" v-model="buscarc" @keyup="listarOrdenes(1,`%${buscarc}%`,'like','clientes.contacto')"  placeholder="Contacto">
-                                            <input type="text" v-model="buscarv" @keyup="listarOrdenes(1,`%${buscarv}%`,'like','ordentrabajos.total')"  placeholder="Valor orden">
-                                            
-                                            <div class="input-group">
-                                                <div class="modal fade" tabindex="-1" :class="{'mostrar' : modalIntervalo}">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Asiganr Intervalo</h5>
-                                                                <button @click="cerrarModalIntervalo" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div v-text="`${fechaI}-${fechaF}`"></div>
-                                                                <div class="inputGruop">
-                                                                    <input type="date" placeholder="Fecha Inicial" v-model="fechaI">
-                                                                    <input type="date" placeholder="Fecha Final" v-model="fechaF">
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button @click="cerrarModalIntervalo" type="button" class="btn btn-secondary">Cerrar</button>
-                                                                <button @click="filtrarFecha()" type="button" class="btn btn-primary">Aplicar</button>
+                                    <!-- Search inputs and filters row -->
+                                    <div style="display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; align-items: center !important; gap: 8px !important; width: 100% !important; margin-bottom: 15px !important;">
+                                        <input type="text" class="form-control" style="width: 100px !important; max-width: 100px !important; display: inline-block !important; height: 35px !important; border: 1px solid #ccc !important; border-radius: 4px !important; padding: 6px 12px !important;" v-model="buscaro" @keyup="listarOrdenes(1,buscaro,'like','ordentrabajos.id')" placeholder="No. Orden">
+                                        <input type="text" class="form-control" style="width: 180px !important; max-width: 180px !important; display: inline-block !important; height: 35px !important; border: 1px solid #ccc !important; border-radius: 4px !important; padding: 6px 12px !important;" v-model="buscare" @keyup="listarOrdenes(1,buscare,'like','personas.nombre')" placeholder="Empresa">
+                                        <input type="text" class="form-control" style="width: 180px !important; max-width: 180px !important; display: inline-block !important; height: 35px !important; border: 1px solid #ccc !important; border-radius: 4px !important; padding: 6px 12px !important;" v-model="buscarp" @keyup="listarOrdenes(1,buscarp,'like','articulos.nombre')" placeholder="Producto">
+                                        
+                                        <div style="display: flex !important; flex-direction: row !important; align-items: center !important; gap: 0 !important; width: auto !important;">
+                                            <div class="modal fade" tabindex="-1" :class="{'mostrar' : modalIntervalo}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Asignar Intervalo</h5>
+                                                            <button @click="cerrarModalIntervalo" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div v-text="`${fechaI}-${fechaF}`"></div>
+                                                            <div class="inputGroup" style="display: flex; gap: 5px; margin-top: 10px;">
+                                                                <input type="date" class="form-control" placeholder="Fecha Inicial" v-model="fechaI">
+                                                                <input type="date" class="form-control" placeholder="Fecha Final" v-model="fechaF">
                                                             </div>
                                                         </div>
+                                                        <div class="modal-footer">
+                                                            <button @click="cerrarModalIntervalo" type="button" class="btn btn-secondary">Cerrar</button>
+                                                            <button @click="filtrarFecha()" type="button" class="btn btn-primary">Aplicar</button>
+                                                        </div>
                                                     </div>
-                                                </div>  
-                                                <select @change="filtrarFecha()" v-model="filtroFecha">
-                                                    <option value="1">Filtrar por fecha</option>   
-                                                    <option value="hoy">Hoy</option>   
-                                                    <option value="ayer">Ayer</option>  
-                                                    <option value="ultimos7">Ultimos 7 días</option>  
-                                                    <option value="ultimos30">Ultimos 30 días</option>  
-                                                    <option value="semana">Esta semana</option>  
-                                                    <option value="mes">Este mes</option>  
-                                                </select>
-                                                <button class="btn btn-primary" @click="asiganarIntervalo()">Intervalo fecha</button>
+                                                </div>
                                             </div>
                                             
-                                        
+                                            <select class="form-control" style="width: 250px !important; max-width: 250px !important; display: inline-block !important; height: 35px !important; border: 1px solid #ccc !important; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important;" @change="filtrarFecha()" v-model="filtroFecha">
+                                                <option value="1">Filtrar por fecha</option>   
+                                                <option value="hoy">Hoy</option>   
+                                                <option value="ayer">Ayer</option>  
+                                                <option value="ultimos7">Ultimos 7 días</option>  
+                                                <option value="ultimos30">Ultimos 30 días</option>  
+                                                <option value="semana">Esta semana</option>  
+                                                <option value="mes">Este mes</option>  
+                                            </select>
+                                            <button class="btn btn-primary" style="background-color: #6a1b9a !important; border-color: #6a1b9a !important; height: 35px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; font-weight: bold !important; padding: 0 15px !important; white-space: nowrap !important; display: inline-block !important;" @click="asiganarIntervalo()">Intervalo fecha</button>
                                         </div>
+
+                                        <button type="button" @click="mostrarDetalle('nuevo')" class="btn" style="background-color: #0df05b !important; color: white !important; border: none !important; border-radius: 4px !important; padding: 0 15px !important; font-weight: bold !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 5px !important; height: 35px !important; white-space: nowrap !important;">
+                                            <i class="fa fa-plus-circle" style="font-size: 16px;"></i> Nuevo
+                                        </button>
                                     </div>
-                                        <div class="col-xl-12">
-                                        <div class="input-group">
-                                            <div class="alert alert-primary mb-0 p-1" ><strong>Estado</strong> </div>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'todos')">Todos</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'D')">Diseño</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'A')">Aprobación</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'EP')">Enviar a producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'ENP')">En producción</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'E')">Por entregar</button>
-                                            <button class="btn btn-secondary" @click="filtrarOrdenes(1,'T')">Terminada</button>
+                                    
+                                    <!-- States Tab Bar -->
+                                    <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; width: fit-content; margin-bottom: 15px; background-color: #aec6d0;">
+                                        <div style="background-color: #bde5f2; color: #136988; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;">
+                                            Estado
                                         </div>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'todos')">Todos</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'D')">Diseño</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'A')">Aprobación</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'EP')">Enviar a producción</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'ENP')">En producción</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'EM')">Empacado</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold; border-right: 1px solid #ccc;" @click="filtrarOrdenes(1,'E')">Por entregar</button>
+                                        <button class="btn" style="background-color: #aec6d0; color: #333; border: none; border-radius: 0; padding: 8px 15px; font-weight: bold;" @click="filtrarOrdenes(1,'T')">Terminada</button>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Pagination Above the Table -->
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                                <select v-model="limite" @change="cambiarLimite()" class="form-control" style="width: 80px; height: 35px; border: 1px solid #ccc; border-radius: 4px; padding: 5px;">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                
+                                <ul class="pagination" style="margin: 0; display: flex; list-style: none; padding-left: 0; gap: 5px;">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)" style="color: #7b1fa2; border: 1px solid #ccc; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; background: white;">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" 
+                                           :style="page == isActived ? 'background-color: #7b1fa2; border-color: #7b1fa2; color: white; font-weight: bold; border-radius: 4px; padding: 6px 12px; text-decoration: none;' : 'color: #7b1fa2; border: 1px solid #ccc; font-weight: bold; border-radius: 4px; padding: 6px 12px; text-decoration: none; background: white;'"
+                                           v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)" style="color: #7b1fa2; border: 1px solid #ccc; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; background: white;">Sig</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-sm">
-                                    
-                                    <thead>
+                                                                    <thead>
                                         <tr>
                                             <th>Opciones</th>
                                             <th @click="ordenar('idorden')">No. orden <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
@@ -89,9 +114,9 @@
                                             <th @click="ordenar('cliente')">Cliente <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                             <th @click="ordenar('detalles_diseno')">Detalles del diseño <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                             <th @click="ordenar('observaciones')">Observaciones <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
-                                            <th >Producción </th>
-                                            <th @click="ordenar('estadoc')">Estado Comerical <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
-                                            <th @click="ordenar('estadop')">Estado Producción <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th>Producción</th>
+                                            <th @click="ordenar('estadop')">Estado Comercial y Producción <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
+                                            <th>Impresión orden de producción</th>
                                             <th @click="ordenar('total')">Valor orden <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                             <th @click="ordenar('fecha_entrega')">Fecha de entrega <i v-if="ordenarFlecha" class="fa fa-arrow-up"></i><i v-else class="fa fa-arrow-down"></i></th>
                                         </tr>
@@ -99,81 +124,86 @@
                                     <tbody v-if="arrayOrdenes.length">
                                         <tr v-for="(orden, index) in arrayOrdenes" :key="index">
                                             
-                                            <td>
-                                            
-                                                <button type="button" @click="verOrden(orden)" class="btn btn-primary btn-sm">
-                                                <i class="icon-eye"></i>
-                                                </button> &nbsp;
-                                                <button type="button" @click="editarOrden(orden,'edit')" class="btn btn-warning btn-sm">
-                                                <i class="icon-pencil"></i>
-                                                </button> &nbsp;
-                                                <button type="button" @click="copiarOrden(orden)" class="btn btn-success btn-sm">
-                                                <i class="fa fa-copy"></i>
-                                                </button> &nbsp;
-                                                <button type="button" class="btn btn-danger btn-sm" @click="eliminarOrden(orden.idorden)">
-                                                    <i class="icon-trash"></i>
-                                                </button>
+                                            <td style="padding: 4px; vertical-align: middle;">
+                                                <div style="display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: center; width: 35px; margin: 0 auto;">
+                                                    <button type="button" @click="verOrden(orden)" class="btn btn-sm text-white" style="background-color: #6a1b9a; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Ver Orden">
+                                                        <i class="icon-eye"></i>
+                                                    </button>
+                                                    <button type="button" @click="editarOrden(orden,'edit')" class="btn btn-sm text-white" style="background-color: #fbc02d; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Editar Orden">
+                                                        <i class="icon-pencil"></i>
+                                                    </button>
+                                                    <button type="button" @click="copiarOrden(orden)" class="btn btn-sm text-white" style="background-color: #00e676; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Copiar Orden">
+                                                        <i class="fa fa-copy"></i>
+                                                    </button>
+                                                    <button type="button" @click="eliminarOrden(orden.idorden || orden.id)" class="btn btn-sm text-white" style="background-color: #ff5252; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Eliminar Orden">
+                                                        <i class="icon-trash"></i>
+                                                    </button>
+                                                    <button type="button" @click="generarOrdentrabajo(orden)" class="btn btn-sm text-white" style="background-color: #00b0ff; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Generar Orden de Trabajo">
+                                                        <i class="icon-screen-desktop"></i>
+                                                    </button>
+                                                    <button type="button" @click="imprimirHojaRuta(orden)" class="btn btn-sm text-white" style="background-color: #5c2c74; border: none; padding: 4px; width: 100%; border-radius: 2px;" title="Hoja de Ruta (PDF)">
+                                                        <i class="fa fa-list-alt"></i>
+                                                    </button>
+                                                    <button type="button" @click="gestionarHojaRutaEscaneada(orden)" class="btn btn-sm text-white mt-1" :style="{ backgroundColor: orden.hoja_ruta_escaneada ? '#16a34a' : '#0284c7', border: 'none', padding: '4px', width: '100%', borderRadius: '2px' }" :title="orden.hoja_ruta_escaneada ? 'Ver Hoja de Ruta Escaneada' : 'Subir Hoja de Ruta Escaneada / Foto'">
+                                                        <i class="fa" :class="orden.hoja_ruta_escaneada ? 'fa-file-image-o' : 'fa-upload'"></i>
+                                                    </button>
+                                                </div>
                                             </td>
-                                            <td v-text="orden.idorden"></td>
-                                            <td v-text="orden.fechaorden"></td>
+                                            <td v-text="orden.idorden || orden.id"></td>
+                                            <td v-text="orden.fechaorden || orden.fecha_orden || (orden.created_at ? orden.created_at.substring(0,10) : '')"></td>
                                             <td v-text="orden.fecha"></td>
-                                            <td>{{orden.cantidad}} {{orden.articulo}} {{orden.ancho_material}}</td>
-                                            <td v-text="orden.rasonsocial"></td>
+                                            <td>
+                                                {{orden.cantidad}} 
+                                                {{ orden.articulo && typeof orden.articulo === 'object' ? orden.articulo.nombre : (orden.articulo || '') }} 
+                                                {{orden.ancho_material || orden.tamano || ''}}
+                                            </td>
+                                            <td v-text="orden.rasonsocial || (orden.cliente && orden.cliente.razonsocial)"></td>
                                             <td style="color:red" v-text="orden.detalles_diseno"></td>
                                             <td style="color:red" v-text="orden.observaciones"></td>
                                             <td>
-                                                <ul v-if="orden.costos.length" class="costos-semaforo">
-                                                    <li v-for="costo in orden.costos" :key="costo.id" v-text="costo.tipo_costo.charAt(0)" :class="[ costo.terminado==1 ? 'bg-success': costo.completado==1 ? 'bg-warning': 'bg-danger']" >
-                                                    </li>
-                                                </ul>  
+                                                 <div style="font-size: 11px;">Prioridad</div>
+                                                 <div v-if="String(orden.prioridad).toLowerCase() === 'vip'" class="badge badge-vip-gold p-1 text-center" style="display: block; width: 100%;">
+                                                     ⭐ VIP
+                                                 </div>
+                                                 <div v-else class="badge p-1 text-white text-center" :class="[ (orden.prioridad == 'normal') ? 'bg-success' : (orden.prioridad == 'media' ? 'bg-warning' : 'bg-danger') ]" style="display: block; width: 100%; border-radius: 4px; font-weight: bold;">
+                                                     {{ orden.prioridad || 'normal' }}
+                                                 </div>
                                             </td>
                                             <td>
-                                                <select v-model="orden.estadoc" id="" class="bg-primary" @change="cambiarEstado(orden)" >
-                                                    <option v-for="(estadoc, key) in estadocomercial" :key="key" :value="key" v-text="estadocomercial[key]"></option>
+                                                <select v-model="orden.produccion" class="bg-success text-white border-0 p-1" style="border-radius: 4px; font-weight: bold; width: 100%; height: 30px;" @change="cambiarEstado(orden)">
+                                                    <option v-for="(estadop, index) in estadoproduccion" :key="index" :value="index" v-text="estadoproduccion[index]"></option>
                                                 </select>
                                             </td>
                                             <td>
-                                                <select v-model="orden.estadop" id="" class="bg-success" @change="cambiarEstado(orden)">
-                                                    <option v-for="(estadop, key) in estadoproduccion" :key="key" :value="key" v-text="estadoproduccion[key]"></option>
-                                                </select>
+                                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                                    <button v-if="orden.impresa == 0" class="btn btn-sm text-white" style="background-color: #7b1fa2; border-color: #7b1fa2; width: 100%; font-weight: bold;" @click="cambiarImpreso(orden, 1)">
+                                                        No impresa
+                                                    </button>
+                                                    <button v-else class="btn btn-sm text-white" style="background-color: #e3b7e4; border-color: #e3b7e4; color: #522b53; width: 100%; font-weight: bold;" @click="cambiarImpreso(orden, 0)">
+                                                        Impresa
+                                                    </button>
+                                                    
+                                                    <button v-if="(orden.estadoc || orden.estado) == 'VC'" class="btn btn-sm text-white" style="background-color: #ffb300; border-color: #ffb300; width: 100%; font-weight: bold;" @click="cambiarEstado(orden, 'OSP')">
+                                                        VC
+                                                    </button>
+                                                </div>
                                             </td>
-                                            <td v-text="orden.total"></td>
-                                            <td >
-                                                <input type="date" v-model="orden.fecha_entrega" @change="cambiarFecha(orden)" :style="`background:hsl(${calcularDias(index,orden)*15}deg 100% 44%)`">
+                                            <td style="color: #007e33; font-weight: bold;" v-text="orden.total"></td>
+                                            <td>
+                                                <input type="date" v-model="orden.fecha_entrega" @change="cambiarFecha(orden)" :style="`background:hsl(${calcularDias(index,orden)*15}deg 100% 44%); border: 1px solid #ccc; border-radius: 4px; padding: 2px; color: black;`">
                                             </td>
-                                            <table>
-
-                                            <tr  v-if="vieworden==orden.idorden">
-                                                <td >
-                                                    Orden de trabajo
-                                                </td>
-                                            </tr>
-                                            </table>
                                                                         
                                         </tr> 
                                     </tbody>
                                     <tbody v-else>
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="13" class="text-center">
                                                 No hay ordenes creadas
                                             </td>
                                         </tr>
                                     </tbody>    
                                 </table>
-                            </div>
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item" v-if="pagination.current_page > 1">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
-                                    </li>
-                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
-                                    </li>
-                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            </div>   </nav>
                         </div>
                     </template>
                     <!--Fin Listado-->
@@ -662,12 +692,19 @@
                                             </thead>
                                             <tbody>
                                                 <tr style="background-color: #CEECF5;">
-                                                    <td>$ <input type="text" v-model="precio_producto"> </td>
-                                                    <td><input type="text" v-model="cantidad"> </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="number" class="form-control" v-model="descuento" placeholder="Descuento">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">$</span>
+                                                            </div>
+                                                            <input type="number" class="form-control" v-model="precio_producto">
                                                         </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" v-model="cantidad">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" v-model="descuento" placeholder="Descuento">
                                                     </td>
                                                     <td>$ {{calcularTotalParcial}}</td>
                                                     <td>$ {{calcularTotalImpuesto}}</td>
@@ -721,34 +758,95 @@
                             <!-- lista de detalles de trabajo agregados -->
                             <div class="form-group col-md-12 border p-4">
                                 <div class="table-responsive col-md-12">
-                                    <table class="table table-bordered table-striped table-sm">
-                                        <thead>
+                                    <table class="table table-bordered table-striped table-sm" style="border-collapse: collapse; border: 1px solid #ccc; width: 100%;">
+                                        <thead style="background-color: #d2e0e6; color: #2e3e4e; font-weight: bold; border-bottom: 2px solid #b2c0c6;">
                                             <tr>
-                                                <th>Opciones</th>
-                                                <th>Detalle</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th style="padding: 12px; border: 1px solid #b8c7cc; font-size: 14px; text-align: left;">Opciones</th>
+                                                <th style="padding: 12px; border: 1px solid #b8c7cc; font-size: 14px; font-style: italic; text-align: left;">Titulo Detalle</th>
+                                                <th style="padding: 12px; border: 1px solid #b8c7cc; font-size: 14px; font-style: italic; text-align: left;">Detalle</th>
+                                                <th style="padding: 12px; border: 1px solid #b8c7cc; font-size: 14px; font-style: italic; text-align: left;">Descripcion</th>
+                                                <th style="padding: 12px; border: 1px solid #b8c7cc; font-size: 14px; font-style: italic; text-align: left;">Insumo o Maquina</th>
                                             </tr>
                                         </thead>
                                         <tbody v-if="arrayDetalle.length">
-                                            <tr v-for="(detalle,index) in arrayDetalle" :key="index">
-                                                <td>
-                                                    <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
-                                                        <i class="icon-close"></i>
-                                                    </button>
+                                            <tr v-for="(detalle,index) in arrayDetalle" :key="index" style="border-bottom: 1px solid #c8d4db;">
+                                                <td style="background-color: #dce1e5; text-align: center; vertical-align: middle; padding: 6px 10px; width: 16%; border: 1px solid #c8d4db;">
+                                                     <div style="display: flex; gap: 4px; align-items: center; justify-content: center;">
+                                                         <button @click="moverArribaDetalle(index)" :disabled="index === 0" type="button" 
+                                                                 class="btn btn-sm btn-secondary"
+                                                                 style="padding: 4px 8px; font-size: 13px; font-weight: bold; cursor: pointer;"
+                                                                 title="Mover arriba">
+                                                             ▲
+                                                         </button>
+                                                         <button @click="moverAbajoDetalle(index)" :disabled="index === (arrayDetalle.length - 1)" type="button" 
+                                                                 class="btn btn-sm btn-secondary"
+                                                                 style="padding: 4px 8px; font-size: 13px; font-weight: bold; cursor: pointer;"
+                                                                 title="Mover abajo">
+                                                             ▼
+                                                         </button>
+                                                         <button @click="eliminarDetalle(index)" type="button" title="Eliminar"
+                                                                 style="background-color: #ff6861; color: white; border: none; border-radius: 4px; padding: 4px 10px; height: 31px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s;"
+                                                                 onmouseover="this.style.backgroundColor='#e55750'"
+                                                                 onmouseout="this.style.backgroundColor='#ff6861'">
+                                                             ⊗
+                                                         </button>
+                                                     </div>
+                                                 </td>
+                                                <td style="background-color: #dce1e5; padding: 10px; vertical-align: middle; width: 18%; border: 1px solid #c8d4db;">
+                                                    <input type="text" v-model="detalle.titulo" class="form-control" 
+                                                           style="background-color: #ffffff; color: #333; border: 1px solid #b8c4cc; border-radius: 4px; height: 36px; padding: 6px 12px; font-size: 14px; width: 100%;">
                                                 </td>
-                                                <td>
-                                                    <input type="text" v-model="detalle.titulo_detalle" class="form-control">
+                                                <td style="background-color: #dce1e5; padding: 10px; vertical-align: middle; width: 22%; border: 1px solid #c8d4db;">
+                                                    <div style="width:100%" v-if="esColor(detalle.titulo, detalle.valor)">
+                                                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                                            <selector-color :detalle="detalle" wi="100"></selector-color>
+                                                            <div v-if="getColorsArray(detalle.valor).length > 0" style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                                                                <div v-for="(val, idx) in getColorsArray(detalle.valor)" :key="idx" 
+                                                                     class="text-white text-center d-flex align-items-center justify-content-center" 
+                                                                     :style="'background:' + val.hex + '; padding: 8px 10px; border-radius: 4px; font-size: 12px; min-height: 52px; min-width: 75px; max-width: 95px; line-height: 1.2; font-family: inherit; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.15); word-break: break-word;'">
+                                                                    {{ val.pantone }}
+                                                                </div>
+                                                            </div>
+                                                            <div v-else-if="detalle.valor && typeof detalle.valor === 'object'" 
+                                                                 class="text-white text-center d-flex align-items-center justify-content-center" 
+                                                                 :style="'background:' + (detalle.valor.hex || '#000') + '; padding: 8px 10px; border-radius: 4px; font-size: 12px; min-height: 52px; min-width: 75px; max-width: 95px; line-height: 1.2; font-family: inherit; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.15); word-break: break-word;'">
+                                                                {{ detalle.valor.pantone || detalle.valor }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-else>
+                                                        <input type="text" v-model="detalle.valor" class="form-control" placeholder="Valor detalle" 
+                                                               style="background-color: #ffffff; color: #333; border: 1px solid #b8c4cc; border-radius: 4px; height: 36px; padding: 6px 12px; font-size: 14px; width: 100%;">
+                                                    </div>
                                                 </td>
-                                                <td>
-                                                    <input type="text" v-model="detalle.valor_detalle" class="form-control">
+                                                <td style="background-color: #dce1e5; padding: 10px; vertical-align: middle; width: 22%; border: 1px solid #c8d4db;">
+                                                    <input type="text" v-model="detalle.descripcion" class="form-control" 
+                                                           style="background-color: #ffffff; color: #333; border: 1px solid #b8c4cc; border-radius: 4px; height: 36px; padding: 6px 12px; font-size: 14px; width: 100%; margin-bottom: 4px;">
+                                                    <div v-if="detalle.titulo && detalle.titulo.toLowerCase() === 'papel' && detalle.costo" 
+                                                         style="background-color: #ffffff; border: 1px solid #b8c4cc; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #333; line-height: 1.4; margin-top: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); font-family: inherit; text-align: left;">
+                                                        <div>Tamaños: {{ detalle.costo.descripcion }}</div>
+                                                        <div>Pliegos: {{ Math.round(detalle.costo.cantidad) }}</div>
+                                                    </div>
                                                 </td>
-                                                <td>
-                                                    <input type="text" v-model="detalle.descripcion_detalle" class="form-control">
+                                                <td style="background-color: #dce1e5; padding: 10px; vertical-align: middle; width: 23%; border: 1px solid #c8d4db;">
+                                                    <input v-if="!detalle.costo || !detalle.costo.costois || !detalle.costo.costois.nombre || detalle.costo.costois.nombre===''" 
+                                                           type="text" 
+                                                           :id="'modificar'+index" 
+                                                           class="form-control" 
+                                                           :value="(detalle.costo && detalle.costo.descripcion) ? detalle.costo.descripcion : ''"
+                                                           @keyup="selectInsumos('modificar'+index,detalle)" 
+                                                           placeholder="Asigne Insumo, Maquina" 
+                                                           style="background-color: #ffffff; color: #333; border: 1px solid #b8c4cc; border-radius: 4px; height: 36px; padding: 6px 12px; font-size: 14px; width: 100%;">
+                                                    <input v-else 
+                                                           type="text" 
+                                                           v-model="detalle.costo.costois.nombre" 
+                                                           :id="'modificar'+index"
+                                                           @keyup="selectInsumos('modificar'+index,detalle)" 
+                                                           class="form-control" 
+                                                           style="background-color: #ffffff; color: #333; border: 1px solid #b8c4cc; border-radius: 4px; height: 36px; padding: 6px 12px; font-size: 14px; width: 100%;">
                                                 </td>
                                             </tr>
-                                        
-                                        </tbody>  
+                                        </tbody>                                    
                                         <tbody v-else>
                                             <tr>
                                                 <td colspan="5"> 
@@ -780,7 +878,15 @@
                                                                 @click="getDatosInsumos(insumo,index)">
                                                                 </a> 
                                                             </div>
-                                                           
+                                                            <div v-else-if="seccion && seccion.includes('modificar')" class="list-group">
+                                                                <a href="#" 
+                                                                class="list-group-item list-group-item-action" 
+                                                                v-for="(insumo,index) in arrayInsumos" 
+                                                                :key="index" 
+                                                                @click="agregarCostoDetalle(insumo,index,objeto,seccion)">
+                                                                {{insumo.nombre}} - <small>({{insumo.proveedor ? insumo.proveedor.nombre : 'S/N'}})</small>
+                                                                </a> 
+                                                            </div>
                                                         </template>
                                                     </div>
                                                     <div class="modal-footer">
@@ -962,13 +1068,17 @@
 </template>
 
 <script>
+    import SelectorColor from './partes/SelectorColor.vue'
    
     var meses=['01','02','03','04','05','06','07','08','09','10','11','12']
     export default {
+        props: ['user'],
         data (){
             return {
-                
+                limite: 100,
+                buscaro:'',
                 buscare:'',
+                buscarp:'',
                 buscarc:'',
                 buscarv:'',
                 buscar:'todos',
@@ -980,7 +1090,7 @@
                 action:'',
                 idorden:0,
                 estadocomercial:{C:'Por Cotizar', PC:'Por Concretar', PA:'Pendiente Abono', VC:'Venta Cerrada', P:'No Comprar', A:'Aplazada'},
-                estadoproduccion:{D:'Diseño', A:'Aprobación',EP:'Enviar a producción',ENP:'En Producción', E:'Para Entrega',T:'Terminada'},
+                estadoproduccion:{D:'Diseño', A:'Aprobación', EP:'Enviar a producción', ENP:'En producción', EM:'Empacado', E:'Por entregar', T:'Terminada'},
                 unidad:'',
                 fecha: `${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
                 fechaorden:`${new Date().getFullYear()}/${meses[new Date().getMonth()]}/${new Date().getDate()}`,
@@ -1080,11 +1190,14 @@
                 msjCliente:'',
                 msjArticulo:'',
                 seccion:'',
-                ordenarFlecha:false
-               
+                ordenarFlecha:false,
+                scroll:0,
+                objeto:{}
             }
         },
         components: {
+            'SelectorColor': SelectorColor,
+            'selector-color': SelectorColor
         },
         computed:{
             isActived: function(){
@@ -1189,14 +1302,109 @@
                 }
             },
              
+            normalizarOrdenes(data) {
+                if (!data || !Array.isArray(data)) return [];
+                return data.map(orden => {
+                    if (orden) {
+                        if (typeof orden.idorden === 'undefined') orden.idorden = orden.id;
+                        if (typeof orden.id === 'undefined') orden.id = orden.idorden;
+                        if (typeof orden.produccion === 'undefined') orden.produccion = orden.estadop;
+                        if (typeof orden.estadop === 'undefined') orden.estadop = orden.produccion;
+                        if (typeof orden.estado === 'undefined') orden.estado = orden.estadoc;
+                        if (typeof orden.estadoc === 'undefined') orden.estadoc = orden.estado;
+                        if (typeof orden.rasonsocial === 'undefined' && orden.cliente) orden.rasonsocial = orden.cliente.razonsocial;
+                        if (typeof orden.fechaorden === 'undefined') orden.fechaorden = orden.fecha_orden;
+                        if (typeof orden.fecha_orden === 'undefined') orden.fecha_orden = orden.fechaorden;
+
+                        if (orden.detalles && Array.isArray(orden.detalles)) {
+                            orden.detalles.forEach(det => {
+                                if (det) {
+                                    if (typeof det.titulo_detalle === 'undefined' && typeof det.titulo !== 'undefined') det.titulo_detalle = det.titulo;
+                                    if (typeof det.titulo === 'undefined' && typeof det.titulo_detalle !== 'undefined') det.titulo = det.titulo_detalle;
+                                    if (typeof det.valor_detalle === 'undefined' && typeof det.valor !== 'undefined') det.valor_detalle = det.valor;
+                                    if (typeof det.valor === 'undefined' && typeof det.valor_detalle !== 'undefined') det.valor = det.valor_detalle;
+                                    if (typeof det.descripcion_detalle === 'undefined' && typeof det.descripcion !== 'undefined') det.descripcion_detalle = det.descripcion;
+                                    if (typeof det.descripcion === 'undefined' && typeof det.descripcion_detalle !== 'undefined') det.descripcion = det.descripcion_detalle;
+                                }
+                            });
+                        }
+                    }
+                    return orden;
+                });
+            },
+            cambiarLimite() {
+                this.pagination.per_page = this.limite;
+                this.listarOrdenes(1, this.buscar, 'like', this.criterio);
+            },
+            cambiarImpreso(orden, valor){
+                let me = this;
+                axios.put(me.dominio + '/orden/cambiarImpresa', {
+                    'id': orden.idorden || orden.id,
+                    'impresa': valor
+                }).then(function (response) {
+                    orden.impresa = valor;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            imprimirHojaRuta(orden) {
+                if (window.abrirModalProcesosHojaRuta) {
+                    window.abrirModalProcesosHojaRuta(orden);
+                } else {
+                    let id = (orden && (orden.idorden || orden.id)) ? (orden.idorden || orden.id) : orden;
+                    if (id) window.open('/orden/hoja-ruta/' + id, '_blank');
+                }
+            },
+            generarOrdentrabajo(orden) {
+                var me = this;
+                var url = '/generarOrden';
+                var userj = me.user;
+                var userId = userj ? userj.id : 1;
+                
+                let datosenvio = {
+                    id: orden.idorden || orden.id,
+                    fecha_orden: orden.fechaorden || orden.fecha_orden,
+                    fecha: orden.fecha,
+                    cantidad: orden.cantidad,
+                    articulo: orden.articulo && typeof orden.articulo === 'object' ? orden.articulo.nombre : (orden.articulo || ''),
+                    rasonsocial: orden.rasonsocial || (orden.cliente && orden.cliente.razonsocial),
+                    detalles_diseno: orden.detalles_diseno,
+                    observaciones: orden.observaciones,
+                    total: orden.total,
+                    fecha_entrega: orden.fecha_entrega,
+                    prioridad: orden.prioridad,
+                    produccion: orden.estadop || orden.produccion,
+                    estado: orden.estadoc || orden.estado,
+                    user_id: userId
+                };
+                
+                axios({
+                    url: me.dominio + '/generarOrden?orden=' + encodeURIComponent(JSON.stringify(datosenvio)),
+                    method: 'GET',
+                    responseType: 'blob'
+                }).then(function (response) {
+                    var url = window.URL.createObjectURL(new Blob([response.data]));
+                    var link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'orden' + (datosenvio.rasonsocial || '') + '.pdf');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
             listarOrdenes (page,buscar,operador,criterio){
                 let me=this;
-                var url= me.dominio+'/orden?page='+page+'&criterio='+ criterio+'&operador='+operador+'&buscar='+buscar;
+                me.buscar=buscar;
+                me.criterio=criterio;
+                var url= me.dominio+'/orden?page='+page+'&criterio='+ criterio+'&operador='+operador+'&buscar='+buscar+'&per_page='+me.limite;
                 axios.get(url,{
                     
                 }).then(function (response) {
+                    console.log(response);
                     var respuesta= response.data;
-                    me.arrayOrdenes = respuesta.ordenes.data;
+                    me.arrayOrdenes = me.normalizarOrdenes(respuesta.ordenes.data);
                     me.pagination= respuesta.pagination;
                 })
                 .catch(function (error) {
@@ -1391,15 +1599,23 @@
                 me.arrayArticulo=[];
                 me.modala=0
             },
-            selectInsumos(seccion){
+            selectInsumos(seccion, objeto = null){
                 let me=this;
-              
-                var url= me.dominio+'/costop/selectInsumos?filtro='+this.buscar_insumo;
+                me.objeto=objeto;
+                var filtro = '';
+                if (seccion === 'costo') {
+                    filtro = me.buscar_insumo;
+                } else {
+                    var campo = document.getElementById(seccion);
+                    filtro = campo ? campo.value : '';
+                }
+                var base = window.location.pathname.replace(/\/main.*/i, '').replace(/\/+$/, '');
+                var url= base + '/costop/selectInsumos?filtro='+encodeURIComponent(filtro);
                 axios.get(url).then(function (response) {
                     let respuesta = response.data;
-                    me.arrayInsumos=respuesta.insumos;
-                    me.modali=1
-                    me.seccion=seccion
+                    me.arrayInsumos=respuesta.insumos || [];
+                    me.modali=1;
+                    me.seccion=seccion;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -1499,6 +1715,26 @@
                     console.log(error);
                 });
             },
+            moverArribaDetalle(index) {
+                if (index > 0 && this.arrayDetalle) {
+                    const temp = this.arrayDetalle[index];
+                    this.$set(this.arrayDetalle, index, this.arrayDetalle[index - 1]);
+                    this.$set(this.arrayDetalle, index - 1, temp);
+                    this.arrayDetalle.forEach((det, idx) => {
+                        det.orden = idx + 1;
+                    });
+                }
+            },
+            moverAbajoDetalle(index) {
+                if (this.arrayDetalle && index < this.arrayDetalle.length - 1) {
+                    const temp = this.arrayDetalle[index];
+                    this.$set(this.arrayDetalle, index, this.arrayDetalle[index + 1]);
+                    this.$set(this.arrayDetalle, index + 1, temp);
+                    this.arrayDetalle.forEach((det, idx) => {
+                        det.orden = idx + 1;
+                    });
+                }
+            },
             eliminarDetalle(index){
                  let me=this
                  if(me.arrayDetalle[index].id>0){
@@ -1535,6 +1771,13 @@
             },
             registrarOrden(){
                 let me = this;
+                this.arrayDetalle.forEach(det => {
+                    if (det) {
+                        det.titulo_detalle = det.titulo;
+                        det.valor_detalle = det.valor;
+                        det.descripcion_detalle = det.descripcion;
+                    }
+                });
                 const orden1 = new FormData()
                 orden1.set('estadoc',this.estadoc)
                 orden1.set('estadop',this.estadop)
@@ -1569,6 +1812,13 @@
            
             actualizarOrden(){
                 let me = this;
+                this.arrayDetalle.forEach(det => {
+                    if (det) {
+                        det.titulo_detalle = det.titulo;
+                        det.valor_detalle = det.valor;
+                        det.descripcion_detalle = det.descripcion;
+                    }
+                });
                 const orden1 = new FormData()
                 orden1.set('_method', 'PUT')
                 orden1.set('id', parseInt(this.idorden))
@@ -1604,16 +1854,32 @@
                 this.listarOrdenes(1,this.buscar,'like',this.criterio);
                 
             },
-            cambiarEstado(orden){
+            cambiarEstado(orden, nuevoEstadoComercial = null){
                 var me=this
+                let id = orden.idorden || orden.id;
+                let estadoc = nuevoEstadoComercial !== null ? nuevoEstadoComercial : (orden.estado || orden.estadoc);
+                let estadop = orden.produccion || orden.estadop;
+                
+                // Keep aliases in sync so subsequent changes work correctly
+                if (nuevoEstadoComercial !== null) {
+                    orden.estado = estadoc;
+                    orden.estadoc = estadoc;
+                }
+                orden.estadop = estadop;
+
                 axios.put(me.dominio+'/orden/cambiarEstado',{
-                    'id':orden.idorden,
-                    'estadoc':orden.estadoc,
-                    'estadop':orden.estadop
+                    'id': id,
+                    'estado': estadoc,
+                    'produccion': estadop,
+                    'estadoc': estadoc,
+                    'estadop': estadop,
+                    'user_id': me.user ? me.user.id : null
                 })
                 .then(function (response) {
-                   
-                   
+                    if (nuevoEstadoComercial !== null) {
+                        if (typeof orden.estadoc !== 'undefined') orden.estadoc = nuevoEstadoComercial;
+                        if (typeof orden.estado !== 'undefined') orden.estado = nuevoEstadoComercial;
+                    }
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -1622,7 +1888,7 @@
             cambiarFecha(orden){
                 var me=this
                  axios.put(me.dominio+'/orden/cambiarFecha',{
-                     'id':orden.idorden,
+                     'id':orden.idorden || orden.id,
                      'fecha_entrega':orden.fecha_entrega
                  })
                 .then(function (response) {
@@ -1646,8 +1912,13 @@
             },
             eliminarOrden(id){
                 let me=this
-                var url= me.dominio+'/orden/borrar?id='+ id;
-                axios.delete(url,{'_method': 'DELETE'}).then(function (response) {
+                var url= me.dominio+'/orden/borrar';
+                axios.delete(url,{
+                    data: {
+                        'id': id,
+                        'user_id': me.user ? me.user.id : null
+                    }
+                }).then(function (response) {
 
                     var respuesta= response.data;
                 }).catch(function (error) {
@@ -1762,7 +2033,7 @@
                 var url= me.dominio+'/orden/filtrarFecha?filtroFecha='+ me.filtroFecha;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayOrdenes = respuesta.ordenes.data;
+                    me.arrayOrdenes = me.normalizarOrdenes(respuesta.ordenes.data);
                     me.pagination= respuesta.pagination
                     me.modalIntervalo=0
 
@@ -1777,7 +2048,7 @@
                 var url= me.dominio+'/orden/filtrarOrdenes?page='+page+'&buscar='+buscar;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayOrdenes = respuesta.ordenes.data;
+                    me.arrayOrdenes = me.normalizarOrdenes(respuesta.ordenes.data);
                     me.pagination= respuesta.pagination
                 }).catch(function (error) {
                     console.log(error);
@@ -1806,6 +2077,18 @@
                 this.total=orden.total
                 this.abono=orden.abono
                 this.saldo=orden.saldo
+                if (orden.detalles && Array.isArray(orden.detalles)) {
+                    orden.detalles.forEach(det => {
+                        if (det) {
+                            if (typeof det.titulo_detalle === 'undefined' && typeof det.titulo !== 'undefined') det.titulo_detalle = det.titulo;
+                            if (typeof det.titulo === 'undefined' && typeof det.titulo_detalle !== 'undefined') det.titulo = det.titulo_detalle;
+                            if (typeof det.valor_detalle === 'undefined' && typeof det.valor !== 'undefined') det.valor_detalle = det.valor;
+                            if (typeof det.valor === 'undefined' && typeof det.valor_detalle !== 'undefined') det.valor = det.valor_detalle;
+                            if (typeof det.descripcion_detalle === 'undefined' && typeof det.descripcion !== 'undefined') det.descripcion_detalle = det.descripcion;
+                            if (typeof det.descripcion === 'undefined' && typeof det.descripcion_detalle !== 'undefined') det.descripcion = det.descripcion_detalle;
+                        }
+                    });
+                }
                 this.arrayDetalle=orden.detalles
                 this.arrayCostos=orden.costos
             },
@@ -1820,14 +2103,14 @@
             editarOrden(orden,action){
                 this.listado = 0
                 this.action=action
-                this.idorden=orden.idorden
-                this.getClientebyid(orden.idcliente)
-                this.selectArticulobyid(orden.idarticulo)
+                this.idorden=orden.idorden || orden.id
+                this.getClientebyid(orden.idcliente || orden.cliente_id)
+                this.selectArticulobyid(orden.idarticulo || orden.articulo_id)
                 this.estadoc=orden.estadoc
                 this.estadop=orden.estadop
                 this.diasfaltantes=this.calcularDias(0,orden)
-                this.id_cliente=orden.idcliente
-                this.id_articulo=orden.idarticulo
+                this.id_cliente=orden.idcliente || orden.cliente_id
+                this.id_articulo=orden.idarticulo || orden.articulo_id
                 this.fecha_entrega=orden.fecha_entrega
                 this.fecha=orden.fecha
                 this.fechaorden=orden.fechaorden
@@ -1844,6 +2127,18 @@
                 this.total=orden.total
                 this.abono=orden.abono
                 this.saldo=orden.saldo
+                if (orden.detalles && Array.isArray(orden.detalles)) {
+                    orden.detalles.forEach(det => {
+                        if (det) {
+                            if (typeof det.titulo_detalle === 'undefined' && typeof det.titulo !== 'undefined') det.titulo_detalle = det.titulo;
+                            if (typeof det.titulo === 'undefined' && typeof det.titulo_detalle !== 'undefined') det.titulo = det.titulo_detalle;
+                            if (typeof det.valor_detalle === 'undefined' && typeof det.valor !== 'undefined') det.valor_detalle = det.valor;
+                            if (typeof det.valor === 'undefined' && typeof det.valor_detalle !== 'undefined') det.valor = det.valor_detalle;
+                            if (typeof det.descripcion_detalle === 'undefined' && typeof det.descripcion !== 'undefined') det.descripcion_detalle = det.descripcion;
+                            if (typeof det.descripcion === 'undefined' && typeof det.descripcion_detalle !== 'undefined') det.descripcion = det.descripcion_detalle;
+                        }
+                    });
+                }
                 this.arrayDetalle=orden.detalles
                 this.arrayCostos=orden.costos
             },
@@ -1864,8 +2159,58 @@
                 this.modalo=0
                 this.ordenv=[]
             },
-           
-          
+            getColorsArray(valor){
+                if(Array.isArray(valor)) return valor;
+                if(typeof valor === 'string' && valor.trim().startsWith('[')) {
+                    try {
+                        let parsed = JSON.parse(valor);
+                        if(Array.isArray(parsed)) return parsed;
+                    } catch(e){}
+                }
+                return [];
+            },
+            esColor(titulo, valor){
+                if(this.getColorsArray(valor).length > 0) return true;
+                if(!titulo) return false;
+                let t = String(titulo).toLowerCase();
+                return t.includes('tinta') || t.includes('impresion') || t.includes('impresión') || t.includes('color');
+            },
+            agregarCostoDetalle(costo,index,detalle,seccion){
+                let me=this;
+                var tamanos=parseFloat(me.cantidad/me.cabida)+parseInt(me.carpeta_cliente);
+                var pliegos=tamanos/me.tamano;
+                
+                if(seccion.includes('modificar')){
+                    if(detalle.costo){
+                        detalle.costo.costois_id=costo.id;
+                        detalle.costo.costois=costo;
+                    }else{
+                        var cost={
+                            costos_id:0,
+                            titulo:costo.tipo_costo,
+                            costois:costo,
+                            costois_id:costo.id,
+                            valor:costo.valor,
+                            cantidad:pliegos,
+                            orden:1,
+                            descripcion:tamanos,
+                            completado:0,
+                            terminado:0,
+                        };
+                        this.$set(detalle, 'costo', cost);
+                        this.$set(detalle, 'costos_id', 0);
+                    }
+                    detalle.valor = costo.nombre;
+                }
+                
+                // Keep suffix in sync
+                detalle.valor_detalle = detalle.valor;
+                
+                me.modali=0;
+            },
+            handleScroll(evt) {
+                this.scroll = window.scrollY;
+            },
         },
         mounted() {
             this.listarOrdenes(1,this.buscar,'like',this.criterio);
@@ -1876,21 +2221,28 @@
     .insumos, .producto, .cliente{
         position: relative;
     } 
-    .modal{
-        height: 2015px !important
-    }
-   
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
     .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-color: rgba(0,0,0,0.5) !important;
+        overflow-y: hidden !important;
+        z-index: 10500 !important;
     }
-    .modal-bajo{
-        top:30%;
+    .mostrar .modal-dialog,
+    .modal-bajo {
+        margin: 10px auto !important;
+        top: 0 !important;
+        align-self: flex-start !important;
+        max-height: calc(100vh - 20px) !important;
+        height: calc(100vh - 20px) !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     .div-error{
         display: flex;

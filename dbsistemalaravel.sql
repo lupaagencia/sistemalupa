@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2021 a las 13:56:36
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.3.18
+-- Tiempo de generación: 19-05-2026 a las 11:24:21
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,34 +24,133 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `actividad`
+--
+
+CREATE TABLE `actividad` (
+  `id` int(10) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `hora` time NOT NULL,
+  `actividad` varchar(1000) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `activos`
+--
+
+CREATE TABLE `activos` (
+  `id` int(10) NOT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
+  `activo` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `ubicacion` varchar(50) DEFAULT NULL,
+  `responsable` int(10) DEFAULT NULL,
+  `clasificacion` varchar(50) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `grupo` varchar(50) DEFAULT NULL,
+  `datos_activo` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ajustes`
+--
+
+CREATE TABLE `ajustes` (
+  `id` int(10) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `detalle` varchar(50) NOT NULL,
+  `valor` varchar(200) NOT NULL,
+  `categoria` varchar(191) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `articulos`
 --
 
 CREATE TABLE `articulos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `id_item_padre` int(10) DEFAULT NULL,
+  `id_item_padre` int(11) DEFAULT NULL,
   `idcategoria` int(10) UNSIGNED NOT NULL,
-  `codigo` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo_producto` int(11) NOT NULL DEFAULT '1',
-  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imagen` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'noimagen',
-  `rangos` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `precio_venta` decimal(11,2) NOT NULL,
-  `iva` tinyint(10) NOT NULL DEFAULT '0',
-  `stock` int(11) NOT NULL,
-  `descripcion` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `condicion` tinyint(1) NOT NULL DEFAULT '1',
+  `codigo` varchar(50) DEFAULT NULL,
+  `tipo_producto_id` int(11) NOT NULL,
+  `tipo_cantidad` varchar(400) DEFAULT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `imagen` varchar(100) NOT NULL DEFAULT 'noimagen',
+  `rangos` varchar(400) DEFAULT NULL,
+  `precio_venta` decimal(11,2) DEFAULT NULL,
+  `iva` tinyint(4) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `tamano` varchar(20) DEFAULT NULL,
+  `medida_final` varchar(191) DEFAULT NULL,
+  `ancho_final` decimal(10,2) DEFAULT NULL,
+  `largo_final` decimal(10,2) DEFAULT NULL,
+  `descripcion` varchar(256) DEFAULT NULL,
+  `condicion` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `etiquetas` text DEFAULT NULL,
+  `ancho` decimal(12,2) DEFAULT NULL,
+  `largo` decimal(12,2) DEFAULT NULL,
+  `alto` decimal(12,2) DEFAULT NULL,
+  `volumen` decimal(12,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `articulos2`
+--
+
+CREATE TABLE `articulos2` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_item_padre` int(11) DEFAULT NULL,
+  `idcategoria` int(10) UNSIGNED NOT NULL,
+  `codigo` varchar(50) DEFAULT NULL,
+  `tipo_producto_id` int(11) NOT NULL,
+  `tipo_cantidad` varchar(400) DEFAULT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `imagen` varchar(100) NOT NULL DEFAULT 'noimagen',
+  `rangos` varchar(400) DEFAULT NULL,
+  `precio_venta` decimal(11,2) DEFAULT NULL,
+  `iva` tinyint(4) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `tamano` varchar(20) DEFAULT NULL,
+  `descripcion` varchar(256) DEFAULT NULL,
+  `condicion` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `etiquetas` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `articulo_troquels`
+--
+
+CREATE TABLE `articulo_troquels` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `articulo_id` int(10) UNSIGNED NOT NULL,
+  `cabida` int(11) NOT NULL,
+  `imagen` varchar(191) DEFAULT NULL,
+  `ancho_impresion` decimal(10,2) DEFAULT NULL,
+  `largo_impresion` decimal(10,2) DEFAULT NULL,
+  `tamano` varchar(191) DEFAULT NULL,
+  `mostrar` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `articulos`
---
-
-INSERT INTO `articulos` (`id`, `id_item_padre`, `idcategoria`, `codigo`, `tipo_producto`, `nombre`, `imagen`, `rangos`, `precio_venta`, `iva`, `stock`, `descripcion`, `condicion`, `created_at`, `updated_at`) VALUES
-(22, 0, 1, '1', 1, 'Caja L12', '1629367592_L12.jpg', '[{\"de\":\"1\",\"hasta\":\"1000\",\"descuento\":\"0\",\"rangoEdit\":0}]', '420.00', 0, 1000, 'null', 1, '2021-08-19 15:06:32', '2021-08-19 16:15:29'),
-(23, 0, 1, '1', 1, 'caja 456', 'noimagen', '[]', '456.00', 0, 1000, NULL, 1, '2021-08-26 05:44:56', '2021-08-26 05:44:56');
 
 -- --------------------------------------------------------
 
@@ -63,27 +161,47 @@ INSERT INTO `articulos` (`id`, `id_item_padre`, `idcategoria`, `codigo`, `tipo_p
 CREATE TABLE `atributos` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_articulo` int(10) UNSIGNED DEFAULT NULL,
-  `valor` decimal(30,0) NOT NULL,
+  `valor` decimal(30,0) DEFAULT NULL,
+  `tipo_atributo` varchar(10) DEFAULT NULL,
   `tipo_campo` int(11) DEFAULT NULL,
   `tipo_valor` int(11) DEFAULT NULL,
-  `nombre` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo_impresion` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nota` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alerta` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unidad_medida` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `operacion` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `minimo` int(10) DEFAULT NULL,
-  `maximo` int(10) DEFAULT NULL,
-  `orden` int(11) DEFAULT NULL
+  `nombre` varchar(20) DEFAULT NULL,
+  `tipo_impresion` varchar(20) DEFAULT NULL,
+  `nota` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `alerta` varchar(100) DEFAULT NULL,
+  `unidad_medida` varchar(50) DEFAULT NULL,
+  `operacion` varchar(10) DEFAULT NULL,
+  `minimo` int(11) DEFAULT NULL,
+  `maximo` int(11) DEFAULT NULL,
+  `orden` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `atributos`
+-- Estructura de tabla para la tabla `atributos_tienda`
 --
 
-INSERT INTO `atributos` (`id`, `id_articulo`, `valor`, `tipo_campo`, `tipo_valor`, `nombre`, `tipo_impresion`, `nota`, `descripcion`, `alerta`, `unidad_medida`, `operacion`, `minimo`, `maximo`, `orden`) VALUES
-(6, 22, '0', 1, 1, 'Papel', NULL, NULL, '', '', 'Cm', '+', 0, 0, 1);
+CREATE TABLE `atributos_tienda` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tipo` varchar(191) NOT NULL,
+  `nombre` varchar(191) NOT NULL,
+  `etiquetas` text DEFAULT NULL,
+  `imagen` varchar(191) DEFAULT NULL,
+  `valor_extra` decimal(11,2) NOT NULL DEFAULT 0.00,
+  `formula` text DEFAULT NULL,
+  `dependencia` varchar(255) DEFAULT NULL,
+  `condicion` text DEFAULT NULL,
+  `es_buscable` tinyint(1) NOT NULL DEFAULT 1,
+  `mostrar_en_producto` tinyint(1) NOT NULL DEFAULT 1,
+  `seleccion_multiple` tinyint(1) NOT NULL DEFAULT 0,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -93,36 +211,33 @@ INSERT INTO `atributos` (`id`, `id_articulo`, `valor`, `tipo_campo`, `tipo_valor
 
 CREATE TABLE `categorias` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imagen` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `condicion` tinyint(1) NOT NULL DEFAULT '1',
+  `padre_id` int(10) UNSIGNED DEFAULT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(256) DEFAULT NULL,
+  `imagen` varchar(191) DEFAULT NULL,
+  `condicion` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `banner` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `categorias`
+-- Estructura de tabla para la tabla `categorias2`
 --
 
-INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen`, `condicion`, `created_at`, `updated_at`) VALUES
-(1, 'Cajas', 'Caja en todo tipo de material', 'cajas.jpg', 1, NULL, '2020-11-04 04:02:23'),
-(2, 'Papel Antigrasa', NULL, 'antigrasa.jpg', 1, '2020-10-30 17:07:04', '2020-10-30 17:07:04'),
-(3, 'Individuales', NULL, 'individuales.jpg', 1, '2020-10-30 17:07:22', '2020-10-30 17:07:22'),
-(4, 'Bolsas Domicilio', NULL, 'bolsas.jpg', 1, '2020-10-30 17:08:57', '2020-10-30 17:08:57'),
-(5, 'Porta Perro', NULL, 'portaperro.jpg', 1, '2020-10-30 17:09:18', '2020-10-30 17:09:18'),
-(6, 'Hamburguesa', NULL, 'hamburguesa.jpg', 1, '2020-10-30 19:00:16', '2020-10-30 19:00:16'),
-(7, 'Pizza', NULL, 'pizza.jpg', 1, '2020-10-30 19:00:26', '2020-10-30 19:00:26'),
-(8, 'Papas', NULL, 'papas.jpg', 1, '2020-10-30 19:00:31', '2020-10-30 19:00:31'),
-(9, 'LS9 - LS12', NULL, 'ls.jpg', 1, '2020-10-30 19:00:46', '2020-10-30 19:00:46'),
-(10, 'DP001', NULL, 'dp.jpg', 1, '2020-10-30 19:00:53', '2020-10-30 19:00:53'),
-(11, 'Cubiertos', NULL, 'cubiertos.jpg', 1, '2020-10-30 19:01:03', '2020-10-30 19:01:03'),
-(12, 'Japonesa', NULL, 'japonesa.jpg', 1, '2020-10-30 19:01:17', '2020-10-30 19:01:17'),
-(13, 'DP-PERF02', NULL, 'dp2.jpg', 1, '2020-10-30 19:01:34', '2020-10-30 19:01:34'),
-(14, 'Boutique', NULL, 'boutique.jpg', 1, '2020-10-30 19:01:50', '2020-10-30 19:01:50'),
-(15, 'Cono', NULL, 'cono.jpg', 1, '2020-10-30 19:02:11', '2020-10-30 19:02:11'),
-(16, 'Etiquetas y Stickers', NULL, 'sticker.jpg', 1, '2020-10-30 19:02:24', '2020-10-30 19:02:24'),
-(17, 'Imanes', NULL, 'iman.jpg', 1, '2020-10-30 19:02:30', '2020-10-30 19:02:30');
+CREATE TABLE `categorias2` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `padre_id` int(10) UNSIGNED DEFAULT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(256) DEFAULT NULL,
+  `imagen` varchar(191) DEFAULT NULL,
+  `condicion` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `banner` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -132,29 +247,147 @@ INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen`, `condicion`, 
 
 CREATE TABLE `clientes` (
   `id` int(10) UNSIGNED NOT NULL,
-  `tipo_cliente` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ciudad` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `departamento` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pais` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contacto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono_contacto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_contacto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `tipo_cliente` varchar(20) DEFAULT NULL,
+  `razonsocial` varchar(100) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `direccionf` varchar(100) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `departamento` varchar(100) DEFAULT NULL,
+  `pais` varchar(50) DEFAULT NULL,
+  `contacto` varchar(50) DEFAULT NULL,
+  `sitio_web` varchar(50) DEFAULT NULL,
+  `redes_sociales` varchar(50) DEFAULT NULL,
+  `tipo_documento` varchar(20) DEFAULT NULL,
+  `num_documento` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `clientes`
+-- Estructura de tabla para la tabla `cliente_contacto`
 --
 
-INSERT INTO `clientes` (`id`, `tipo_cliente`, `ciudad`, `departamento`, `pais`, `contacto`, `telefono_contacto`, `email_contacto`) VALUES
-(24, 'Natural', NULL, NULL, NULL, 'dfs', NULL, NULL),
-(16, 'Natural', NULL, NULL, NULL, 'Juan David Gómez', NULL, NULL),
-(39, 'Jurídica', NULL, NULL, 'Colombia', 'Fernando Ossa', '3163423277', NULL),
-(40, 'Natural', 'Cali', 'Valle del Cauca', 'Colombia', 'Catherine Paez', '+573183953381', NULL),
-(41, 'Juridico', 'La victoria', 'Valle del Cauca', 'Colombia', 'Viry Rebello', '3122682256', NULL),
-(43, 'Natural', 'Cali', 'Valle del Cauca', 'Colombia', 'sdfa', NULL, NULL),
-(44, NULL, NULL, NULL, NULL, 'Didier Valderrama', NULL, NULL),
-(80, 'Jurídica', NULL, NULL, NULL, 'sdfa', NULL, NULL),
-(99, 'Jurídica', NULL, NULL, NULL, 'sfad', NULL, NULL);
+CREATE TABLE `cliente_contacto` (
+  `id` int(10) NOT NULL,
+  `cliente_id` int(10) DEFAULT NULL,
+  `contacto_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente_envio`
+--
+
+CREATE TABLE `cliente_envio` (
+  `id` int(10) NOT NULL,
+  `cliente_id` int(10) DEFAULT NULL,
+  `datosenvio_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente_factura`
+--
+
+CREATE TABLE `cliente_factura` (
+  `id` int(10) NOT NULL,
+  `cliente_id` int(10) NOT NULL,
+  `facturacion_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobantes`
+--
+
+CREATE TABLE `comprobantes` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `num_comprobante` int(11) DEFAULT NULL,
+  `fuente_id` int(10) DEFAULT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `datos_factura_id` int(10) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `forma_pago` varchar(50) DEFAULT NULL,
+  `subtotal` decimal(20,2) DEFAULT NULL,
+  `iva` decimal(10,2) DEFAULT NULL,
+  `descuento` decimal(20,2) DEFAULT NULL,
+  `total` decimal(20,2) DEFAULT NULL,
+  `impuestos` decimal(20,2) DEFAULT NULL,
+  `abono` decimal(20,2) DEFAULT NULL,
+  `saldo` decimal(20,2) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `transportadora` varchar(50) DEFAULT NULL,
+  `monto_aplicado_anticipo` decimal(20,2) NOT NULL DEFAULT 0.00,
+  `pedido_id` int(10) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobantes2`
+--
+
+CREATE TABLE `comprobantes2` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `num_comprobante` int(11) DEFAULT NULL,
+  `fuente_id` int(10) DEFAULT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `datos_factura_id` int(10) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `forma_pago` varchar(50) DEFAULT NULL,
+  `subtotal` decimal(20,2) DEFAULT NULL,
+  `iva` decimal(10,2) DEFAULT NULL,
+  `descuento` decimal(20,2) DEFAULT NULL,
+  `total` decimal(20,2) DEFAULT NULL,
+  `impuestos` decimal(20,2) DEFAULT NULL,
+  `abono` decimal(20,2) DEFAULT NULL,
+  `saldo` decimal(20,2) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `transportadora` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobantes3`
+--
+
+CREATE TABLE `comprobantes3` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `num_comprobante` int(11) DEFAULT NULL,
+  `fuente_id` int(10) DEFAULT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `datos_factura_id` int(10) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `forma_pago` varchar(50) DEFAULT NULL,
+  `subtotal` decimal(20,2) DEFAULT NULL,
+  `iva` decimal(10,2) DEFAULT NULL,
+  `descuento` decimal(20,2) DEFAULT NULL,
+  `total` decimal(20,2) DEFAULT NULL,
+  `impuestos` decimal(20,2) DEFAULT NULL,
+  `abono` decimal(20,2) DEFAULT NULL,
+  `saldo` decimal(20,2) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `transportadora` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -168,16 +401,38 @@ CREATE TABLE `comprobates` (
   `id_cliente` int(10) UNSIGNED NOT NULL,
   `id_user` int(10) UNSIGNED NOT NULL,
   `fecha` date NOT NULL,
-  `forma_pago` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `forma_pago` varchar(50) NOT NULL,
   `subtotal` decimal(20,2) NOT NULL,
   `descuento` decimal(20,2) NOT NULL,
   `total` decimal(20,2) NOT NULL,
   `impuestos` decimal(20,2) NOT NULL,
-  `fuente` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estado` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fuente` varchar(50) NOT NULL,
+  `estado` varchar(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contactos`
+--
+
+CREATE TABLE `contactos` (
+  `id` int(10) NOT NULL,
+  `favorito` int(1) NOT NULL,
+  `nombre` varchar(400) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `telefono_particular` varchar(50) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `tipo_contacto` varchar(100) DEFAULT NULL,
+  `cargo` varchar(50) DEFAULT NULL,
+  `nombre_asistente` varchar(100) DEFAULT NULL,
+  `telefono_asistente` varchar(50) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -189,158 +444,16 @@ CREATE TABLE `costois` (
   `id` int(10) UNSIGNED NOT NULL,
   `idproveedor` int(10) UNSIGNED NOT NULL,
   `idpersona` int(10) UNSIGNED NOT NULL,
-  `tipo_costo` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unidad_medida` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_costo` varchar(20) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `unidad_medida` varchar(50) NOT NULL,
   `valor` decimal(11,2) NOT NULL,
   `total` decimal(11,2) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `costois`
---
-
-INSERT INTO `costois` (`id`, `idproveedor`, `idpersona`, `tipo_costo`, `nombre`, `unidad_medida`, `valor`, `total`, `estado`, `created_at`, `updated_at`) VALUES
-(8, 8, 8, 'Papel', 'Cartón Kraft calibre 48', 'pliego', '681.00', '0.00', '1', '2020-11-05 14:26:19', '2020-11-06 17:46:59'),
-(10, 9, 9, 'Papel', 'Carton kraft calibre 48', 'Pliego', '641.00', '0.00', '1', '2020-11-06 17:34:41', '2020-11-06 17:34:41'),
-(11, 8, 8, 'Papel', 'Earth Pack 295 grs', 'Pliego', '929.00', '0.00', '1', '2020-11-06 17:38:47', '2020-11-06 17:38:47'),
-(12, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 25x12 cm', 'Millar', '62000.00', '0.00', '1', '2020-11-06 18:30:08', '2020-11-06 18:30:08'),
-(13, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 24x12 cm', 'Millar', '57000.00', '0.00', '1', '2020-11-06 18:32:24', '2020-11-06 18:32:24'),
-(14, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 22x14 cm', 'Millar', '57000.00', '0.00', '1', '2020-11-06 18:33:14', '2020-11-06 18:33:14'),
-(15, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 21.5x14 cm', 'Millar', '54000.00', '0.00', '1', '2020-11-06 18:33:55', '2020-11-06 18:33:55'),
-(16, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 21x14 cm', 'Millar', '52000.00', '0.00', '1', '2020-11-06 18:35:37', '2020-11-06 18:35:37'),
-(17, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20.5x13.5 cm', 'Millar', '49000.00', '0.00', '1', '2020-11-06 18:36:12', '2020-11-06 18:37:15'),
-(18, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x13 cm', 'Millar', '47000.00', '0.00', '1', '2020-11-06 18:36:54', '2020-11-06 18:36:54'),
-(19, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 25x10 cm', 'Millar', '42000.00', '0.00', '1', '2020-11-06 18:38:47', '2020-11-06 18:38:47'),
-(20, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 30x10 cm', 'Millar', '47000.00', '0.00', '1', '2020-11-06 18:39:17', '2020-11-06 18:39:17'),
-(21, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x12.5 cm', 'Millar', '45000.00', '0.00', '1', '2020-11-06 18:39:40', '2020-11-06 18:39:40'),
-(22, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x11.5 cm', 'Millar', '39000.00', '0.00', '1', '2020-11-06 18:40:05', '2020-11-06 18:40:05'),
-(23, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x11 cm', 'Millar', '37000.00', '0.00', '1', '2020-11-06 18:41:06', '2020-11-06 18:41:06'),
-(24, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 17x12 cm', 'Millar', '34000.00', '0.00', '1', '2020-11-06 18:41:44', '2020-11-06 18:41:44'),
-(25, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 17x11 cm', 'Millar', '32000.00', '0.00', '1', '2020-11-06 18:43:49', '2020-11-06 18:43:49'),
-(26, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x10 cm', 'Millar', '32000.00', '0.00', '1', '2020-11-06 18:45:44', '2020-11-06 18:45:44'),
-(27, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 20x9 cm', 'Millar', '27000.00', '0.00', '1', '2020-11-06 18:46:17', '2020-11-06 18:46:17'),
-(28, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 17x10cm', 'Millar', '27000.00', '0.00', '1', '2020-11-06 18:46:46', '2020-11-06 18:46:46'),
-(29, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 10x15 cm', 'Millar', '25000.00', '0.00', '1', '2020-11-06 18:48:31', '2020-11-06 18:48:31'),
-(30, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 14x9 cm', 'Millar', '22000.00', '0.00', '1', '2020-11-06 19:04:53', '2020-11-06 19:04:53'),
-(31, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 13x10 cm', 'Millar', '22000.00', '0.00', '1', '2020-11-06 19:05:31', '2020-11-06 19:05:31'),
-(32, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 13x9 cm', 'Millar', '22000.00', '0.00', '1', '2020-11-06 19:06:07', '2020-11-06 19:06:07'),
-(33, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 25x17 cm', 'Millar', '70000.00', '0.00', '1', '2020-11-06 19:06:40', '2020-11-06 19:06:40'),
-(34, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 28x21 cm', 'Millar', '102000.00', '0.00', '1', '2020-11-06 19:07:15', '2020-11-06 19:07:15'),
-(35, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 33x21 cm', 'Millar', '117000.00', '0.00', '1', '2020-11-06 19:08:11', '2020-11-06 19:08:11'),
-(36, 11, 11, 'montaje', 'Volante 4x0 propalcote 115 grs 34x24 cm', 'Millar', '132000.00', '0.00', '1', '2020-11-06 19:08:41', '2020-11-06 19:08:41'),
-(37, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 23x33 cm', 'Millar', '212000.00', '0.00', '1', '2020-11-06 19:10:09', '2020-11-06 19:10:09'),
-(38, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 22x28 cm', 'Millar', '182000.00', '0.00', '1', '2020-11-06 19:11:12', '2020-11-06 19:11:12'),
-(39, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 21x14 cm', 'Millar', '102000.00', '0.00', '1', '2020-11-06 19:11:51', '2020-11-06 19:11:51'),
-(40, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 20x13 cm', 'Millar', '82000.00', '0.00', '1', '2020-11-06 19:12:23', '2020-11-06 19:12:23'),
-(41, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 20x11 cm', 'Millar', '72000.00', '0.00', '1', '2020-11-06 19:12:54', '2020-11-06 19:12:54'),
-(42, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 17x12 cm', 'Millar', '67000.00', '0.00', '1', '2020-11-06 19:13:21', '2020-11-06 19:13:21'),
-(43, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 20x9 cm', 'Millar', '62000.00', '0.00', '1', '2020-11-06 19:13:54', '2020-11-06 19:13:54'),
-(44, 11, 11, 'montaje', 'Volante 4x4 propalcote 150 grs 10x15 cm', 'Millar', '52000.00', '0.00', '1', '2020-11-06 19:14:21', '2020-11-06 19:14:21'),
-(45, 11, 11, 'montaje', 'Tarjeta UV total 4x0 propalcote 280 grs', 'Millar', '16000.00', '0.00', '1', '2020-11-06 19:16:13', '2020-11-06 19:17:56'),
-(46, 11, 11, 'montaje', 'Tarjeta UV total 4x1 propalcote 300 grs retiro 1 tinta (negro)', 'Millar', '17000.00', '0.00', '1', '2020-11-06 19:17:41', '2020-11-06 19:17:41'),
-(47, 11, 11, 'montaje', 'Tarjeta UV total 4x4 propalcote 300 grs', 'Millar', '27000.00', '0.00', '1', '2020-11-06 19:19:23', '2020-11-06 19:19:23'),
-(48, 11, 11, 'montaje', 'Tarjetas Imantadas 9x5.5 (sin troquelado)', 'Millar', '145000.00', '0.00', '1', '2020-11-06 19:20:47', '2020-11-06 19:20:47'),
-(49, 11, 11, 'montaje', 'Tarjetas Mate UV Parcial prop 300 grs 4x0', 'Millar', '45000.00', '0.00', '1', '2020-11-06 19:21:58', '2020-11-06 19:21:58'),
-(50, 11, 11, 'montaje', 'Tarjetas Mate UV Parcial prop 300 grs 4x1', 'Millar', '45000.00', '0.00', '1', '2020-11-06 19:22:18', '2020-11-06 19:22:18'),
-(51, 11, 11, 'montaje', 'Tarjetas Mate UV Parcial prop 300 grs 4x4', 'Millar', '55000.00', '0.00', '1', '2020-11-06 19:22:40', '2020-11-06 19:22:40'),
-(52, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 9x5.5', 'Millar', '30000.00', '0.00', '1', '2020-11-06 19:26:01', '2020-11-06 19:26:01'),
-(53, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 10x3', 'Millar', '30000.00', '0.00', '1', '2020-11-06 19:26:33', '2020-11-06 19:26:33'),
-(54, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 11x2', 'Millar', '30000.00', '0.00', '1', '2020-11-06 19:27:09', '2020-11-06 19:27:09'),
-(55, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 10x6', 'Millar', '34000.00', '0.00', '1', '2020-11-06 19:27:50', '2020-11-06 19:27:50'),
-(56, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 9x7', 'Millar', '34000.00', '0.00', '1', '2020-11-06 19:28:14', '2020-11-06 19:28:14'),
-(57, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 8x7', 'Millar', '34000.00', '0.00', '1', '2020-11-06 19:28:35', '2020-11-06 19:28:35'),
-(58, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 11x5', 'Millar', '340000.00', '0.00', '1', '2020-11-06 19:29:01', '2020-11-06 19:29:01'),
-(59, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 9x11', 'Millar', '49000.00', '0.00', '1', '2020-11-06 19:29:25', '2020-11-06 19:29:25'),
-(60, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 9x10', 'Millar', '49000.00', '0.00', '1', '2020-11-06 19:29:50', '2020-11-06 19:29:50'),
-(61, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 12x8', 'Millar', '49000.00', '0.00', '1', '2020-11-06 19:30:19', '2020-11-06 19:30:19'),
-(62, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 10x8', 'Millar', '42000.00', '0.00', '1', '2020-11-06 19:30:48', '2020-11-06 19:30:48'),
-(63, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 11x7', 'Millar', '42000.00', '0.00', '1', '2020-11-06 19:31:16', '2020-11-06 19:31:16'),
-(64, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 12x5', 'Millare', '42000.00', '0.00', '1', '2020-11-06 19:31:38', '2020-11-06 19:31:38'),
-(65, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 12x12', 'Millar', '54000.00', '0.00', '1', '2020-11-06 19:32:05', '2020-11-06 19:32:05'),
-(66, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 13x11', 'Millar', '54000.00', '0.00', '1', '2020-11-06 19:32:46', '2020-11-06 19:32:46'),
-(67, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 14x9', 'Millar', '54000.00', '0.00', '1', '2020-11-06 19:33:19', '2020-11-06 19:33:19'),
-(68, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 14x10', 'Millar', '59000.00', '0.00', '1', '2020-11-06 19:33:48', '2020-11-06 19:33:48'),
-(69, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 15x9', 'Millar', '59000.00', '0.00', '1', '2020-11-06 19:34:13', '2020-11-06 19:34:13'),
-(70, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 18x11', 'Millar', '74000.00', '0.00', '1', '2020-11-06 19:35:07', '2020-11-06 19:35:07'),
-(71, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 12x17', 'Millar', '74000.00', '0.00', '1', '2020-11-06 19:35:39', '2020-11-06 19:35:39'),
-(72, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 13x15', 'Millar', '74000.00', '0.00', '1', '2020-11-06 19:36:05', '2020-11-06 19:36:05'),
-(73, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 20x10', 'Millar', '69000.00', '0.00', '1', '2020-11-06 19:37:13', '2020-11-06 19:37:13'),
-(74, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 21x9', 'Millar', '69000.00', '0.00', '1', '2020-11-06 19:37:47', '2020-11-06 19:37:47'),
-(75, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 21x8', 'Millar', '69000.00', '0.00', '1', '2020-11-06 19:38:54', '2020-11-06 19:38:54'),
-(76, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 15x6', 'Millar', '44000.00', '0.00', '1', '2020-11-06 19:40:48', '2020-11-06 19:40:48'),
-(77, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 14x7', 'Millar', '44000.00', '0.00', '1', '2020-11-06 19:41:21', '2020-11-06 19:41:21'),
-(78, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 16x5', 'Millar', '44000.00', '0.00', '1', '2020-11-06 19:41:51', '2020-11-06 19:41:51'),
-(79, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 20x13', 'Millar', '99000.00', '0.00', '1', '2020-11-06 19:43:06', '2020-11-06 19:43:06'),
-(80, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 21x14', 'Millar', '114000.00', '0.00', '1', '2020-11-06 19:43:32', '2020-11-06 19:43:32'),
-(81, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 20x6', 'Millar', '54000.00', '0.00', '1', '2020-11-06 19:43:57', '2020-11-06 19:43:57'),
-(82, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 17x5', 'Millar', '44000.00', '0.00', '1', '2020-11-06 19:44:28', '2020-11-06 19:44:28'),
-(83, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 11x10', 'Millar', '52000.00', '0.00', '1', '2020-11-06 19:44:57', '2020-11-06 19:44:57'),
-(84, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 14x12', 'Millar', '64000.00', '0.00', '1', '2020-11-06 19:45:20', '2020-11-06 19:45:20'),
-(85, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 10x7', 'Millar', '39000.00', '0.00', '1', '2020-11-06 19:45:42', '2020-11-06 19:45:42'),
-(86, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 11x6', 'Millar', '39000.00', '0.00', '1', '2020-11-06 19:46:08', '2020-11-06 19:46:08'),
-(87, 11, 11, 'montaje', 'Adhesivo Barniz Brillante 8x8', 'Millar', '39000.00', '0.00', '1', '2020-11-06 19:46:29', '2020-11-06 19:46:29'),
-(88, 25, 25, 'Plancha', 'Plancha Octavo 25,5x38', 'unidad', '6000.00', '0.00', '1', '2020-11-14 05:38:34', '2020-11-14 05:38:34'),
-(89, 25, 25, 'Plancha', 'Plancha de doble carta 28x46cm', 'unidad', '7000.00', '0.00', '1', '2020-11-14 05:39:13', '2020-11-14 05:39:13'),
-(90, 25, 25, 'Plancha', 'Plancha ABD 360 47,5 c 27,5', 'unidad', '7000.00', '0.00', '1', '2020-11-14 05:39:50', '2020-11-14 05:39:50'),
-(91, 25, 25, 'Plancha', 'Plancha de cuarto 52x40', 'unidad', '8500.00', '0.00', '1', '2020-11-14 05:40:38', '2020-11-14 05:40:38'),
-(92, 25, 25, 'Plancha', 'Plancha de Cuarto Mayor 55x65', 'unidad', '13000.00', '0.00', '1', '2020-11-14 05:41:31', '2020-11-14 05:41:31'),
-(93, 25, 25, 'Plancha', 'Plancha solna 125 64,5x50,8', 'unidad', '13000.00', '0.00', '1', '2020-11-14 05:42:12', '2020-11-14 05:42:12'),
-(94, 25, 25, 'Plancha', 'Plancha de speedmaster 52,5x45,9', 'unidad', '10000.00', '0.00', '1', '2020-11-14 05:42:35', '2020-11-14 05:44:52'),
-(95, 25, 25, 'Plancha', 'Plancha de Medio pliego', 'unidad', '20000.00', '0.00', '1', '2020-11-14 05:43:13', '2020-11-14 05:43:13'),
-(96, 25, 25, 'Plancha', 'Plancha Harris 82,5x69,2', 'unidad', '35000.00', '0.00', '1', '2020-11-14 05:43:49', '2020-11-14 05:43:49'),
-(97, 25, 25, 'Plancha', 'Plancha de pliego', 'unidad', '45000.00', '0.00', '1', '2020-11-14 05:44:08', '2020-11-14 05:44:08'),
-(98, 8, 8, 'Papel', 'Bristol blanco', 'pliego', '399.00', '0.00', '1', '2020-11-18 01:22:17', '2020-11-18 01:22:17'),
-(99, 9, 9, 'Papel', 'Bristol blanco', 'pliego', '400.00', '0.00', '1', '2020-11-18 01:22:41', '2020-11-18 01:22:41'),
-(100, 8, 8, 'Papel', 'Bristol colores', 'pliego', '412.00', '0.00', '1', '2020-11-18 01:23:02', '2020-11-18 01:23:02'),
-(101, 9, 9, 'Papel', 'Bristol colores', 'pliego', '422.00', '0.00', '1', '2020-11-18 01:23:17', '2020-11-18 01:23:17'),
-(102, 26, 26, 'Papel', 'Periódico blanco', 'pliego', '105.00', '0.00', '1', '2020-11-18 05:53:49', '2020-11-18 05:53:49'),
-(103, 26, 26, 'Papel', 'Bond 75 grs', 'pliego', '300.00', '0.00', '1', '2020-11-18 05:54:11', '2021-06-17 20:10:19'),
-(104, 8, 8, 'Papel', 'Earth pack 70 grs', 'pliego', '218.00', '0.00', '1', '2020-11-18 16:48:57', '2020-11-18 16:48:57'),
-(105, 26, 26, 'Papel', 'Earth pack 70 grs', 'pliego', '245.00', '0.00', '1', '2020-11-18 16:49:23', '2020-11-18 16:49:23'),
-(106, 9, 9, 'Papel', 'Quimico', 'pliego', '321.00', '0.00', '1', '2020-11-18 19:07:48', '2020-11-18 19:07:48'),
-(107, 9, 9, 'Papel', 'Quimico copia intermedia', 'pliego', '332.00', '0.00', '1', '2020-11-18 19:08:24', '2020-11-18 19:08:24'),
-(108, 9, 9, 'Papel', 'Quimico copia final', 'pliego', '307.00', '0.00', '1', '2020-11-18 19:08:46', '2020-11-18 19:08:46'),
-(109, 8, 8, 'Papel', 'Quimico', 'pliego', '337.00', '0.00', '1', '2020-11-18 19:09:19', '2020-11-18 19:09:19'),
-(110, 8, 8, 'Papel', 'Quimico copia intermedia', 'pliego', '367.00', '0.00', '1', '2020-11-18 19:09:49', '2020-11-18 19:09:49'),
-(111, 8, 8, 'Papel', 'Quimico copia final', 'pliego', '311.00', '0.00', '1', '2020-11-18 19:10:18', '2020-11-18 19:10:18'),
-(112, 26, 26, 'Papel', 'Quimico', 'pliego', '335.00', '0.00', '1', '2020-11-18 19:10:48', '2020-11-18 19:10:48'),
-(113, 26, 26, 'Papel', 'Quimico copia intermedia', 'pliego', '350.00', '0.00', '1', '2020-11-18 19:11:05', '2020-11-18 19:11:05'),
-(114, 26, 26, 'Papel', 'Quimico copia final', 'pliego', '325.00', '0.00', '1', '2020-11-18 19:11:32', '2020-11-18 19:11:32'),
-(115, 27, 27, 'Papel', 'Lamina imantada 0.3 mm', 'metro', '5400.00', '0.00', '1', '2020-11-18 19:58:18', '2020-11-18 19:58:18'),
-(116, 8, 8, 'Papel', 'Adhesivo de seguridad', 'pliego', '1776.00', '0.00', '1', '2020-12-09 21:25:52', '2020-12-09 21:25:52'),
-(117, 8, 8, 'Papel', 'Adhesivo p4 multiusos (refrigeración)', 'pliego', '1834.00', '0.00', '1', '2020-12-09 21:40:46', '2020-12-09 21:40:46'),
-(118, 9, 9, 'Papel', 'Adhesivo de seguridad', 'pliego', '1805.00', '0.00', '1', '2020-12-10 18:58:17', '2020-12-10 18:58:17'),
-(119, 9, 9, 'Papel', 'Adhesivo de seguridad refrigeración', 'pliego', '2175.00', '0.00', '1', '2020-12-10 18:58:57', '2020-12-10 18:58:57'),
-(120, 9, 9, 'Papel', 'Propalcote 150 grs', 'pliego', '438.00', '0.00', '1', '2020-12-11 00:35:47', '2020-12-15 16:04:22'),
-(121, 9, 9, 'Papel', 'Bond 75 grs', 'pliego', '382.00', '0.00', '1', '2020-12-17 20:00:42', '2021-06-17 20:10:03'),
-(122, 33, 33, 'Papel', 'Kraft o chip 300 grs', 'pliego', '497.00', '0.00', '1', '2020-12-17 20:01:32', '2020-12-17 20:01:32'),
-(123, 9, 9, 'Papel', 'Carton blanco reverso blanco claibre 49 (290 grs)', 'pliego', '1240.00', '0.00', '1', '2021-01-18 19:50:35', '2021-01-18 19:50:35'),
-(124, 9, 9, 'Papel', 'Maule calibre 16', 'pliego', '992.00', '0.00', '1', '2021-01-19 00:21:10', '2021-01-19 00:21:10'),
-(125, 35, 35, 'Papel', 'Kraft semiextensible 80 grs', 'metro cuadrado', '542.00', '0.00', '1', '2021-01-28 12:33:58', '2021-01-28 12:33:58'),
-(126, 8, 8, 'Papel', 'Propalcote 280 grs', 'pliego', '871.00', '0.00', '1', '2021-02-11 00:46:47', '2021-02-11 00:46:47'),
-(127, 10, 10, 'impresionf', 'Vinilo impresión y corte (mínimo 50x90)', 'cm cuadrado', '5.50', '0.00', '1', '2021-03-04 15:22:37', '2021-03-04 15:23:42'),
-(128, 9, 9, 'Papel', 'Propalcote 200 grs 60x90', 'pliego', '450.00', '0.00', '1', '2021-03-11 23:27:08', '2021-03-11 23:27:08'),
-(129, 9, 9, 'Papel', 'Propalcote 200 grs 70x100', 'pliego', '584.00', '0.00', '1', '2021-03-11 23:34:48', '2021-03-11 23:34:48'),
-(130, 8, 8, 'Papel', 'Propalcote 300 grs una cara', 'pliego', '987.00', '0.00', '1', '2021-03-11 23:36:17', '2021-03-11 23:36:17'),
-(131, 8, 8, 'Papel', 'Propalcote 320 grs 60x90', 'pliego', '829.00', '0.00', '1', '2021-03-11 23:36:54', '2021-04-26 21:42:10'),
-(132, 8, 8, 'Papel', 'Propalcote 320 grs 70x100', 'pliego', '1034.00', '0.00', '1', '2021-03-11 23:37:19', '2021-03-11 23:37:19'),
-(133, 8, 8, 'Papel', 'Propalcote 200 grs 60x90', 'pliego', '614.00', '0.00', '1', '2021-03-11 23:37:56', '2021-03-11 23:37:56'),
-(134, 8, 8, 'Papel', 'Propalcote 200 grs 70x10', 'pliego', '476.00', '0.00', '1', '2021-03-11 23:38:19', '2021-03-11 23:38:19'),
-(135, 9, 9, 'Papel', 'Propalcote 300 grs una cara', 'pliego', '910.00', '0.00', '1', '2021-03-12 00:28:34', '2021-03-12 00:28:34'),
-(136, 9, 9, 'Papel', 'Propalcote 320 grs 70x100', 'pliego', '953.00', '0.00', '1', '2021-03-12 00:28:56', '2021-03-12 00:28:56'),
-(137, 8, 8, 'Papel', 'Earth pack 90 grs', 'pliego', '290.00', '0.00', '1', '2021-03-24 20:58:27', '2021-03-24 20:58:27'),
-(138, 9, 9, 'Papel', 'Earth pack 90 grs', 'pliego', '256.00', '0.00', '1', '2021-03-24 20:59:07', '2021-03-24 20:59:07'),
-(139, 38, 38, 'Papel', 'Carton ultra 40', 'pliego', '1275.00', '0.00', '1', '2021-04-11 20:58:48', '2021-04-11 20:59:19'),
-(140, 38, 38, 'Papel', 'Carton ultra 48', 'pliego', '1490.00', '0.00', '1', '2021-04-11 20:59:08', '2021-04-11 20:59:08'),
-(141, 38, 38, 'Papel', 'Carton Came 40', 'pliego', '790.00', '0.00', '1', '2021-04-11 20:59:43', '2021-04-11 20:59:43'),
-(142, 38, 38, 'Papel', 'Carton Came 48', 'pliego', '990.00', '0.00', '1', '2021-04-11 21:00:02', '2021-04-11 21:00:02'),
-(143, 38, 38, 'Papel', 'Poly board 15', 'pliego', '1400.00', '0.00', '1', '2021-04-11 21:01:01', '2021-04-11 21:01:01'),
-(144, 38, 38, 'Papel', 'Poly Board 18', 'pliego', '1440.00', '0.00', '1', '2021-04-11 21:01:27', '2021-04-11 21:01:27'),
-(145, 38, 38, 'Papel', 'Poly Board 20', 'pliego', '1540.00', '0.00', '1', '2021-04-11 21:01:58', '2021-04-11 21:01:58');
 
 -- --------------------------------------------------------
 
@@ -350,27 +463,126 @@ INSERT INTO `costois` (`id`, `idproveedor`, `idpersona`, `tipo_costo`, `nombre`,
 
 CREATE TABLE `costos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `idorden` int(10) UNSIGNED NOT NULL,
-  `idcostois` int(10) UNSIGNED NOT NULL,
-  `titulo` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cantidad` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ordentrabajo_id` int(10) UNSIGNED NOT NULL,
+  `costois_id` int(10) UNSIGNED NOT NULL,
+  `titulo` varchar(20) DEFAULT NULL,
+  `descripcion` decimal(20,2) DEFAULT NULL,
+  `cantidad` decimal(20,2) DEFAULT NULL,
   `valor` decimal(10,2) DEFAULT NULL,
   `total` decimal(20,2) DEFAULT NULL,
-  `orden` int(10) DEFAULT NULL,
-  `completado` tinyint(10) DEFAULT NULL,
+  `orden` int(11) DEFAULT NULL,
+  `completado` int(11) NOT NULL DEFAULT 0,
+  `pago` int(11) NOT NULL DEFAULT 0,
   `fecha_termina` date DEFAULT NULL,
-  `terminado` tinyint(10) DEFAULT NULL,
+  `terminado` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `costos`
+-- Estructura de tabla para la tabla `costosproduccion`
 --
 
-INSERT INTO `costos` (`id`, `idorden`, `idcostois`, `titulo`, `descripcion`, `cantidad`, `valor`, `total`, `orden`, `completado`, `fecha_termina`, `terminado`, `created_at`, `updated_at`) VALUES
-(1, 1, 141, 'Papel', '', '1', '790.00', '790.00', 0, 0, '2021-08-26', 0, '2021-08-26 04:59:33', '2021-08-26 05:55:35');
+CREATE TABLE `costosproduccion` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `idproveedor` int(10) UNSIGNED NOT NULL,
+  `idpersona` int(10) UNSIGNED NOT NULL,
+  `tipo_costo` varchar(20) NOT NULL,
+  `nombre` varchar(7) DEFAULT NULL,
+  `unidad_medida` varchar(10) NOT NULL,
+  `valor` decimal(4,2) NOT NULL,
+  `total` decimal(11,2) NOT NULL,
+  `estado` varchar(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `costo_articulos`
+--
+
+CREATE TABLE `costo_articulos` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `idarticulo` int(10) UNSIGNED NOT NULL,
+  `idopcion` int(10) UNSIGNED DEFAULT 0,
+  `idcostois` int(10) UNSIGNED NOT NULL,
+  `titulo` varchar(20) NOT NULL,
+  `descripcion` varchar(400) NOT NULL,
+  `orden_produccion` int(11) NOT NULL,
+  `fraccion` decimal(10,2) NOT NULL,
+  `rentabilidad` decimal(10,2) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
+  `valorfull` decimal(20,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cruce_cartera`
+--
+
+CREATE TABLE `cruce_cartera` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `recibo_pago_id` bigint(20) UNSIGNED NOT NULL,
+  `comprobante_id` bigint(20) UNSIGNED NOT NULL,
+  `monto` decimal(20,2) NOT NULL,
+  `fecha_cruce` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `datosenvio`
+--
+
+CREATE TABLE `datosenvio` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `favorito` int(1) NOT NULL,
+  `idcliente` int(11) DEFAULT NULL,
+  `contacto` varchar(50) DEFAULT NULL,
+  `empresa` varchar(50) DEFAULT NULL,
+  `tipo_documento` varchar(50) DEFAULT NULL,
+  `documento` varchar(50) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `direccion` varchar(150) DEFAULT NULL,
+  `ciudad` varchar(50) DEFAULT NULL,
+  `pais` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `datos_factura`
+--
+
+CREATE TABLE `datos_factura` (
+  `id` int(10) NOT NULL,
+  `favorito` int(1) NOT NULL,
+  `razonsocial` varchar(400) NOT NULL,
+  `tipo_persona` varchar(50) DEFAULT NULL,
+  `tipo_documento` varchar(20) NOT NULL,
+  `numero` varchar(20) DEFAULT NULL,
+  `digito` varchar(10) DEFAULT NULL,
+  `direccion` varchar(400) NOT NULL,
+  `telefono` varchar(50) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `ciudad` varchar(50) NOT NULL,
+  `departamento` varchar(50) NOT NULL,
+  `pais` varchar(50) NOT NULL,
+  `actividad` varchar(10) DEFAULT NULL,
+  `responsable` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -380,20 +592,14 @@ INSERT INTO `costos` (`id`, `idorden`, `idcostois`, `titulo`, `descripcion`, `ca
 
 CREATE TABLE `detalletrabajos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `idorden` int(10) UNSIGNED NOT NULL,
-  `titulo` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `valor` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ordentrabajo_id` int(10) UNSIGNED NOT NULL,
+  `costos_id` int(11) DEFAULT NULL,
+  `titulo` varchar(20) NOT NULL,
+  `descripcion` varchar(400) DEFAULT NULL,
+  `valor` varchar(1910) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detalletrabajos`
---
-
-INSERT INTO `detalletrabajos` (`id`, `idorden`, `titulo`, `descripcion`, `valor`, `created_at`, `updated_at`) VALUES
-(1, 1, 'sdaf', '', 'sdfa', '2021-08-26 04:59:25', '2021-08-26 04:59:25');
 
 -- --------------------------------------------------------
 
@@ -417,18 +623,144 @@ CREATE TABLE `detalle_ingresos` (
 
 CREATE TABLE `egresos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `cuenta_contable` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_documento` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_egreso` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `forma_pago` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuenta_contable` varchar(100) NOT NULL,
+  `tipo_documento` varchar(20) NOT NULL,
+  `tipo_egreso` varchar(20) NOT NULL,
+  `forma_pago` varchar(20) NOT NULL,
   `subtotal` decimal(20,2) NOT NULL,
   `total` decimal(4,2) NOT NULL,
   `iva` decimal(4,2) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(20) NOT NULL,
   `fecha` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleados`
+--
+
+CREATE TABLE `empleados` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `tipo_doc` varchar(50) DEFAULT NULL,
+  `num_doc` varchar(20) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `lugar_nacimiento` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `estado_civil` varchar(50) DEFAULT NULL,
+  `num_hijos` varchar(11) DEFAULT NULL,
+  `cargo` varchar(100) DEFAULT NULL,
+  `area` varchar(100) DEFAULT NULL,
+  `tipo_contrato` varchar(50) DEFAULT NULL,
+  `fecha_ingreso` date DEFAULT NULL,
+  `fecha_finalizacion` date DEFAULT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  `tipo_jornada` varchar(50) DEFAULT NULL,
+  `turno` varchar(50) DEFAULT NULL,
+  `horas_semanales` varchar(11) DEFAULT NULL,
+  `num_cuenta_banco` varchar(50) DEFAULT NULL,
+  `banco` varchar(100) DEFAULT NULL,
+  `tipo_cuenta` varchar(50) DEFAULT NULL,
+  `num_afiliacion_social` varchar(50) DEFAULT NULL,
+  `pension` varchar(100) DEFAULT NULL,
+  `eps` varchar(100) DEFAULT NULL,
+  `arl` varchar(100) DEFAULT NULL,
+  `nivel_estudio` varchar(100) DEFAULT NULL,
+  `titulos` text DEFAULT NULL,
+  `certificaciones` text DEFAULT NULL,
+  `idiomas` text DEFAULT NULL,
+  `habilidades` text DEFAULT NULL,
+  `experiencia` text DEFAULT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `talla_dotacion` varchar(10) DEFAULT NULL,
+  `img_doc` varchar(255) DEFAULT NULL,
+  `pdf_hoja` varchar(255) DEFAULT NULL,
+  `pdf_contrato` varchar(255) DEFAULT NULL,
+  `contacto_esposa` text DEFAULT NULL,
+  `contacto_padres` text DEFAULT NULL,
+  `contacto_emergencia` text DEFAULT NULL,
+  `info_medica` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `entregas`
+--
+
+CREATE TABLE `entregas` (
+  `id` int(10) NOT NULL,
+  `ordentrabajo_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `pedido_id` int(10) NOT NULL,
+  `fecha` date NOT NULL,
+  `numero_remision` int(10) NOT NULL,
+  `observaciones` varchar(500) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT 0,
+  `saldo_anterior` int(11) NOT NULL DEFAULT 0,
+  `saldo_restante` int(11) NOT NULL DEFAULT 0,
+  `tipo_documento` varchar(191) DEFAULT NULL,
+  `comprobante_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `cuentacobro_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `entrega_items`
+--
+
+CREATE TABLE `entrega_items` (
+  `id` int(10) NOT NULL,
+  `entrega_id` int(10) NOT NULL,
+  `linea_comprobante_id` int(10) NOT NULL,
+  `cantidad` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `flujo_produccion`
+--
+
+CREATE TABLE `flujo_produccion` (
+  `id` int(11) NOT NULL,
+  `orden_trabajo_id` int(11) NOT NULL,
+  `proceso` varchar(50) NOT NULL,
+  `fecha_inicia` date DEFAULT NULL,
+  `fecha_termina` date DEFAULT NULL,
+  `hora_inicia` time DEFAULT NULL,
+  `hora_termina` time DEFAULT NULL,
+  `cantidad` int(50) DEFAULT NULL,
+  `siguiente_proceso` varchar(50) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `observaciones` varchar(400) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagenes`
+--
+
+CREATE TABLE `imagenes` (
+  `id` int(10) NOT NULL,
+  `id_tabla` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `orden` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -438,18 +770,41 @@ CREATE TABLE `egresos` (
 
 CREATE TABLE `ingresos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `idproveedor` int(10) UNSIGNED NOT NULL,
-  `idusuario` int(10) UNSIGNED NOT NULL,
-  `tipo_comprobante` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `serie_comprobante` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `num_comprobante` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `usuario_id` int(10) UNSIGNED NOT NULL,
+  `tipo_comprobante` varchar(20) NOT NULL,
+  `serie_comprobante` varchar(7) DEFAULT NULL,
+  `num_comprobante` varchar(10) NOT NULL,
   `fecha_hora` datetime NOT NULL,
   `impuesto` decimal(4,2) NOT NULL,
   `total` decimal(11,2) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventarios_materia_primas`
+--
+
+CREATE TABLE `inventarios_materia_primas` (
+  `id` int(10) NOT NULL,
+  `asignado_id` int(10) DEFAULT NULL,
+  `referencia` varchar(50) DEFAULT NULL,
+  `tipo` varchar(50) DEFAULT NULL,
+  `ubicacion` varchar(100) DEFAULT NULL,
+  `costois_id` varchar(50) DEFAULT NULL,
+  `detalles` varchar(50) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `uso` varchar(50) DEFAULT NULL,
+  `cantidad` bigint(10) DEFAULT NULL,
+  `unidad` varchar(50) DEFAULT NULL,
+  `cambio` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -459,18 +814,35 @@ CREATE TABLE `ingresos` (
 
 CREATE TABLE `linea_comprobantes` (
   `id` int(10) UNSIGNED NOT NULL,
-  `id_comprobante` int(10) UNSIGNED NOT NULL,
-  `id_articulo` int(10) UNSIGNED NOT NULL,
-  `fecha` date NOT NULL,
-  `fecha_entrega` date NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `valor_unitario` decimal(20,0) NOT NULL,
-  `descuento` decimal(20,0) NOT NULL,
-  `impuesto` decimal(20,0) NOT NULL,
-  `valor_total` decimal(20,0) NOT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comprobante_id` int(10) UNSIGNED NOT NULL,
+  `articulo_id` int(10) UNSIGNED NOT NULL,
+  `ordentrabajo_id` int(11) NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `fecha_entrega` date DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `valor_unitario` decimal(20,0) DEFAULT NULL,
+  `subtotal` decimal(20,2) DEFAULT NULL,
+  `descuento` decimal(20,0) DEFAULT NULL,
+  `impuesto` decimal(20,0) DEFAULT NULL,
+  `valor_total` decimal(20,0) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mensajes`
+--
+
+CREATE TABLE `mensajes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `usuario` varchar(191) DEFAULT NULL,
+  `contenido` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `leido` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -481,34 +853,27 @@ CREATE TABLE `linea_comprobantes` (
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(191) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `migrations`
+-- Estructura de tabla para la tabla `movimiento_materia_primas`
 --
 
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_100000_create_password_resets_table', 1),
-(2, '2020_09_28_093145_create_categorias_table', 1),
-(3, '2020_10_02_111948_create_articulos_table', 1),
-(4, '2020_10_08_095941_create_personas_table', 1),
-(5, '2020_10_08_100909_create_proveedores_table', 1),
-(6, '2020_10_08_110320_create_roles_table', 1),
-(7, '2020_10_08_110500_create_users_table', 2),
-(8, '2020_10_14_102526_create_ingresos_table', 2),
-(9, '2020_10_14_102646_create_detalle_ingresos_table', 2),
-(10, '2020_10_30_120111_add_imagen_to_categorias', 3),
-(17, '2020_11_03_191007_create_costoproduccions_table', 4),
-(18, '2020_11_05_001007_create_costois_table', 4),
-(19, '2020_11_06_013122_create_costos_table', 5),
-(20, '2020_11_06_013228_create_detalletrabajos_table', 5),
-(21, '2020_11_06_161836_create_clientes_table', 6),
-(22, '2020_11_07_232449_create_ordentrabajos_table', 6),
-(23, '2021_08_13_114355_create_ingresos_table', 6),
-(24, '2021_08_13_122730_create_egresos_table', 6),
-(25, '2021_09_03_091112_create_comprobates_table', 7);
+CREATE TABLE `movimiento_materia_primas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `inventarios_materia_prima_id` bigint(20) UNSIGNED NOT NULL,
+  `proveedores_id` bigint(20) UNSIGNED NOT NULL,
+  `tipo` enum('entrada','salida') NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `costo_unitario` decimal(10,2) NOT NULL,
+  `costo_total` decimal(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -519,21 +884,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `opcion_atributos` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_atributo` int(10) UNSIGNED DEFAULT NULL,
-  `label` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(100) DEFAULT NULL,
   `valor` decimal(20,2) DEFAULT NULL,
-  `opciones` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alerta` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `opciones` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `alerta` varchar(100) DEFAULT NULL,
   `orden` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `opcion_atributos`
---
-
-INSERT INTO `opcion_atributos` (`id`, `id_atributo`, `label`, `valor`, `opciones`, `descripcion`, `alerta`, `orden`) VALUES
-(2, 6, 'Carton kraft 300 grs', '0.00', NULL, '', '', 1),
-(3, 6, 'Propalcote 280grs', '300.00', NULL, '', '', 2);
 
 -- --------------------------------------------------------
 
@@ -543,36 +900,37 @@ INSERT INTO `opcion_atributos` (`id`, `id_atributo`, `label`, `valor`, `opciones
 
 CREATE TABLE `ordentrabajos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `idcliente` int(10) UNSIGNED NOT NULL,
-  `idarticulo` int(10) UNSIGNED NOT NULL,
-  `idcostois` int(10) DEFAULT NULL,
-  `cantidad` decimal(20,2) DEFAULT NULL,
-  `ancho_material` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `largo_material` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `articulo_id` int(10) UNSIGNED NOT NULL,
+  `medida_final` varchar(50) DEFAULT NULL,
+  `cantidad` decimal(20,0) DEFAULT NULL,
+  `cantidad_entregada` int(11) NOT NULL DEFAULT 0,
+  `tamano` decimal(20,2) DEFAULT NULL,
+  `medida_material` varchar(50) DEFAULT NULL,
+  `valor_unitario` decimal(20,0) DEFAULT NULL,
   `impuesto` decimal(30,2) DEFAULT NULL,
-  `produccion` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `valor_impuesto` decimal(20,2) DEFAULT NULL,
+  `produccion` varchar(20) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `unidad_medida` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `detalles_diseno` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `carpeta_cliente` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `observaciones` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `totalParcial` decimal(30,2) DEFAULT NULL,
-  `descuento` decimal(20,2) DEFAULT NULL,
-  `abono` decimal(20,2) DEFAULT NULL,
-  `saldo` decimal(20,2) DEFAULT NULL,
-  `total` decimal(20,2) DEFAULT NULL,
-  `estado` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `fecha_entrega` date NOT NULL DEFAULT '0000-00-00',
+  `cabida` decimal(20,2) DEFAULT NULL,
+  `detalles_diseno` varchar(3000) DEFAULT NULL,
+  `carpeta_cliente` varchar(50) DEFAULT NULL,
+  `observaciones` varchar(3000) DEFAULT NULL,
+  `totalParcial` decimal(30,0) DEFAULT NULL,
+  `descuento` decimal(20,0) DEFAULT NULL,
+  `abono` decimal(20,0) DEFAULT NULL,
+  `saldo` decimal(20,0) DEFAULT NULL,
+  `total` decimal(20,0) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL,
+  `prioridad` varchar(50) DEFAULT NULL,
+  `impresa` int(1) DEFAULT NULL,
+  `plancha` int(11) DEFAULT NULL,
+  `pago` int(11) DEFAULT NULL,
+  `fecha_entrega` date DEFAULT NULL,
   `created_at` date DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `cantidad_original` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `ordentrabajos`
---
-
-INSERT INTO `ordentrabajos` (`id`, `idcliente`, `idarticulo`, `idcostois`, `cantidad`, `ancho_material`, `largo_material`, `impuesto`, `produccion`, `fecha`, `unidad_medida`, `detalles_diseno`, `carpeta_cliente`, `observaciones`, `totalParcial`, `descuento`, `abono`, `saldo`, `total`, `estado`, `fecha_entrega`, `created_at`, `updated_at`) VALUES
-(1, 16, 23, NULL, '1000.00', '0', '0', '0.19', 'null', '2021-08-25', NULL, 'null', 'null', 'null', '456000.00', '0.00', '0.00', '542640.00', '542640.00', 'C', '2021-08-25', '2021-08-25', '2021-08-26 05:55:35');
 
 -- --------------------------------------------------------
 
@@ -581,9 +939,24 @@ INSERT INTO `ordentrabajos` (`id`, `idcliente`, `idarticulo`, `idcostois`, `cant
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `token` varchar(191) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos_remision`
+--
+
+CREATE TABLE `pedidos_remision` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pedido_id` bigint(20) UNSIGNED NOT NULL,
+  `remision_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `cuentacobro_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -594,50 +967,32 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `personas` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_documento` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `num_documento` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `direccion` varchar(70) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `tipo_documento` varchar(20) DEFAULT NULL,
+  `num_documento` varchar(20) DEFAULT NULL,
+  `direccion` varchar(70) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `personas`
+-- Estructura de tabla para la tabla `procesos`
 --
 
-INSERT INTO `personas` (`id`, `nombre`, `tipo_documento`, `num_documento`, `direccion`, `telefono`, `email`, `created_at`, `updated_at`) VALUES
-(2, 'julian', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 'Julian Agudelo', 'DNI', '94506025', 'djfladsj', 'dsfadsjl', 'lupaproyectos@gmail.com', '2020-10-30 15:46:21', '2020-10-30 15:46:21'),
-(8, 'Ashe', 'RUT', NULL, NULL, NULL, NULL, '2020-11-04 09:19:08', '2020-11-05 16:07:48'),
-(9, 'Cooimpresores', 'RUT', NULL, 'Cra # 18-50', NULL, NULL, '2020-11-05 14:30:32', '2020-11-05 16:07:44'),
-(10, 'Ecoprint', 'RUT', '4646', 'Calle 17 #4-50', NULL, NULL, '2020-11-05 16:06:48', '2020-11-05 16:07:39'),
-(11, 'Number ONE', 'RUT', 'sdf', NULL, NULL, NULL, '2020-11-06 18:25:00', '2020-11-06 18:25:25'),
-(16, 'Tomglen', 'CC', NULL, NULL, NULL, NULL, '2020-11-09 04:10:43', '2020-11-09 05:16:09'),
-(24, 'La selecta 1', 'CC', 'sdfa', 'Carrera 31 #9c70', 'sdf', 'lupaproyectos@gmail.com', '2020-11-09 04:40:29', '2021-08-03 16:36:47'),
-(25, 'CTP MAX FUXION', 'CC', NULL, 'Carrera 3 No. 20-01', '8816070', 'maxfuxionctp@gmail.com', '2020-11-14 05:37:43', '2020-11-14 05:37:43'),
-(26, 'Servipapeles Colombia SAS', 'RUT', '9003046902', 'Cra 5 # 17-28', '8823677', 'servipapeles.colombia4761@gmail.com', '2020-11-18 05:53:18', '2020-12-05 19:09:59'),
-(27, 'Proadhesivos', 'RUC', NULL, NULL, NULL, NULL, '2020-11-18 19:57:41', '2020-11-18 19:57:41'),
-(28, 'Insumos Artes Graficas (Naranjo)', 'RUC', NULL, 'Cra 3 #18-17', '3156552542', 'insumosartesgraficas@live.com', '2020-11-19 19:41:37', '2020-11-19 19:41:37'),
-(29, 'Tintascol SAS', 'RUC', NULL, 'Cra 3 #20-28', '3183396446', 'tintascols.a.s@hotmail.com', '2020-11-19 19:43:23', '2020-11-19 19:43:23'),
-(30, 'Soluciones Empresariales y Logísticas SAS', 'RUC', NULL, 'Cra 5 #19-69', '3113440411', 'seylsas@hotmail.com', '2020-11-19 19:46:15', '2020-11-19 19:46:15'),
-(31, 'Transprensa', 'RUC', NULL, 'Calle 8 #27-14 Alameda', '3146498146', 'crm.alameda@transprensa.com.co', '2020-12-05 21:21:36', '2020-12-05 21:21:36'),
-(32, 'Incolpa', 'RUC', NULL, NULL, '6669515', NULL, '2020-12-14 18:31:16', '2020-12-14 18:31:16'),
-(33, 'Mundo Materiales y Recuperados SAS', 'RUC', NULL, 'Calle 20 #2-47', '3166874233', 'mundomrsas@gmail.com', '2020-12-14 18:32:48', '2020-12-14 18:32:48'),
-(34, 'Aircom', 'RUC', NULL, NULL, '3154901106', 'aircom20@hotmail.com', '2020-12-14 18:33:31', '2020-12-14 18:33:31'),
-(35, 'Imexcyan Trading SAS', 'RUT', '901122956', 'Calle 26 con 5', '317 2737215', 'imexcyantrading@gmail.com', '2021-01-07 16:50:58', '2021-01-07 16:50:58'),
-(36, 'Guillotina James', 'CC', NULL, 'Calle 19 # 2-37', '8893977 - 8963174', 'azserviciosgraficos@gmail.com', '2021-02-11 01:18:06', '2021-02-11 01:18:33'),
-(37, 'Dispapeles', 'RUT', NULL, 'Calle 24 #4-63', '8851712', NULL, '2021-04-06 21:54:14', '2021-04-06 21:55:38'),
-(38, 'JD Comercializadora', 'RUC', NULL, 'Cra 2 #19-73', '3899674 - 3142129822', 'comercializadora-jd@hotmail.com', '2021-04-06 22:24:51', '2021-04-06 22:24:51'),
-(39, 'El Argentino', 'DNI', NULL, NULL, '3163423277', 'lupaproyectos@gmail.com', '2021-07-23 16:12:28', '2021-07-23 16:12:56'),
-(40, 'La Mascoteria', NULL, NULL, NULL, '+573183953381', NULL, '2021-07-23 16:17:38', '2021-07-23 16:19:32'),
-(41, 'La Piketa', 'NIT', NULL, 'Carrera 5 #6-26', '3122682256', NULL, '2021-08-02 16:34:41', '2021-08-02 16:34:41'),
-(43, 'la burguesa', NULL, NULL, 'sdfa', NULL, 'sdfa', '2021-08-03 15:22:06', '2021-08-03 15:22:06'),
-(44, 'Martin Pizza', NULL, NULL, NULL, NULL, NULL, '2021-08-10 15:48:37', '2021-08-10 15:48:37'),
-(80, 'Martin', 'DNI', NULL, NULL, NULL, NULL, '2021-08-18 15:55:40', '2021-08-18 15:55:40'),
-(99, 'la selecta', 'DNI', NULL, NULL, NULL, NULL, '2021-08-18 16:22:45', '2021-08-18 16:22:45');
+CREATE TABLE `procesos` (
+  `id` int(10) NOT NULL,
+  `posicion` int(10) NOT NULL,
+  `proceso` varchar(50) NOT NULL,
+  `cantidad` int(10) DEFAULT NULL,
+  `organizacion` varchar(50) DEFAULT NULL,
+  `hora` time DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -647,33 +1002,79 @@ INSERT INTO `personas` (`id`, `nombre`, `tipo_documento`, `num_documento`, `dire
 
 CREATE TABLE `proveedores` (
   `id` int(10) UNSIGNED NOT NULL,
-  `contacto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono_contacto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `contacto` varchar(50) DEFAULT NULL,
+  `telefono_contacto` varchar(50) DEFAULT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `tipo_documento` varchar(20) DEFAULT NULL,
+  `num_documento` varchar(20) DEFAULT NULL,
+  `direccion` varchar(70) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `proveedores`
+-- Estructura de tabla para la tabla `recibo_pagos`
 --
 
-INSERT INTO `proveedores` (`id`, `contacto`, `telefono_contacto`) VALUES
-(8, 'Elver', NULL),
-(9, 'Vicent', NULL),
-(10, NULL, NULL),
-(11, NULL, NULL),
-(25, 'Abelardo', '3148038624'),
-(26, 'Doña Luz', NULL),
-(27, NULL, NULL),
-(28, NULL, NULL),
-(29, 'Rodrigo Satizabal', '3146031352'),
-(30, 'Martín E. Sánchez', '3207117556'),
-(31, 'Daira Tapasco', NULL),
-(32, 'Luis Alberto Olaya', '3163269117'),
-(33, 'Viviana', '3167442587'),
-(34, 'Angelo Miranda', NULL),
-(35, 'Cesar', '318 5102088'),
-(36, 'James', NULL),
-(37, NULL, NULL),
-(38, NULL, NULL);
+CREATE TABLE `recibo_pagos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `comprobante_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `cliente_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `fecha` date NOT NULL,
+  `monto` decimal(20,2) NOT NULL,
+  `saldo_recibo` decimal(20,2) DEFAULT 0.00,
+  `forma_pago` varchar(191) NOT NULL,
+  `num_recibo` varchar(191) NOT NULL,
+  `pedido_id` int(10) UNSIGNED DEFAULT NULL,
+  `observaciones` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registros_produccion`
+--
+
+CREATE TABLE `registros_produccion` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `orden_trabajo_id` int(10) DEFAULT NULL,
+  `empleado_id` int(10) UNSIGNED NOT NULL,
+  `actividad` varchar(50) DEFAULT NULL,
+  `elemento` varchar(100) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `hora_inicio` time DEFAULT NULL,
+  `hora_fin` time DEFAULT NULL,
+  `minutos` int(10) UNSIGNED DEFAULT NULL,
+  `cantidad` int(10) UNSIGNED DEFAULT NULL,
+  `unidad` varchar(20) DEFAULT NULL,
+  `observaciones` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reportes`
+--
+
+CREATE TABLE `reportes` (
+  `id` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `fecha` date NOT NULL,
+  `archivo` varchar(100) NOT NULL,
+  `estado` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -683,20 +1084,87 @@ INSERT INTO `proveedores` (`id`, `contacto`, `telefono_contacto`) VALUES
 
 CREATE TABLE `roles` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nombre` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `condicion` tinyint(1) NOT NULL DEFAULT '1'
+  `nombre` varchar(30) NOT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `condicion` tinyint(1) NOT NULL DEFAULT 1,
+  `produccion` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `roles`
+-- Estructura de tabla para la tabla `statusproduccion`
 --
 
-INSERT INTO `roles` (`id`, `nombre`, `descripcion`, `condicion`) VALUES
-(1, 'Administrador', 'Administradores de área', 1),
-(2, 'Vendedor', 'Vendedor área venta', 1),
-(3, 'Almacenero', 'Almacenero área compras', 1),
-(4, 'Diseñador', 'Área de diseño', 1);
+CREATE TABLE `statusproduccion` (
+  `id` int(10) NOT NULL,
+  `idorden` int(10) NOT NULL,
+  `estado` varchar(50) NOT NULL,
+  `prioridad` int(11) NOT NULL,
+  `fecha_termina` timestamp NULL DEFAULT NULL,
+  `hora` time NOT NULL,
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_producto`
+--
+
+CREATE TABLE `tipo_producto` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `valor` decimal(30,2) NOT NULL,
+  `tamano` int(10) NOT NULL,
+  `area` decimal(30,3) NOT NULL,
+  `impresiones` int(10) NOT NULL,
+  `sobrante` int(11) NOT NULL,
+  `cabida` int(10) NOT NULL,
+  `tipo_cantidad` varchar(400) DEFAULT NULL,
+  `rangos` varchar(400) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `formula_ancho` varchar(191) DEFAULT NULL,
+  `formula_largo` varchar(191) DEFAULT NULL,
+  `piezas_por_pliego` int(11) NOT NULL DEFAULT 0,
+  `gastos_fijos` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `rentabilidad` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `permite_troquelado` tinyint(1) NOT NULL DEFAULT 0,
+  `imagen` varchar(100) DEFAULT NULL,
+  `orden` int(11) NOT NULL,
+  `estado` int(2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_producto_atributo_tienda`
+--
+
+CREATE TABLE `tipo_producto_atributo_tienda` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tipo_producto_id` int(11) NOT NULL,
+  `atributo_tienda_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_producto_procesos`
+--
+
+CREATE TABLE `tipo_producto_procesos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tipo_producto_id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(191) NOT NULL,
+  `costo_unitario` decimal(12,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -706,32 +1174,72 @@ INSERT INTO `roles` (`id`, `nombre`, `descripcion`, `condicion`) VALUES
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `usuario` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `condicion` tinyint(1) NOT NULL DEFAULT '1',
-  `idrol` int(10) UNSIGNED NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `empleado_id` int(10) NOT NULL,
+  `usuario` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
+  `condicion` tinyint(1) NOT NULL DEFAULT 1,
+  `idrol` varchar(100) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `users`
+-- Estructura de tabla para la tabla `users2`
 --
 
-INSERT INTO `users` (`id`, `usuario`, `password`, `condicion`, `idrol`, `remember_token`) VALUES
-(7, 'admin', '$2y$10$dl7GtFi4rBFZ.KrmvS8JFuYGbzjXDxUtmTYvfWkm.UXIDNuGuMgca', 1, 1, NULL),
-(2, 'julian', '$2y$10$2yoQ63PFFAFPgcuJ2eCYIOYIJ3Snhj068IOEld/nPcDAs7miVYsie', 1, 1, 'vrC3Fy1wzL5SkLC5WMJuHWeaJrw9B1h4GIA0lrbFnJOOmSRrEwhsCkudbjsZ');
+CREATE TABLE `users2` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `empleado_id` int(10) NOT NULL,
+  `usuario` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
+  `condicion` tinyint(1) NOT NULL DEFAULT 1,
+  `idrol` int(10) UNSIGNED NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `actividad`
+--
+ALTER TABLE `actividad`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `activos`
+--
+ALTER TABLE `activos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `ajustes`
+--
+ALTER TABLE `ajustes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `articulos`
 --
 ALTER TABLE `articulos`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `articulos_nombre_unique` (`nombre`),
   ADD KEY `articulos_idcategoria_foreign` (`idcategoria`);
+
+--
+-- Indices de la tabla `articulos2`
+--
+ALTER TABLE `articulos2`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `articulos_idcategoria_foreign` (`idcategoria`);
+
+--
+-- Indices de la tabla `articulo_troquels`
+--
+ALTER TABLE `articulo_troquels`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `articulo_troquels_articulo_id_foreign` (`articulo_id`);
 
 --
 -- Indices de la tabla `atributos`
@@ -741,25 +1249,90 @@ ALTER TABLE `atributos`
   ADD KEY `atributos_id_articulo_foreign` (`id_articulo`);
 
 --
+-- Indices de la tabla `atributos_tienda`
+--
+ALTER TABLE `atributos_tienda`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `categorias`
 --
 ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `categorias2`
+--
+ALTER TABLE `categorias2`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `categorias_padre_id_foreign` (`padre_id`);
+
+--
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `clientes_id_foraing` (`id`) USING BTREE;
+
+--
+-- Indices de la tabla `cliente_contacto`
+--
+ALTER TABLE `cliente_contacto`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cliente_id` (`cliente_id`),
+  ADD KEY `contacto_id` (`contacto_id`);
+
+--
+-- Indices de la tabla `cliente_envio`
+--
+ALTER TABLE `cliente_envio`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idcliente` (`cliente_id`,`datosenvio_id`);
+
+--
+-- Indices de la tabla `cliente_factura`
+--
+ALTER TABLE `cliente_factura`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `comprobantes`
+--
+ALTER TABLE `comprobantes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `comprobantes_tipo_num_unique` (`tipo`,`num_comprobante`) USING BTREE,
+  ADD KEY `comprobates_id_cliente_foreign` (`cliente_id`),
+  ADD KEY `comprobates_id_user_foreign` (`user_id`);
+
+--
+-- Indices de la tabla `comprobantes2`
+--
+ALTER TABLE `comprobantes2`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `comprobantes_tipo_num_unique` (`tipo`,`num_comprobante`) USING BTREE,
+  ADD KEY `comprobates_id_cliente_foreign` (`cliente_id`),
+  ADD KEY `comprobates_id_user_foreign` (`user_id`);
+
+--
+-- Indices de la tabla `comprobantes3`
+--
+ALTER TABLE `comprobantes3`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `comprobantes_tipo_num_unique` (`tipo`,`num_comprobante`) USING BTREE,
+  ADD KEY `comprobates_id_cliente_foreign` (`cliente_id`),
+  ADD KEY `comprobates_id_user_foreign` (`user_id`);
 
 --
 -- Indices de la tabla `comprobates`
 --
 ALTER TABLE `comprobates`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `comprobates_num_comprobante_unique` (`num_comprobante`),
-  ADD KEY `comprobates_id_cliente_foreign` (`id_cliente`),
-  ADD KEY `comprobates_id_user_foreign` (`id_user`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `contactos`
+--
+ALTER TABLE `contactos`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `costois`
@@ -774,15 +1347,51 @@ ALTER TABLE `costois`
 --
 ALTER TABLE `costos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `costos_idcostois_foreign` (`idcostois`),
-  ADD KEY `costos_idorden_foreign` (`idorden`);
+  ADD KEY `costos_idcostois_foreign` (`costois_id`),
+  ADD KEY `costos_idorden_foreign` (`ordentrabajo_id`);
+
+--
+-- Indices de la tabla `costosproduccion`
+--
+ALTER TABLE `costosproduccion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `costosproduccion_idproveedor_foreign` (`idproveedor`),
+  ADD KEY `costosproduccion_idpersona_foreign` (`idpersona`);
+
+--
+-- Indices de la tabla `costo_articulos`
+--
+ALTER TABLE `costo_articulos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `costo_articulos_idopcion_foreign` (`idopcion`),
+  ADD KEY `costo_articulos_idcostois_foreign` (`idcostois`),
+  ADD KEY `costo_articulos_idarticulo_foreign` (`idarticulo`);
+
+--
+-- Indices de la tabla `cruce_cartera`
+--
+ALTER TABLE `cruce_cartera`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `datosenvio`
+--
+ALTER TABLE `datosenvio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `datosenvio_idcliente_foreign` (`idcliente`);
+
+--
+-- Indices de la tabla `datos_factura`
+--
+ALTER TABLE `datos_factura`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `detalletrabajos`
 --
 ALTER TABLE `detalletrabajos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `detalletrabajos_idorden_foreign` (`idorden`);
+  ADD KEY `detalletrabajos_idorden_foreign` (`ordentrabajo_id`);
 
 --
 -- Indices de la tabla `detalle_ingresos`
@@ -799,25 +1408,74 @@ ALTER TABLE `egresos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `empleados`
+--
+ALTER TABLE `empleados`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `entregas`
+--
+ALTER TABLE `entregas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `entrega_items`
+--
+ALTER TABLE `entrega_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `flujo_produccion`
+--
+ALTER TABLE `flujo_produccion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `imagenes`
+--
+ALTER TABLE `imagenes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `imagenes_idtabla_foranea` (`id_tabla`);
+
+--
 -- Indices de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `ingresos_idproveedor_foreign` (`idproveedor`),
-  ADD KEY `ingresos_idusuario_foreign` (`idusuario`);
+  ADD KEY `ingresos_idproveedor_foreign` (`cliente_id`),
+  ADD KEY `ingresos_idusuario_foreign` (`usuario_id`);
+
+--
+-- Indices de la tabla `inventarios_materia_primas`
+--
+ALTER TABLE `inventarios_materia_primas`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `linea_comprobantes`
 --
 ALTER TABLE `linea_comprobantes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `comprobantes_foreign` (`id_comprobante`),
-  ADD KEY `articulos_foreign` (`id_articulo`);
+  ADD KEY `comprobantes_foreign` (`comprobante_id`),
+  ADD KEY `articulos_foreign` (`articulo_id`);
+
+--
+-- Indices de la tabla `mensajes`
+--
+ALTER TABLE `mensajes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `migrations`
 --
 ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `movimiento_materia_primas`
+--
+ALTER TABLE `movimiento_materia_primas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -832,14 +1490,20 @@ ALTER TABLE `opcion_atributos`
 --
 ALTER TABLE `ordentrabajos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idcliente` (`idcliente`) USING BTREE,
-  ADD KEY `ordentrabajos_ibfk_2` (`idarticulo`);
+  ADD KEY `idcliente` (`cliente_id`) USING BTREE,
+  ADD KEY `ordentrabajos_ibfk_2` (`articulo_id`);
 
 --
 -- Indices de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indices de la tabla `pedidos_remision`
+--
+ALTER TABLE `pedidos_remision`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `personas`
@@ -849,10 +1513,37 @@ ALTER TABLE `personas`
   ADD UNIQUE KEY `personas_nombre_unique` (`nombre`);
 
 --
+-- Indices de la tabla `procesos`
+--
+ALTER TABLE `procesos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `statusproduccion_idorden_foreign` (`posicion`) USING BTREE;
+
+--
 -- Indices de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `proveedores_id_foreign` (`id`);
+
+--
+-- Indices de la tabla `recibo_pagos`
+--
+ALTER TABLE `recibo_pagos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `registros_produccion`
+--
+ALTER TABLE `registros_produccion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `reportes`
+--
+ALTER TABLE `reportes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `iduser` (`iduser`);
 
 --
 -- Indices de la tabla `roles`
@@ -862,9 +1553,43 @@ ALTER TABLE `roles`
   ADD UNIQUE KEY `roles_nombre_unique` (`nombre`);
 
 --
+-- Indices de la tabla `statusproduccion`
+--
+ALTER TABLE `statusproduccion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `statusproduccion_idorden_foreign` (`idorden`) USING BTREE;
+
+--
+-- Indices de la tabla `tipo_producto`
+--
+ALTER TABLE `tipo_producto`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_producto_atributo_tienda`
+--
+ALTER TABLE `tipo_producto_atributo_tienda`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_producto_procesos`
+--
+ALTER TABLE `tipo_producto_procesos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_usuario_unique` (`usuario`),
+  ADD KEY `users_id_foreign` (`id`),
+  ADD KEY `users_idrol_foreign` (`idrol`);
+
+--
+-- Indices de la tabla `users2`
+--
+ALTER TABLE `users2`
   ADD UNIQUE KEY `users_usuario_unique` (`usuario`),
   ADD KEY `users_id_foreign` (`id`),
   ADD KEY `users_idrol_foreign` (`idrol`);
@@ -874,28 +1599,106 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `actividad`
+--
+ALTER TABLE `actividad`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `activos`
+--
+ALTER TABLE `activos`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `ajustes`
+--
+ALTER TABLE `ajustes`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `articulos2`
+--
+ALTER TABLE `articulos2`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `articulo_troquels`
+--
+ALTER TABLE `articulo_troquels`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `atributos`
 --
 ALTER TABLE `atributos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `atributos_tienda`
+--
+ALTER TABLE `atributos_tienda`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `categorias2`
+--
+ALTER TABLE `categorias2`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cliente_contacto`
+--
+ALTER TABLE `cliente_contacto`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cliente_envio`
+--
+ALTER TABLE `cliente_envio`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cliente_factura`
+--
+ALTER TABLE `cliente_factura`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `comprobantes`
+--
+ALTER TABLE `comprobantes`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `comprobantes2`
+--
+ALTER TABLE `comprobantes2`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `comprobantes3`
+--
+ALTER TABLE `comprobantes3`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `comprobates`
@@ -904,22 +1707,58 @@ ALTER TABLE `comprobates`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `contactos`
+--
+ALTER TABLE `contactos`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `costois`
 --
 ALTER TABLE `costois`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `costos`
 --
 ALTER TABLE `costos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `costosproduccion`
+--
+ALTER TABLE `costosproduccion`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `costo_articulos`
+--
+ALTER TABLE `costo_articulos`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cruce_cartera`
+--
+ALTER TABLE `cruce_cartera`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `datosenvio`
+--
+ALTER TABLE `datosenvio`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `datos_factura`
+--
+ALTER TABLE `datos_factura`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalletrabajos`
 --
 ALTER TABLE `detalletrabajos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_ingresos`
@@ -934,10 +1773,40 @@ ALTER TABLE `egresos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `empleados`
+--
+ALTER TABLE `empleados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `entregas`
+--
+ALTER TABLE `entregas`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `flujo_produccion`
+--
+ALTER TABLE `flujo_produccion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `imagenes`
+--
+ALTER TABLE `imagenes`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `ingresos`
 --
 ALTER TABLE `ingresos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `inventarios_materia_primas`
+--
+ALTER TABLE `inventarios_materia_primas`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `linea_comprobantes`
@@ -946,57 +1815,141 @@ ALTER TABLE `linea_comprobantes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `mensajes`
+--
+ALTER TABLE `mensajes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `movimiento_materia_primas`
+--
+ALTER TABLE `movimiento_materia_primas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `opcion_atributos`
 --
 ALTER TABLE `opcion_atributos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ordentrabajos`
 --
 ALTER TABLE `ordentrabajos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos_remision`
+--
+ALTER TABLE `pedidos_remision`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `procesos`
+--
+ALTER TABLE `procesos`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedores`
+--
+ALTER TABLE `proveedores`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `recibo_pagos`
+--
+ALTER TABLE `recibo_pagos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `registros_produccion`
+--
+ALTER TABLE `registros_produccion`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `reportes`
+--
+ALTER TABLE `reportes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `statusproduccion`
+--
+ALTER TABLE `statusproduccion`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_producto`
+--
+ALTER TABLE `tipo_producto`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_producto_atributo_tienda`
+--
+ALTER TABLE `tipo_producto_atributo_tienda`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_producto_procesos`
+--
+ALTER TABLE `tipo_producto_procesos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `articulos`
+-- Filtros para la tabla `articulos2`
 --
-ALTER TABLE `articulos`
-  ADD CONSTRAINT `articulos_idcategoria_foreign` FOREIGN KEY (`idcategoria`) REFERENCES `categorias` (`id`);
+ALTER TABLE `articulos2`
+  ADD CONSTRAINT `articulos_idcategoria_foreign` FOREIGN KEY (`idcategoria`) REFERENCES `categorias2` (`id`);
 
 --
--- Filtros para la tabla `clientes`
+-- Filtros para la tabla `articulo_troquels`
 --
-ALTER TABLE `clientes`
-  ADD CONSTRAINT `clientes_id_foreign` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE;
+ALTER TABLE `articulo_troquels`
+  ADD CONSTRAINT `articulo_troquels_articulo_id_foreign` FOREIGN KEY (`articulo_id`) REFERENCES `articulos` (`id`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `comprobates`
+-- Filtros para la tabla `categorias2`
 --
-ALTER TABLE `comprobates`
-  ADD CONSTRAINT `comprobates_id_cliente_foreign` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`),
-  ADD CONSTRAINT `comprobates_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+ALTER TABLE `categorias2`
+  ADD CONSTRAINT `categorias_padre_id_foreign` FOREIGN KEY (`padre_id`) REFERENCES `categorias2` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `comprobantes2`
+--
+ALTER TABLE `comprobantes2`
+  ADD CONSTRAINT `comprobates_id_cliente_foreign` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`),
+  ADD CONSTRAINT `comprobates_id_user_foreign` FOREIGN KEY (`user_id`) REFERENCES `users2` (`id`);
 
 --
 -- Filtros para la tabla `costois`
@@ -1006,63 +1959,17 @@ ALTER TABLE `costois`
   ADD CONSTRAINT `costois_idproveedor_foreign` FOREIGN KEY (`idproveedor`) REFERENCES `proveedores` (`id`);
 
 --
--- Filtros para la tabla `costos`
+-- Filtros para la tabla `costosproduccion`
 --
-ALTER TABLE `costos`
-  ADD CONSTRAINT `costos_idcostois_foreign` FOREIGN KEY (`idcostois`) REFERENCES `costois` (`id`),
-  ADD CONSTRAINT `costos_idorden_foreign` FOREIGN KEY (`idorden`) REFERENCES `ordentrabajos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `costosproduccion`
+  ADD CONSTRAINT `costosproduccion_idpersona_foreign` FOREIGN KEY (`idpersona`) REFERENCES `personas` (`id`),
+  ADD CONSTRAINT `costosproduccion_idproveedor_foreign` FOREIGN KEY (`idproveedor`) REFERENCES `proveedores` (`id`);
 
 --
 -- Filtros para la tabla `detalletrabajos`
 --
 ALTER TABLE `detalletrabajos`
-  ADD CONSTRAINT `detalletrabajos_idorden_foreign` FOREIGN KEY (`idorden`) REFERENCES `ordentrabajos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `detalle_ingresos`
---
-ALTER TABLE `detalle_ingresos`
-  ADD CONSTRAINT `detalle_ingresos_idarticulo_foreign` FOREIGN KEY (`idarticulo`) REFERENCES `articulos` (`id`),
-  ADD CONSTRAINT `detalle_ingresos_idingreso_foreign` FOREIGN KEY (`idingreso`) REFERENCES `ingresos` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `ingresos`
---
-ALTER TABLE `ingresos`
-  ADD CONSTRAINT `ingresos_idproveedor_foreign` FOREIGN KEY (`idproveedor`) REFERENCES `proveedores` (`id`),
-  ADD CONSTRAINT `ingresos_idusuario_foreign` FOREIGN KEY (`idusuario`) REFERENCES `users` (`id`);
-
---
--- Filtros para la tabla `linea_comprobantes`
---
-ALTER TABLE `linea_comprobantes`
-  ADD CONSTRAINT `articulos_foreign` FOREIGN KEY (`id_articulo`) REFERENCES `articulos` (`id`),
-  ADD CONSTRAINT `comprobantes_foreign` FOREIGN KEY (`id_comprobante`) REFERENCES `comprobates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `opcion_atributos`
---
-ALTER TABLE `opcion_atributos`
-  ADD CONSTRAINT `opcion_atributos_id_atributo_foreign` FOREIGN KEY (`id_atributo`) REFERENCES `atributos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `ordentrabajos`
---
-ALTER TABLE `ordentrabajos`
-  ADD CONSTRAINT `ordentrabajos_ibfk_2` FOREIGN KEY (`idarticulo`) REFERENCES `articulos` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `proveedores`
---
-ALTER TABLE `proveedores`
-  ADD CONSTRAINT `proveedores_id_foreign` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_id_foreign` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `users_idrol_foreign` FOREIGN KEY (`idrol`) REFERENCES `roles` (`id`);
+  ADD CONSTRAINT `detalletrabajos_idorden_foreign` FOREIGN KEY (`ordentrabajo_id`) REFERENCES `ordentrabajos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -28,11 +28,35 @@
                                 <div class="headerOrden">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <button v-if="action=='nuevo'" type="button" class="btn btn-primary" @click="registrarComprobante()">Registrar</button>
-                                            <button v-else type="button" class="btn btn-primary" @click="actualizarComprobante()">Guardar</button>
+                                            <button type="button" class="btn btn-primary" @click="registrarComprobante()">Registrar</button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group row border p-4 cliente">
+                            <div class="col-md-12">
+                                 <div class="col-md-3">
+                                    <label for="">Fecha {{comprobante}}</label>
+                                    <input type="date" class="form-control" v-model="fecha_comprobante">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Forma de pago</label>
+                                    <input type="text" class="form-control" v-model="forma_pago">
+                                </div>
+                                    <div class="col-md-3">
+                                    <label class=" form-control-label" for="text-input">Estado</label>
+                                    <select v-model="tipo_cliente" class="form-control">
+                                        <option value="Natural">Pendiente</option>
+                                        <option value="Juridico">En proceso</option>
+                                        <option value="Juridico">Entregado</option>
+                                    </select>                                    
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Número {{comprobante}}</label>
+                                    <input type="text" class="form-control" v-model="num_comprobante">
+                                </div>
+
                             </div>
                         </div>
                         <div class="form-group row border p-4 cliente">
@@ -186,7 +210,7 @@
                                     <h4>Lineas de {{comprobante}}</h4>
                                 </div>
                             
-                                <div class="col-lg-7 col-xl-6">
+                                <div class="col-lg-7 col-xl-3">
                                     <div class="form-group">
                                         <label>Seleccione un producto<span style="color:red" v-show="idarticulo==0">(*Seleccione)</span> </label>
                                         <div class="form-group row">
@@ -195,29 +219,13 @@
                                                     <input type="text" class="form-control" v-model="buscar_articulo" @keyup="selectArticulo('nuevo')" placeholder="Ingrese nombre del producto">
                                                 </div>  
                                             </div>
-                                            <div class="col-lg-12" v-if="articulo_seleccionado!=null">
-                                                    <div class="form-group row border p-4 subform">
-                                                    <div class="col-md-3">
-                                                        <label for="">Producto</label>
-                                                        <input type="text" class="form-control" v-model="nombre_articulo">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="">Valor producto</label>
-                                                        <input type="text" class="form-control" v-model="precio">
-                                                    </div>
-                                                    
-                                                    <div class="col-md-3">
-                                                        <label for="">IVA</label>
-                                                        <input type="text" class="form-control" v-model="descuento_articulo">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="">IVA</label>
-                                                        <input type="text" class="form-control" v-model="impuesto_articulo">
-                                                    </div>
-                                                </div>                                  
-                                            </div>
+                                            
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Fecha</label>
+                                    <input type="date" class="form-control" v-model="fecha" >
                                 </div>
                                 <div class="col-md-3">
                                     <label for="">Fecha de entrega</label>
@@ -229,24 +237,32 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label for="">Detalle</label>
-                                    <input type="text" class="form-control" v-model="detalle_linea">
+                                    <input type="text" class="form-control" v-model="nombre_articulo">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="">Valor unitario</label>
-                                    <input type="text" class="form-control" v-model="valor_unitario">
+                                    <input type="text" class="form-control" v-model="precio">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="">Descuento</label>
                                     <input type="text" class="form-control" v-model="descuento_linea">
                                 </div>
+                                <div class="col-md-2">
+                                    <label for="">Subtotal</label>
+                                    <div class="form-control">
+                                    {{calcularSubtotalLinea}}
+                                    </div>
+                                </div>
                             
                                 <div class="col-md-2">
                                     <label for="">Impuesto</label>
-                                    <input type="text" class="form-control" v-model="impuesto_linea">
+                                     <input type="text" class="form-control" v-model="impuesto_linea">
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-2">
                                     <label for="">Total</label>
-                                    <textarea style="color:red" class="form-control" v-model="total_linea">  </textarea>
+                                    <div class="form-control">
+                                    {{calcularTotalLinea}}
+                                    </div>
                                 </div>
                                 
                                 <div class="col-lg-2 col-xl-3">
@@ -268,6 +284,7 @@
                                                     <th>Detalle</th>
                                                     <th>Valor unitario</th>
                                                     <th>Descuento</th>
+                                                    <th>Subtotal</th>
                                                     <th>Impuesto</th>
                                                     <th>Valor</th>
                                                 </tr>
@@ -289,19 +306,22 @@
                                                         <input type="text" v-model="linea.cantidad"  value="3" class="form-control">
                                                     </td>
                                                     <td>
-                                                        <input type="text" v-model="linea.artiuclo"  value="3" class="form-control">
+                                                        <input type="text" v-model="linea.articulo"  value="3" class="form-control">
                                                     </td>
                                                     <td>
-                                                        <input type="text" v-model="linea.valor_unitario" class="form-control">
+                                                        <input type="text" v-model="linea.valor" class="form-control">
                                                     </td>
                                                     <td>
                                                         <input type="text"  v-model="linea.descuento" class="form-control">
                                                     </td>
                                                     <td>
+                                                        <input type="text"  v-model="linea.subtotal" class="form-control">
+                                                    </td>
+                                                    <td>
                                                         <input type="text"  v-model="linea.impuesto" class="form-control">
                                                     </td>
                                                     <td>
-                                                        <input type="text"  v-model="linea.valor_total" class="form-control">
+                                                        <input type="text"  v-model="linea.total" class="form-control">
                                                     </td>
                                                    
                                                 </tr>
@@ -325,10 +345,8 @@
                                         <table class="table table-bordered table-striped table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th>Valor unitario</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Descuento</th>
                                                     <th>Subtotal</th>
+                                                    <th>Descuento</th>
                                                     <th>Impuesto</th>
                                                     <th>Total</th>
                                                     <th>Abono</th>
@@ -337,22 +355,13 @@
                                             </thead>
                                             <tbody>
                                                 <tr style="background-color: #CEECF5;">
-                                                    <td>$ <input type="text" v-model="precio_producto"> </td>
-                                                    <td><input type="text" v-model="cantidad"> </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input type="number" class="form-control" v-model="descuento" placeholder="Descuento">
-                                                        </div>
-                                                    </td>
-                                                    <td>$ {{calcularTotalParcial}}</td>
+                                                    <td>$ {{calcularSubtotal}}</td>
+                                                    <td>$ {{calcularTotalDescuento}}</td>
                                                     <td>$ {{calcularTotalImpuesto}}</td>
-                                                    <td>$ {{calcularTotal.toFixed(0)}}</td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input type="number" class="form-control" v-model="abono" placeholder="Abono">
-                                                        </div>
-                                                    </td>
-                                                    <td>$ {{calcularSaldo.toFixed(0)}}</td>
+                                                    <td>$ {{calcularTotalParcial}}</td>
+                                                    <td>$ <input type="text" v-model="abono"></td>
+                                                    <td>$ {{calcularSaldo}}</td>
+                                                   
                                                 </tr>
                                             </tbody>  
                                                                     
@@ -365,9 +374,7 @@
                       
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
-                                <button v-if="action=='nuevo'" type="button" class="btn btn-primary" @click="registrarOrden()">Registrar</button>
-                                <button v-else type="button" class="btn btn-primary" @click="actualizarOrden()">Guardar</button>
+                                <button type="button" class="btn btn-primary" @click="registrarPedido()">Registrar</button>
                             </div>
                         </div>
                     </div>
@@ -395,6 +402,7 @@
                 fecha: `${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
                 comprobante : 'pedido',
                 num_comprobante : '',
+                forma_pago:'Contado',
                 abono:0,
                 saldo:0,
                 impuesto: 0,
@@ -435,13 +443,17 @@
                 precio:0,
                 impuesto_artiuclo:0,
                 descuento_artiuclo:0,
-                fecha_entrega:new Date(),
+                fecha_entrega:`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`,
                 cantidad_linea:1000,
                 detalle_linea:'',
-                valor_unitario:'',
-                descuento_linea:'',
-                impuesto_linea:'',
-                total_linea:'',
+                precio:0,
+                descuento_linea:0,
+                impuesto_linea:0,
+                iva_linea:0,
+                subtotal_linea:0,
+                total_linea:0,
+                tamano_linea:'',
+                medida_final_linea:'',
                 arrayLineas:[],
                 tituloModal : '',
                 pagination : {
@@ -490,51 +502,95 @@
                 return pagesArray;             
 
             },
-            calcularCosto2(){
+            calcularImpuestoLinea(){
                 var resultado=0
-                resultado=this.cantidad_costo*this.valor_insumo
-                this.valor_costo=resultado
+                this.iva_linea=parseFloat(this.subtotal_linea)*parseFloat(this.impuesto_linea);
+                for(var i=0;i<this.arrayLineas.length;i++){
+                    this.arrayLineas[i].iva=parseFloat(this.arrayLineas[i].subtotal)*parsefloat(this.arrayLineas[i].impuesto)
+                }
                 return resultado
             },
-            subtotalCosto(){
+            calcularSubtotalLinea(){
                 var resultado=0
-                for(var i=0;i<this.arrayCostos.length;i++){
-                    this.arrayCostos[i].subtotal_costo=parseFloat(this.arrayCostos[i].valor_costo)*parseInt(this.arrayCostos[i].cantidad_costo)
-                resultado=this.arrayCostos[i].subtotal_costo
+                this.subtotal_linea=parseFloat(this.precio)*parseFloat(this.cantidad_linea)-parseFloat(this.descuento_linea);
+                resultado=this.subtotal_linea
+                for(var i=0;i<this.arrayLineas.length;i++){
+                    this.arrayLineas[i].subtotal=parseFloat(this.arrayLineas[i].valor)*parseInt(this.arrayLineas[i].cantidad)-parseInt(this.arrayLineas[i].descuento)
                 }
                 return resultado
             },
             
-            totalCostos(){
+            calcularTotalLinea(){
                 var resultado=0
-                for(var i=0;i<this.arrayCostos.length;i++){
-                    resultado=resultado+parseFloat(this.arrayCostos[i].subtotal_costo)
+                if(this.impuesto_linea==''){
+                    this.impuesto_linea=0
+                }
+                this.total_linea=parseFloat(this.subtotal_linea)*(1+parseFloat(this.impuesto_linea))
+                resultado=this.total_linea
+                for(var i=0;i<this.arrayLineas.length;i++){
+                    if(this.arrayLineas[i].impuesto==''){
+                        this.arrayLineas[i].impuesto=0
+                    }
+                    this.arrayLineas[i].total=parseFloat(this.arrayLineas[i].subtotal)*(1+parseFloat(this.arrayLineas[i].impuesto))
                 }
                 return resultado
             },
+          
            
+           
+            calcularTotalDescuento(){
+                var resultado=0
+                this.arrayLineas.forEach(e => {
+                    resultado=resultado+parseFloat(e.descuento)
+                });
+                return resultado
+            },
+           
+            calcularTotalImpuesto(){
+                var resultado=0
+                var iva=0
+                this.arrayLineas.forEach(e => {
+                    e.iva=e.subtotal*(e.impuesto)
+                    iva=iva+parseFloat(e.iva)
+                })
+                resultado=iva
+                return resultado
+            },
+            
+            calcularSubtotal(){
+                var resultado=0
+                var subtotal=0
+                this.arrayLineas.forEach(e => {
+                    var sub=parseFloat(e.subtotal)+parseFloat(e.descuento)
+                    subtotal=subtotal+sub
+                })
+                resultado=subtotal
+                return resultado
+            },
             calcularTotalParcial(){
                 var resultado=0
-                resultado=(this.precio_producto*this.cantidad)-this.descuento
-                this.totalParcial=resultado
-                return resultado
-            },
-            calcularTotalImpuesto(){
-                var resultado=0;
-                resultado=this.totalParcial*this.impuesto
-                this.totalImpuesto=resultado
-                return resultado
-            },
-            calcularTotal(){
-                var resultado=0
-                resultado=this.totalParcial+this.totalImpuesto
-                this.total=resultado
+                var iva=0
+                var subtotal=0
+                var descuento=0
+                this.arrayLineas.forEach(e => {
+                    subtotal=subtotal+parseFloat(e.subtotal)
+                    iva=iva+parseFloat(e.iva)
+                    descuento=descuento+parseFloat(e.descuento)
+                })
+                resultado=subtotal+iva
                 return resultado
             },
             calcularSaldo(){
                 var resultado=0
-                resultado =this.total-this.abono
-                this.saldo=resultado
+                var iva=0
+                var subtotal=0
+                var descuento=0
+                this.arrayLineas.forEach(e => {
+                    subtotal=subtotal+parseFloat(e.subtotal)
+                    iva=iva+parseFloat(e.iva)
+                    descuento=descuento+parseFloat(e.descuento)
+                })
+                resultado=(subtotal+iva)-this.abono
                 return resultado
             }
            
@@ -565,21 +621,7 @@
                 }
             },
              
-            listarOrdenes (page,buscar,operador,criterio){
-                let me=this;
-                var url= me.dominio+'/orden?page='+page+'&criterio='+ criterio+'&operador='+operador+'&buscar='+buscar;
-                axios.get(url,{
-                    
-                }).then(function (response) {
-                    var respuesta= response.data;
-                    me.arrayOrdenes = respuesta.ordenes.data;
-                    me.pagination= respuesta.pagination;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-               
-            },
+            
             getClientebyid(idcliente){
                 let me=this;
                 var url= me.dominio+'/cliente/selectCliente?id='+idcliente;
@@ -663,8 +705,11 @@
                 let me = this;
                 me.loading = true;
                 me.idarticulo = val1.id;
-                me.nombre_articulo=val1.nombre;
-                me.precio=val1.precio_venta
+                me.nombre_articulo = val1.nombre;
+                me.precio = val1.precio_venta;
+                me.tamano_linea = val1.tamano;
+                me.medida_final_linea = val1.medida_final;
+                me.impuesto_linea = 0;
                 me.articulo_seleccionado=val1;
                 me.buscar_articulo=val1.nombre
                 me.aseleccionado=true
@@ -685,32 +730,41 @@
                     console.log(error);
                 });
             },
-            agregarCosto(){
+            agregarLinea(){
                 let me=this
+                
                 if(me.tipo_costo=='' || me.valor_costo==''){
 
                 }else{
-                    me.arrayCostos.push({
-                        idcosto:0,
-                        tipo_costo:me.tipo_costo,
-                        nombre_insumo:me.nombre_insumo,
-                        id_insumo:me.insumo_seleccionado.id,
-                        valor_costo:me.valor_costo,
-                        cantidad_costo:me.cantidad_costo,
-                        orden_costo:me.orden_costo,
-                        descripcion_costo:me.descripcion_costo,
-                        subtotal_costo:parseFloat(me.valor_costo)*parseInt(me.cantidad_costo)
+                    me.arrayLineas.push({
+                        idarticulo:0,
+                        impuesto:me.impuesto_linea,
+                        descuento_artiuclo:me.descuento_linea,
+                        fecha:me.fecha,
+                        fecha_entrega:me.fecha_entrega,
+                        cantidad:me.cantidad_linea,
+                        articulo:me.nombre_articulo,
+                        valor:me.precio,
+                        iva:parseFloat(this.subtotal_linea)*parseFloat(this.impuesto_linea),
+                        descuento:me.descuento_linea,
+                        valor_total:me.total_linea,
+                        subtotal:me.subtotal_linea,
+                        tamano: me.tamano_linea,
+                        medida_final: me.medida_final_linea,
+                        tipo_cantidad:me.articulo_seleccionado.tipo_cantidad
                     }) 
-                    me.tipo_costo=''
-                    me.nombre_insumo=''
-                    me.id_insumo=''
-                    me.valor_costo=''
-                    me.cantidad_costo=1
-                    me.orden_costo=0
-                    me.descripcion_costo=''
-                    me.subtotal_costo=''
-                    me.insumo_seleccionado=null
-                    me.buscar_insumo=''
+                    me.nombre_articulo=''
+                    me.iva_linea=0,
+                    me.impuesto_linea=0
+                    me.descuento_linea=0
+                    me.fecha=`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`
+                    me.fecha_entrega=`${new Date().getFullYear()}-${meses[new Date().getMonth()]}-${new Date().getDate()}`
+                    me.cantidad_linea=1000
+                    me.detalle_linea=''
+                    me.precio=0
+                    me.descuento_linea=0
+                    me.subtotal_linea=0
+                    me.total_linea=0
                 }
                
                 
@@ -722,7 +776,7 @@
                 me.tipo_costo=val1.tipo_costo;
                 me.nombre_insumo=val1.nombre;
                 me.valor_insumo=val1.valor
-                me.unidad_medida=val1.unidad_medida
+                me.cabida=val1.cabida
                 me.insumo_seleccionado=val1;
                 me.buscar_insumo=val1.nombre
                 me.iseleccionado=true
@@ -741,13 +795,7 @@
                 me.arrayInsumos=[];
                 me.modali=0
             },
-            cambiarPagina(page,buscar,criterio){
-                let me = this;
-                //Actualiza la página actual
-                me.pagination.current_page = page;
-                //Envia la petición para visualizar la data de esa página
-                me.listarOrdenes(page,buscar,'like',criterio);
-            },
+           
            
             agregarDetalle(){
                  let me=this
@@ -815,36 +863,31 @@
             },
             registrarOrden(){
                 let me = this;
-                const orden1 = new FormData()
-                orden1.set('estadoc',this.estadoc)
-                orden1.set('estadop',this.estadop)
-                orden1.set('id_cliente', this.cliente_seleccionado.id)
-                orden1.set('id_articulo' , this.articulo_seleccionado.id)
-                orden1.set('fecha_entrega' , this.fecha_entrega)
-                orden1.set('fecha' , this.fecha)
-                orden1.set('fechaorden' , this.fechaorden)
-                orden1.set('carpeta_cliente' , this.carpeta_cliente)
-                orden1.set('detalles_diseno' , this.detalles_diseno)
-                orden1.set('observaciones' , this.observaciones)
-                orden1.set('unidad' , this.unidad)
-                orden1.set('ancho_material', this.ancho_material)
-                orden1.set('largo_material', this.largo_material)
-                orden1.set('cantidad', this.cantidad)
-                orden1.set('totalParcial',this.totalParcial)
-                orden1.set('descuento',this.descuento)
-                orden1.set('impuesto',this.impuesto)
-                orden1.set('total',this.total)
-                orden1.set('abono',this.abono)
-                orden1.set('saldo',this.saldo)
-                orden1.set('detalles',JSON.stringify(this.arrayDetalle))
-                orden1.set('costos',JSON.stringify(this.arrayCostos))
+                const pedido = new FormData()
+                pedido.set('estadoc',this.estadoc)
+                pedido.set('estadop',this.estadop)
+                pedido.set('id_cliente', this.cliente_seleccionado.id)
+                pedido.set('fecha' , this.fecha)
+                pedido.set('carpeta_cliente' , this.carpeta_cliente)
+                pedido.set('detalles_diseno' , this.detalles_diseno)
+                pedido.set('observaciones' , this.observaciones)
+                pedido.set('unidad' , this.unidad)
+                pedido.set('tamano', this.tamano)
+                pedido.set('medida_material', this.medida_material)
+                pedido.set('cantidad', this.cantidad)
+                pedido.set('totalParcial',this.totalParcial)
+                pedido.set('descuento',this.descuento)
+                pedido.set('impuesto',this.impuesto)
+                pedido.set('total',this.total)
+                pedido.set('abono',this.abono)
+                pedido.set('saldo',this.saldo)
+                pedido.set('detalles',JSON.stringify(this.arrayLineas))
                 axios.post(me.dominio+'/orden/registrar',orden1)
                 .then(function (response) {
                     me.listado=1
                 }).catch(function (error) {
                     console.log(error);
                 });
-                this.listarOrdenes(1,this.buscar,'like',this.criterio);
             },
            
             actualizarOrden(){
@@ -863,8 +906,8 @@
                 orden1.set('detalles_diseno' , this.detalles_diseno)
                 orden1.set('observaciones' , this.observaciones)
                 orden1.set('unidad' , this.unidad)
-                orden1.set('ancho_material', this.ancho_material)
-                orden1.set('largo_material', this.largo_material)
+                orden1.set('tamano', this.tamano)
+                orden1.set('medida_material', this.medida_material)
                 orden1.set('cantidad', this.cantidad)
                 orden1.set('totalParcial',this.totalParcial)
                 orden1.set('descuento',this.descuento)
@@ -881,7 +924,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-                this.listarOrdenes(1,this.buscar,'like',this.criterio);
                 
             },
             cambiarEstado(orden){
@@ -921,7 +963,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-                this.listarOrdenes(1,this.buscar,'like',this.criterio);
                // this.editarOrden(this.arrayOrdenes[0],'edit')
             },
             eliminarOrden(id){
@@ -933,7 +974,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-                this.listarOrdenes(1,this.buscar,'like',this.criterio);
             },
             imprimirOrden(){
                 window.print()
@@ -948,8 +988,8 @@
                 this.insumo_seleccionado=''
                 this.cliente_seleccionado=''
                 this.abono=0
-                this.ancho_material=''
-                this.largo_material=''
+                this.tamano=''
+                this.medida_material=''
                 this.detalles_diseno=''
                 this.observaciones=''
                 this.cantidad=1000
@@ -1077,8 +1117,8 @@
                 this.carpeta_cliente=orden.carpeta_cliente
                 this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
-                this.ancho_material= orden.ancho_material
-                this.largo_material= orden.largo_material
+                this.tamano= orden.tamano
+                this.medida_material= orden.medida_material
                 this.cantidad= orden.cantidad
                 this.subtotal_orden=orden.totalParcial
                 this.descuento=orden.descuento
@@ -1114,8 +1154,8 @@
                 this.carpeta_cliente=orden.carpeta_cliente
                 this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
-                this.ancho_material= orden.ancho_material
-                this.largo_material= orden.largo_material
+                this.tamano= orden.tamano
+                this.medida_material= orden.medida_material
                 this.cantidad= orden.cantidad
                 this.subtotal_orden=orden.totalParcial
                 this.precio_producto=orden.totalParcial/orden.cantidad
@@ -1147,30 +1187,44 @@
            
           
         },
-        mounted() {
-            this.listarOrdenes(1,this.buscar,'like',this.criterio);
-        }
+       
     }
 </script>
 <style>  
     .insumos, .producto, .cliente{
         position: relative;
     } 
-    .modal{
-        height: 2015px !important
-    }
-   
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
     .mostrar{
-        display: list-item !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
         opacity: 1 !important;
-        position: absolute !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 10500 !important;
+        background-color: rgba(0,0,0,0.5) !important;
+        overflow: hidden !important;
     }
-    .modal-bajo{
-        top:30%;
+    .mostrar .modal-dialog,
+    .modal-bajo {
+        margin: 10px auto !important;
+        top: 0 !important;
+        align-self: flex-start !important;
+        max-height: calc(100vh - 20px) !important;
+        height: calc(100vh - 20px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 800px;
+        }
+        .modal-lg {
+            max-width: 1100px !important;
+        }
     }
     .div-error{
         display: flex;
@@ -1187,3 +1241,4 @@
     }
 
 </style>
+

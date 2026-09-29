@@ -6,33 +6,45 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingreso extends Model
 {
+    protected $table = 'ingresos';
+
     protected $fillable = [
-        'idcliente', 
-        'idarticulo',
-        'idcostois',
-        'cantidad',
-        'ancho_material',
-        'largo_material',
-        'areas_impresas',
-        'tipo_impresion',
-        'colores_impresion',
-        'unidad_medida',
-        'detalles_diseno',
-        'carpeta_cliente',
-        'tamano',
-        'abono',
-        'saldo',
+        'idproveedor', 
+        'idusuario',
+        'tipo_comprobante',
+        'serie_comprobante',
+        'num_comprobante',
+        'fecha_hora',
+        'impuesto',
         'total',
         'estado',
-        'fecha_entrega',
+        'forma_pago',
+        'dias_credito',
+        'comprobante_id'
+    ];
 
-     ];
-     public function usuario()
-     {
-         return $this->belongsTo('App\User');
-     }
-     public function proveedor()
-     {
-         return $this->belongsTo('App\Proveedor');
-     }
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'idusuario');
+    }
+
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class, 'idproveedor');
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetalleIngreso::class, 'idingreso');
+    }
+
+    public function cuentaPorPagar()
+    {
+        return $this->hasOne(CuentaPorPagar::class, 'ingreso_id');
+    }
+
+    public function comprobante()
+    {
+        return $this->belongsTo(ComprobanteContable::class, 'comprobante_id');
+    }
 }

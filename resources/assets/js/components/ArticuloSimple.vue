@@ -6,14 +6,16 @@
             </ol>
             <div class="container-fluid">
                 <!-- Ejemplo de tabla Listado -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Artículos
-                        <button type="button" @click="abrirModal('articulo','registrar')" class="btn btn-secondary">
-                            <i class="icon-plus"></i>&nbsp;Nuevo
-                        </button>
+                <div class="">
+                    <div class="contenedor-header">
+                        <div>
+                            <i class="fa fa-align-justify"></i> Artículos
+                            <button type="button" @click="abrirModal('articulo','registrar')" class="btn btn-success boton-principal">
+                                <i class="icon-plus"></i>&nbsp;Nuevo
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    <div class="contenedor-seccion">
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="input-group">
@@ -32,6 +34,7 @@
                                     <th>Opciones</th>
                                     <th>Código</th>
                                     <th>Nombre</th>
+                                    <th>Tamaño</th>
                                     <th>Categoría</th>
                                     <th>Precio Venta</th>
                                     <th>Stock</th>
@@ -58,6 +61,7 @@
                                     </td>
                                     <td v-text="articulo.codigo"></td>
                                     <td v-text="articulo.nombre"></td>
+                                    <td v-text="articulo.tamano"></td>
                                     <td v-text="articulo.nombre_categoria"></td>
                                     <td v-text="articulo.precio_venta"></td>
                                     <td v-text="articulo.stock"></td>
@@ -128,6 +132,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Tamaño(*)</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-model="tamano" class="form-control" placeholder="Ingrese el tamaño">                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
                                     <div class="col-md-9">
                                         <input type="number" v-model="precio_venta" class="form-control" placeholder="">                                        
@@ -181,6 +191,7 @@
                 nombre_categoria : '',
                 codigo : '',
                 nombre : '',
+                tamano : '',
                 precio_venta : 0,
                 stock : 0,
                 descripcion : '',
@@ -279,6 +290,7 @@
                     'idcategoria': this.idcategoria,
                     'codigo': this.codigo,
                     'nombre': this.nombre,
+                    'tamano': this.tamano,
                     'stock': this.stock,
                     'precio_venta': this.precio_venta,
                     'descripcion': this.descripcion
@@ -300,6 +312,7 @@
                     'idcategoria': this.idcategoria,
                     'codigo': this.codigo,
                     'nombre': this.nombre,
+                    'tamano': this.tamano,
                     'stock': this.stock,
                     'precio_venta': this.precio_venta,
                     'descripcion': this.descripcion,
@@ -401,6 +414,7 @@
 
                 if (this.idcategoria==0) this.errorMostrarMsjArticulo.push("Seleccione una categoría.");
                 if (!this.nombre) this.errorMostrarMsjArticulo.push("El nombre del artículo no puede estar vacío.");
+                if (!this.tamano) this.errorMostrarMsjArticulo.push("El tamaño del artículo no puede estar vacío.");
                 if (!this.stock) this.errorMostrarMsjArticulo.push("El stock del artículo debe ser un número y no puede estar vacío.");
                 if (!this.precio_venta) this.errorMostrarMsjArticulo.push("El precio venta del artículo debe ser un número y no puede estar vacío.");
 
@@ -412,6 +426,7 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.nombre='';
+                this.tamano='';
                 this.descripcion='';
             },
             abrirModal(modelo, accion, data = []){
@@ -427,6 +442,7 @@
                                 this.nombre_categoria='';
                                 this.codigo='';
                                 this.nombre= '';
+                                this.tamano= '';
                                 this.precio_venta=0;
                                 this.stock=0;
                                 this.descripcion = '';
@@ -443,6 +459,7 @@
                                 this.idcategoria=data['idcategoria'];
                                 this.codigo=data['codigo'];
                                 this.nombre = data['nombre'];
+                                this.tamano = data['tamano'];
                                 this.stock=data['stock'];
                                 this.precio_venta=data['precio_venta'];
                                 this.descripcion= data['descripcion'];

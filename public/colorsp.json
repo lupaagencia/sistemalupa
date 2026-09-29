@@ -1,0 +1,70 @@
+[
+    {
+        "pantone": "verde muestra",
+        "hex": "#009411"
+    },
+    {
+        "pantone": "full",
+        "hex": "#000000"
+    },
+    {
+        "pantone": "Rojo",
+        "hex": "#ed0034"
+    },
+    {
+        "pantone": "Naranja Basico",
+        "hex": "#ed9900"
+    },
+    {
+        "pantone": "Rojo Muestra",
+        "hex": "#ed0034"
+    },
+    {
+        "pantone": "Cafe Muestra",
+        "hex": "#603e00"
+    },
+    {
+        "pantone": "Verde Oliva",
+        "hex": "#28724f"
+    },
+    {
+        "pantone": "Magenta",
+        "hex": "#ff0072"
+    },
+    {
+        "pantone": "Amarillo",
+        "hex": "#ffe000"
+    },
+    {
+        "pantone": "Cyan",
+        "hex": "#006aff"
+    },
+    {
+        "pantone": "Amarillo Quemado",
+        "hex": "#ffb549"
+    },
+    {
+        "pantone": "Fullcolor",
+        "hex": "linear-gradient(90deg, #005eb8, #e31c79, #fce300, #000)"
+    },
+    {
+        "pantone": "Verde fuerte",
+        "hex": "#0c3201"
+    },
+    {
+        "pantone": "juli",
+        "hex": "#bc2929"
+    },
+    {
+        "pantone": "gsad",
+        "hex": "#805252"
+    },
+    {
+        "pantone": "Amarillo Oro",
+        "hex": "#8f7c00"
+    },
+    {
+        "pantone": "Rojo rubi",
+        "hex": "#a40e1d"
+    }
+]

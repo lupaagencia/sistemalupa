@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Costois;
+use App\CostoArticulo;
+use App\OpcionAtributo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class CostoisController extends Controller
 {
     /**
@@ -18,16 +21,42 @@ class CostoisController extends Controller
         $criterio = $request->criterio;
         
         if ($buscar==''){
-            $costosp = Costois::join('proveedores','costois.idproveedor','=','proveedores.id')->join('personas','costois.idpersona','=','personas.id')
-            ->select('costois.id','costois.idproveedor','costois.tipo_costo','costois.valor','costois.estado','costois.unidad_medida','costois.updated_at','costois.nombre','proveedores.contacto','proveedores.telefono_contacto','personas.nombre as nombre_proveedor')
-            ->where('costois.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('costois.id', 'desc')->paginate(20);
+            $costosp = Costois::leftJoin('proveedores', 'costois.idproveedor', '=', 'proveedores.id')
+                ->select(
+                    'costois.id',
+                    'costois.idproveedor',
+                    'costois.tipo_costo',
+                    'costois.valor',
+                    'costois.estado',
+                    'costois.unidad_medida as cabida',
+                    'costois.updated_at',
+                    'costois.nombre',
+                    'costois.descripcion',
+                    'proveedores.contacto',
+                    'proveedores.telefono_contacto',
+                    'proveedores.nombre as nombre_proveedor'
+                )
+                ->where('costois.' . $criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('costois.id', 'desc')->paginate(100);
         }
         else{
-           $costosp = Costois::join('proveedores','costois.idproveedor','=','proveedores.id')->join('personas','costois.idpersona','=','personas.id')
-           ->select('costois.id','costois.idproveedor','costois.tipo_costo','costois.valor','costois.estado','costois.unidad_medida','costois.updated_at','costois.nombre','proveedores.contacto','proveedores.telefono_contacto','personas.nombre as nombre_proveedor')
-           ->where('costois.'.$criterio, 'like', '%'. $buscar . '%')
-           ->orderBy('costois.id', 'desc')->paginate(20);
+            $costosp = Costois::leftJoin('proveedores', 'costois.idproveedor', '=', 'proveedores.id')
+                ->select(
+                    'costois.id',
+                    'costois.idproveedor',
+                    'costois.tipo_costo',
+                    'costois.valor',
+                    'costois.estado',
+                    'costois.unidad_medida as cabida',
+                    'costois.updated_at',
+                    'costois.nombre',
+                    'costois.descripcion',
+                    'proveedores.contacto',
+                    'proveedores.telefono_contacto',
+                    'proveedores.nombre as nombre_proveedor'
+                )
+                ->where('costois.' . $criterio, 'like', '%' . $buscar . '%')
+                ->orderBy('costois.id', 'desc')->paginate(100);
         }
         
 
@@ -68,24 +97,47 @@ class CostoisController extends Controller
         $costop->idpersona = $request->idproveedor;
         $costop->tipo_costo = $request->tipo_costo;
         $costop->nombre = $request->nombre;
+        $costop->descripcion = $request->descripcion;
         $costop->unidad_medida = $request->unidad;
         $costop->valor = $request->valor;
         $costop->total = 0;
         $costop->estado=1;
         $costop->save();
     }
-    public function selectInsumos(Request $request){
+    public function agruparTipos(){
         //if (!$request->ajax()) return redirect('/');
-        $filtro = $request->filtro;
-        $costois = Costois::join('proveedores','costois.idproveedor','=','proveedores.id')->join('personas','costois.idpersona','=','personas.id')
-        ->select('costois.id','costois.idproveedor','costois.tipo_costo','costois.valor','costois.estado','costois.unidad_medida','costois.updated_at','costois.nombre','proveedores.contacto','proveedores.telefono_contacto','personas.nombre as nombre_proveedor')
-        ->where('costois.nombre', 'like', '%'. $filtro . '%')
-        ->orWhere('costois.tipo_costo', 'like', '%'. $filtro . '%')
-        ->orderBy('costois.nombre', 'asc')->get();
+        $costois=Costois::select('tipo_costo', DB::raw('count(*) as tipo'))->groupBy('tipo_costo')->get();
+        return $costois;
+        foreach($costois as $costo){
+            $costo->proveedor;
+        }
+        // $costois = Costois::join('proveedores','costois.idproveedor','=','proveedores.id')->join('personas','costois.idpersona','=','personas.id')
+        // ->select('costois.id','costois.idproveedor','costois.tipo_costo','costois.valor','costois.estado','costois.cabida','costois.updated_at','costois.nombre','proveedores.contacto','proveedores.telefono_contacto','personas.nombre as nombre_proveedor')
+        // ->where('costois.nombre', 'like', '%'. $filtro . '%')
+        // ->orWhere('costois.tipo_costo', 'like', '%'. $filtro . '%')
+        // ->orderBy('costois.nombre', 'asc')->get();
         
 
         return ['insumos' => $costois];
 
+    }
+    public function selectInsumos(Request $request){
+        $filtro = trim($request->filtro);
+        if (empty($filtro)) {
+            return response()->json(['insumos' => []]);
+        }
+
+        $costois = Costois::with('proveedor')
+            ->where('estado', 1)
+            ->where(function($q) use ($filtro) {
+                $q->where('nombre', 'like', '%' . $filtro . '%')
+                  ->orWhere('tipo_costo', 'like', '%' . $filtro . '%');
+            })
+            ->orderBy('nombre', 'asc')
+            ->take(30)
+            ->get();
+
+        return response()->json(['insumos' => $costois]);
     }
     /**
      * Display the specified resource.
@@ -116,7 +168,7 @@ class CostoisController extends Controller
      * @param  \App\costois  $costois
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, costois $costois)
+    public function update(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
         $costop = Costois::findOrFail($request->id);
@@ -124,9 +176,27 @@ class CostoisController extends Controller
         $costop->idpersona = $request->idproveedor;
         $costop->tipo_costo = $request->tipo_costo;
         $costop->nombre = $request->nombre;
+        $costop->descripcion = $request->descripcion;
         $costop->unidad_medida = $request->unidad;
         $costop->valor = $request->valor;
         $costop->save();
+        $costoa=CostoArticulo::where('idcostois','=',$request->id)->get();
+        foreach($costoa as $cos){
+            $costoarti=CostoArticulo::findOrFail($cos->id);
+            $costoarti->valor=$costop->valor/$cos->fraccion;
+            $costoarti->valorfull=$costop->valor/$cos->fraccion;
+            $costoarti->save();
+            $opcion=OpcionAtributo::findOrFail($cos->idopcion);
+            $costosOpcion=CostoArticulo::where('idopcion','=',$cos->idopcion)->get();
+            $valoropcion=0;
+            foreach($costosOpcion as $co){
+                $valor=$co->valor*($co->rentabilidad/100+1);
+                $valoropcion=$valoropcion+$valor;
+            }
+            $opcion->valor=$valoropcion;
+            $opcion->save();
+        }
+        
     }
     public function delete(Request $request){
         $costop=Costois::where('id','=',$request->id)->delete();
@@ -142,3 +212,4 @@ class CostoisController extends Controller
         //
     }
 }
+

@@ -1,0 +1,11 @@
+id
+idproveedor
+idpersona
+tipo_costo
+nombre
+unidad_medida
+valor
+total
+estado
+created_at
+updated_at

@@ -1,0 +1,21 @@
+CREATE TABLE `tipo_producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `valor` decimal(30,2) NOT NULL,
+  `tamano` int(10) NOT NULL,
+  `area` decimal(30,3) NOT NULL,
+  `impresiones` int(10) NOT NULL,
+  `sobrante` int(11) NOT NULL,
+  `cabida` int(10) NOT NULL,
+  `tipo_cantidad` varchar(400) DEFAULT NULL,
+  `rangos` varchar(400) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `imagen` varchar(100) DEFAULT NULL,
+  `orden` int(11) NOT NULL,
+  `estado` int(2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `formula_ancho` varchar(191) DEFAULT NULL,
+  `formula_largo` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci

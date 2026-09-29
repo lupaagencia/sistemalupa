@@ -21,7 +21,7 @@
                                 <div class="col-md-12">
                                     <div class="col-xl-12">
                                         <div class="input-group">
-                                            <input type="text" v-model="buscare" @keyup="listarOrdenes(1,`%${buscare}%`,'like','personas.nombre')"  placeholder="Empresa">
+                                            <input type="text" v-model="buscare" @keyup="listarOrdenes(1,`%${buscare}%`,'like','clientes.razonsocial')"  placeholder="Empresa">
                                             <input type="text" v-model="buscarc" @keyup="listarOrdenes(1,`%${buscarc}%`,'like','clientes.contacto')"  placeholder="Contacto">
                                             <input type="text" v-model="buscarv" @keyup="listarOrdenes(1,`%${buscarv}%`,'like','ordentrabajos.total')"  placeholder="Valor orden">
                                             
@@ -173,7 +173,7 @@
                             <div class="card-header header_vieworden">
                                 <div class="logo_vieworden">
 
-                                    <img src="img/logo.png" alt="">
+                                    <img src="img/LOGO-LUPA.jpg" alt="">
                                 </div>
                                <div class="fecha_norden">
                                     <h5 v-text="`ORDEN DE TRABAJO NO. ${idorden}`"></h5>
@@ -218,7 +218,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div><label for="">Cantidad trabajo:</label> <div v-text="cantidad"></div></div>
-                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="ancho_material"></div><div v-text="largo_material"></div></div>
+                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="tamano"></div><div v-text="medida_material"></div></div>
                                         <div><label for="">Carpeta cliente:</label> <div v-text="carpeta_cliente"></div></div>
                                         <div><label for="">Fecha de entrega:</label> <div v-text="fecha_entrega"></div></div>
                                     </div>
@@ -352,8 +352,8 @@
                 carpeta_cliente:'',
                 detalles_diseno:'',
                 observaciones:'',
-                largo_material:0,
-                ancho_material:0,
+                medida_material:0,
+                tamano:0,
                 valor:0,
                 idproveedor:0,
                 nombre : '',
@@ -401,7 +401,7 @@
                 idcosto:0,
                 nombre_insumo:'',
                 valor_insumo:0,
-                unidad_medida:'',
+                cabida:'',
                 insumo_seleccionado:null,
                 iseleccionado:false,
                 arrayInsumos:[],
@@ -597,7 +597,7 @@
                 let me = this;
                 me.loading = true;
                 me.idcliente = val1.id;
-                me.nombre=val1.nombre;
+                me.nombre=val1.razonsocial;
                 me.tipo_documento=val1.tipo_documento
                 me.tipo_cliente=val1.tipo_cliente
                 me.num_documento=val1.num_documento
@@ -611,7 +611,7 @@
                 me.telefono_contacto=val1.telefono_contacto
                 me.email_contacto=val1.email_contacto
                 me.cliente_seleccionado=val1;
-                me.buscar_cliente=val1.nombre
+                me.buscar_cliente=val1.razonsocial
                 me.cseleccionado=true
                 me.arrayClientes=[];
                 me.modalc=0
@@ -650,9 +650,9 @@
                    id=me.cliente_seleccionado.id
                 }
                 var url= me.dominio+'/cliente/actualizar';
-                axios.put(url,{
-                    'tipo_cliente':me.tipo_cliente,
-                    'nombre': me.nombre,
+                axios.put(url, {
+                    'tipo_cliente': me.tipo_cliente,
+                    'razonsocial': me.nombre,
                     'tipo_documento': me.tipo_documento,
                     'num_documento' : me.num_documento,
                     'direccion' : me.direccion,
@@ -801,7 +801,7 @@
                 me.tipo_costo=val1.tipo_costo;
                 me.nombre_insumo=val1.nombre;
                 me.valor_insumo=val1.valor
-                me.unidad_medida=val1.unidad_medida
+                me.cabida=val1.cabida
                 me.insumo_seleccionado=val1;
                 me.buscar_insumo=val1.nombre
                 me.iseleccionado=true
@@ -906,8 +906,8 @@
                 orden1.set('detalles_diseno' , this.detalles_diseno)
                 orden1.set('observaciones' , this.observaciones)
                 orden1.set('unidad' , this.unidad)
-                orden1.set('ancho_material', this.ancho_material)
-                orden1.set('largo_material', this.largo_material)
+                orden1.set('tamano', this.tamano)
+                orden1.set('medida_material', this.medida_material)
                 orden1.set('cantidad', this.cantidad)
                 orden1.set('totalParcial',this.totalParcial)
                 orden1.set('descuento',this.descuento)
@@ -942,8 +942,8 @@
                 orden1.set('detalles_diseno' , this.detalles_diseno)
                 orden1.set('observaciones' , this.observaciones)
                 orden1.set('unidad' , this.unidad)
-                orden1.set('ancho_material', this.ancho_material)
-                orden1.set('largo_material', this.largo_material)
+                orden1.set('tamano', this.tamano)
+                orden1.set('medida_material', this.medida_material)
                 orden1.set('cantidad', this.cantidad)
                 orden1.set('subtotal_orden',this.totalParcial)
                 orden1.set('descuento',this.descuento)
@@ -1027,8 +1027,8 @@
                 this.insumo_seleccionado=''
                 this.cliente_seleccionado=''
                 this.abono=0
-                this.ancho_material=''
-                this.largo_material=''
+                this.tamano=''
+                this.medida_material=''
                 this.detalles_diseno=''
                 this.observaciones=''
                 this.cantidad=1000
@@ -1155,8 +1155,8 @@
                 this.carpeta_cliente=orden.carpeta_cliente
                 this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
-                this.ancho_material= orden.ancho_material
-                this.largo_material= orden.largo_material
+                this.tamano= orden.tamano
+                this.medida_material= orden.medida_material
                 this.cantidad= orden.cantidad
                 this.subtotal_orden=orden.totalParcial
                 this.descuento=orden.descuento
@@ -1192,8 +1192,8 @@
                 this.carpeta_cliente=orden.carpeta_cliente
                 this.detalles_diseno=orden.detalles_diseno
                 this.observaciones=orden.observaciones
-                this.ancho_material= orden.ancho_material
-                this.largo_material= orden.largo_material
+                this.tamano= orden.tamano
+                this.medida_material= orden.medida_material
                 this.cantidad= orden.cantidad
                 this.subtotal_orden=orden.totalParcial
                 this.descuento=orden.descuento
@@ -1233,21 +1233,28 @@
     .insumos, .producto, .cliente{
         position: relative;
     } 
-    .modal{
-        height: 2015px !important
-    }
-   
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
     .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-color: rgba(0,0,0,0.5) !important;
+        overflow-y: hidden !important;
+        z-index: 10500 !important;
     }
-    .modal-bajo{
-        top:30%;
+    .mostrar .modal-dialog,
+    .modal-bajo {
+        margin: 10px auto !important;
+        top: 0 !important;
+        align-self: flex-start !important;
+        max-height: calc(100vh - 20px) !important;
+        height: calc(100vh - 20px) !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     .div-error{
         display: flex;
@@ -1264,3 +1271,5 @@
     }
 
 </style>
+
+

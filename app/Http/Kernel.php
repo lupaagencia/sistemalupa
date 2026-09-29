@@ -59,7 +59,13 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'Administrador'=>\App\Http\Middleware\Administrador::class,
+        'AuxiliarProduccion'=>\App\Http\Middleware\AuxiliarProduccion::class,
+        'Disenador'=>\App\Http\Middleware\Administrador::class,
+        'Coordinador'=>\App\Http\Middleware\Coordinador::class,
+        'Operario'=>\App\Http\Middleware\Operario::class,
         'Almacenero'=>\App\Http\Middleware\Almacenero::class,
         'Vendedor'=>\App\Http\Middleware\Vendedor::class,
+        'Superadministrador'=>\App\Http\Middleware\Superadministrador::class,
+        'periodo.abierto'=>\App\Http\Middleware\CheckPeriodoAbierto::class,
     ];
 }

@@ -63,7 +63,7 @@
                                             <td v-text="proceso.articulo"></td>
                                             <td >{{proceso.titulo}} {{proceso.nombre_insumo}}</td>
                                             <td v-text="proceso.descripcion_costo" ></td>
-                                            <td>{{proceso.cantidad}} {{proceso.unidad_medida}} </td>
+                                            <td>{{proceso.cantidad}} {{proceso.cabida}} </td>
                                             <td>
                                                <select :class="proceso.completado==1 ? 'bg-success':'bg-warning'" v-model="proceso.completado" @change="cambiarProceso(proceso,'completado', busquedaActual)">
                                                    <option value="0" >No Iniciado</option>
@@ -124,7 +124,7 @@
                             <div class="card-header header_vieworden">
                                 <div class="logo_vieworden">
 
-                                    <img src="img/logo.png" alt="">
+                                    <img src="img/LOGO-LUPA.jpg" alt="">
                                 </div>
                                <div class="fecha_norden">
                                     <h5 v-text="`ORDEN DE TRABAJO NO. ${arrayOrdenes.idorden}`"></h5>
@@ -170,7 +170,7 @@
                                     <div class="card-body">
                                         <div><label for="">Producto:</label> <div v-text="arrayOrdenes.articulo"></div></div>
                                         <div><label for="">Cantidad trabajo:</label> <div v-text="arrayOrdenes.cantidad"></div></div>
-                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="`Arte: ${arrayOrdenes.ancho_material}`"></div><div v-text="`Material: ${largo_material}`"></div></div>
+                                        <div><label for="">Dimenciones trabajo:</label> <div v-text="`Arte: ${arrayOrdenes.tamano}`"></div><div v-text="`Material: ${medida_material}`"></div></div>
                                         <div><label for="">Carpeta cliente:</label> <div v-text="arrayOrdenes.carpeta_cliente"></div></div>
                                         <div><label for="">Fecha de entrega:</label> <div v-text="arrayOrdenes.fecha_entrega"></div></div>
                                     </div>
@@ -304,8 +304,8 @@
                 carpeta_cliente:'',
                 detalle_diseno:'',
                 observaciones:'',
-                largo_material:0,
-                ancho_material:0,
+                medida_material:0,
+                tamano:0,
                 valor:0,
                 idproveedor:0,
                 nombre : '',
@@ -353,7 +353,7 @@
                 idcosto:0,
                 nombre_insumo:'',
                 valor_insumo:0,
-                unidad_medida:'',
+                cabida:'',
                 insumo_seleccionado:null,
                 iseleccionado:false,
                 arrayInsumos:[],
@@ -584,14 +584,12 @@
                     
                 }).then(function (response) {
                     var respuesta= response.data;
-                   
-                    me.arrayOrdenes = respuesta.ordenes.data[0];
-                    me.pagination= respuesta.pagination;
+                    me.arrayOrdenes = respuesta.ordenes ? respuesta.ordenes.data : [];
+                    me.pagination= respuesta.pagination || {};
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                me.verOrden();
             },
             selectArticulobyid(idarticulo){
                 let me=this;
@@ -761,8 +759,8 @@
                 this.carpeta_cliente=this.arrayOrdenes.carpeta_cliente
                 this.detalles_diseno=this.arrayOrdenes.detalle_diseno
                 this.observaciones=this.arrayOrdenes.observaciones
-                this.ancho_material= this.arrayOrdenes.ancho_material
-                this.largo_material= this.arrayOrdenes.largo_material
+                this.tamano= this.arrayOrdenes.tamano
+                this.medida_material= this.arrayOrdenes.medida_material
                 this.cantidad= this.arrayOrdenes.cantidad
                 this.subtotal_orden=this.arrayOrdenes.totalParcial
                 this.descuento=this.arrayOrdenes.descuento
@@ -785,21 +783,28 @@
     .insumos, .producto, .cliente{
         position: relative;
     } 
-    .modal{
-        height: 2015px !important
-    }
-   
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
     .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-color: rgba(0,0,0,0.5) !important;
+        overflow-y: hidden !important;
+        z-index: 10500 !important;
     }
-    .modal-bajo{
-        top:30%;
+    .mostrar .modal-dialog,
+    .modal-bajo {
+        margin: 10px auto !important;
+        top: 0 !important;
+        align-self: flex-start !important;
+        max-height: calc(100vh - 20px) !important;
+        height: calc(100vh - 20px) !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     .div-error{
         display: flex;
@@ -816,3 +821,5 @@
     }
 
 </style>
+
+

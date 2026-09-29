@@ -39,13 +39,17 @@
                                     <th>Teléfono</th>
                                     <th>Email</th>
                                     <th>Contacto</th>
+                                    <th>Cupo Crédito</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="persona in arrayPersona" :key="persona.id">
                                     <td>
-                                        <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm">
+                                        <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm" title="Editar">
                                           <i class="icon-pencil"></i>
+                                        </button>&nbsp;
+                                        <button type="button" @click="eliminarProveedor(persona.id)" class="btn btn-danger btn-sm" title="Eliminar">
+                                          <i class="icon-trash"></i>
                                         </button>
                                     </td>
                                     <td v-text="persona.nombre"></td>
@@ -55,6 +59,7 @@
                                     <td v-text="persona.telefono"></td>
                                     <td v-text="persona.email"></td>
                                     <td v-text="persona.contacto"></td>
+                                    <td class="text-right font-weight-bold text-dark">${{ formatNumber(persona.cupo_credito) }}</td>
                                 </tr>                                
                             </tbody>
                         </table>
@@ -139,6 +144,12 @@
                                         <input type="text" v-model="telefono_contacto" class="form-control" placeholder="Teléfono del contacto">
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="cupo-input">Cupo de Crédito</label>
+                                    <div class="col-md-9">
+                                        <input type="number" v-model="cupo_credito" class="form-control" placeholder="0.00" step="0.01" min="0">
+                                    </div>
+                                </div>
 
                                 <div v-show="errorPersona" class="form-group row div-error">
                                     <div class="text-center text-error">
@@ -177,6 +188,7 @@
                 email : '',
                 contacto : '',
                 telefono_contacto : '',
+                cupo_credito : 0,
                 arrayPersona : [],
                 modal : 0,
                 tituloModal : '',
@@ -260,7 +272,8 @@
                     'telefono' : this.telefono,
                     'email' : this.email,
                     'contacto': this.contacto,
-                    'telefono_contacto': this.telefono_contacto
+                    'telefono_contacto': this.telefono_contacto,
+                    'cupo_credito': this.cupo_credito
 
                 }).then(function (response) {
                     me.cerrarModal();
@@ -285,6 +298,7 @@
                     'email' : this.email,
                     'contacto': this.contacto,
                     'telefono_contacto': this.telefono_contacto,
+                    'cupo_credito': this.cupo_credito,
                     'id': this.persona_id
                 }).then(function (response) {
                     me.cerrarModal();
@@ -314,6 +328,7 @@
                 this.email='';
                 this.contacto='';
                 this.telefono_contacto='';
+                this.cupo_credito=0;
                 this.errorPersona=0;
 
             },
@@ -352,11 +367,55 @@
                                 this.email = data['email'];
                                 this.contacto = data['contacto'];
                                 this.telefono_contacto = data['telefono_contacto'];
+                                this.cupo_credito = data['cupo_credito'];
                                 break;
                             }
                         }
                     }
                 }
+            },
+            formatNumber(value) {
+                if (!value) return '0.00';
+                return parseFloat(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            },
+            eliminarProveedor(id) {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+
+                swalWithBootstrapButtons.fire({
+                    title: '¿Está seguro de eliminar este proveedor?',
+                    text: '¡Si elimina el proveedor, este no podrá ser recuperado!',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'No, cancelar',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+                        let me = this;
+                        axios.post('/proveedor/eliminar', {
+                            'id': id
+                        }).then(function (response) {
+                            me.listarPersona(me.pagination.current_page, me.buscar, me.criterio);
+                            Swal.fire(
+                                'Eliminado!',
+                                'El proveedor ha sido eliminado con éxito.',
+                                'success'
+                            );
+                        }).catch(function (error) {
+                            if (error.response && error.response.data && error.response.data.error) {
+                                Swal.fire('No se puede eliminar', error.response.data.error, 'warning');
+                            } else {
+                                Swal.fire('Error', 'No se pudo eliminar el proveedor.', 'error');
+                            }
+                        });
+                    }
+                });
             }
         },
         mounted() {

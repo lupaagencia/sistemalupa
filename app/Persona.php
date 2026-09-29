@@ -6,19 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
 {
-    protected $fillable = ['nombre','tipo_documento','num_documento','direccion','telefono','email'];
+    protected $fillable = ['id', 'nombre', 'tipo_documento', 'num_documento', 'direccion', 'telefono', 'email'];
 
-    public function provedor(){
-        return $this->hasOne('App\Proveedor');
+    public $timestamps = true;
+
+    public function provedor()
+    {
+        return $this->hasOne('App\Proveedor', 'id', 'id');
     }
-    public function user(){
-        return $this->hasOne('App\User');
+
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'id');
     }
-    public function cliente(){
-        return $this->hasOne('App\Cliente');
+
+    public function cliente()
+    {
+        return $this->hasOne('App\Cliente', 'id', 'id');
     }
-   
 }
-    
-
-
