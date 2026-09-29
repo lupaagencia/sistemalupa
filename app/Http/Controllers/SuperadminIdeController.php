@@ -49,7 +49,7 @@ class SuperadminIdeController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Directorio no encontrado.'], 404);
         }
 
-        $tree = $this->buildTree($targetDir, $basePath, 0, 3);
+        $tree = $this->buildTree($targetDir, $basePath, 0, 10);
 
         return response()->json($this->sanitizeUtf8([
             'status' => 'success',
@@ -328,10 +328,10 @@ class SuperadminIdeController extends Controller
     /**
      * Build directory tree recursively with max depth safety.
      */
-    private function buildTree($dir, $basePath, $currentDepth = 0, $maxDepth = 3)
+    private function buildTree($dir, $basePath, $currentDepth = 0, $maxDepth = 10)
     {
         $result = [];
-        $excludeDirNames = ['.git', 'node_modules', 'vendor', 'storage', '.idea', '.vscode', '.agent', '.agents'];
+        $excludeDirNames = ['.git', 'node_modules', 'vendor', 'storage', '.idea', '.vscode', '.agent', '.agents', 'backup sistema', 'scratch', 'tmp'];
         $excludeFiles = ['.env.production', '.DS_Store', 'thumbs.db'];
 
         $items = @scandir($dir);
