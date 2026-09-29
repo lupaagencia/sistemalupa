@@ -191,13 +191,13 @@ class SuperadminIdeController extends Controller
     }
 
     /**
-     * AI Agent Prompt processing.
+     * AI Agent Prompt processing with Agentic Auto-Execution capabilities.
      */
     public function aiPrompt(Request $request)
     {
         $this->checkSuperadmin();
 
-        $prompt = $request->input('prompt');
+        $prompt = trim($request->input('prompt'));
         $activeFile = $request->input('active_file');
         $fileContent = $request->input('file_content');
         $selectedCode = $request->input('selected_code');
@@ -213,8 +213,8 @@ class SuperadminIdeController extends Controller
             $agentsRules = File::get($agentsPath);
         }
 
-        $systemContext = "Eres Antigravity, un asistente de programación agentico de nivel senior creado por Google DeepMind.\n";
-        $systemContext .= "Estás pair-programming con el Superadministrador dentro del Web IDE del sistema Empaques Lupa.\n\n";
+        $systemContext = "Eres Antigravity, el asistente agente de IA senior de Google DeepMind en este Web IDE.\n";
+        $systemContext .= "Tienes permisos agenticos completos para MODIFICAR y GUARDAR código en el proyecto.\n\n";
 
         if (!empty($agentsRules)) {
             $systemContext .= "--- REGLAS DEL PROYECTO (AGENTS.md) ---\n" . $agentsRules . "\n----------------------------------------\n\n";
@@ -223,69 +223,124 @@ class SuperadminIdeController extends Controller
         if (!empty($activeFile)) {
             $systemContext .= "Archivo activo: {$activeFile}\n";
         }
+
         if (!empty($selectedCode)) {
-            $systemContext .= "Código seleccionado por el usuario:\n```\n{$selectedCode}\n```\n";
+            $systemContext .= "Código seleccionado:\n```\n{$selectedCode}\n```\n";
         } elseif (!empty($fileContent)) {
-            $previewSnippet = strlen($fileContent) > 3000 ? substr($fileContent, 0, 3000) . "\n... (contenido truncado para contexto)" : $fileContent;
-            $systemContext .= "Contenido del archivo actual:\n```\n{$previewSnippet}\n```\n";
+            $previewSnippet = strlen($fileContent) > 4000 ? substr($fileContent, 0, 4000) . "\n... (contenido truncado)" : $fileContent;
+            $systemContext .= "Contenido completo del archivo actual:\n```\n{$previewSnippet}\n```\n";
         }
 
-        // Call Gemini API if GEMINI_API_KEY is available in .env or fallback
+        $systemContext .= "\nINSTRUCCIONES DE RESPUESTA AGENTICA:\n";
+        $systemContext .= "1. Analiza el problema o requerimiento del usuario.\n";
+        $systemContext .= "2. Explica qué cambios son necesarios en español en formato Markdown.\n";
+        $systemContext .= "3. Si la solicitud requiere modificar o agregar código en el archivo activo, proporciona el CÓDIGO COMPLETO FINAL del archivo encerrado en un bloque de código ``` (ej. ```php o ```vue o ```javascript) para que el sistema lo aplique y guarde automáticamente en el servidor y GitHub.\n";
+
         $apiKey = env('GEMINI_API_KEY') ?: env('GOOGLE_API_KEY');
-        if (!$apiKey) {
-            // Generar respuesta inteligente estructurada estilo Antigravity
-            $responseMessage = $this->generateAgentResponseFallback($prompt, $activeFile, $fileContent, $selectedCode);
-            return response()->json([
-                'status' => 'success',
-                'agent' => 'Antigravity DeepMind',
-                'response' => $responseMessage,
-                'suggested_code' => $this->extractCodeFromResponse($responseMessage)
-            ]);
-        }
+        $replyText = "";
 
-        try {
-            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . $apiKey;
-            $payload = [
-                "contents" => [
-                    [
-                        "parts" => [
-                            ["text" => $systemContext . "\n\nSolicitud del usuario: " . $prompt]
+        if ($apiKey) {
+            try {
+                $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . $apiKey;
+                $payload = [
+                    "contents" => [
+                        [
+                            "parts" => [
+                                ["text" => $systemContext . "\n\nSolicitud del usuario: " . $prompt]
+                            ]
                         ]
                     ]
-                ]
-            ];
+                ];
 
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            $res = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+                curl_setopt($ch, CURLOPT_TIMEOUT, 35);
+                $res = curl_exec($ch);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
 
-            if ($httpCode === 200 && $res) {
-                $data = json_decode($res, true);
-                $replyText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "No se obtuvo respuesta de la IA.";
-                return response()->json([
-                    'status' => 'success',
-                    'agent' => 'Antigravity DeepMind',
-                    'response' => $replyText,
-                    'suggested_code' => $this->extractCodeFromResponse($replyText)
-                ]);
+                if ($httpCode === 200 && $res) {
+                    $data = json_decode($res, true);
+                    $replyText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "";
+                }
+            } catch (\Exception $e) {
+                Log::error("Error consultando Gemini API: " . $e->getMessage());
             }
-        } catch (\Exception $e) {
-            Log::error("Error consultando Gemini API: " . $e->getMessage());
         }
 
-        $fallbackReply = $this->generateAgentResponseFallback($prompt, $activeFile, $fileContent, $selectedCode);
-        return response()->json([
+        if (empty($replyText)) {
+            $replyText = $this->generateAgentResponseFallback($prompt, $activeFile, $fileContent, $selectedCode);
+        }
+
+        $modifiedCode = $this->extractCodeFromResponse($replyText);
+        $wasApplied = false;
+        $appliedFile = null;
+
+        // Auto-apply modified code to active file if provided
+        if (!empty($modifiedCode) && !empty($activeFile)) {
+            $fullPath = base_path($activeFile);
+            $extension = strtolower(File::extension($fullPath));
+
+            // Validate syntax if PHP
+            $canApply = true;
+            if ($extension === 'php') {
+                $tmpFile = tempnam(sys_get_temp_dir(), 'ide_lint_');
+                file_put_contents($tmpFile, $modifiedCode);
+                $output = [];
+                $returnVar = 0;
+                exec("php -l " . escapeshellarg($tmpFile) . " 2>&1", $output, $returnVar);
+                @unlink($tmpFile);
+
+                if ($returnVar !== 0) {
+                    $canApply = false;
+                    $replyText .= "\n\n⚠️ **Nota de sintaxis**: Se generó una propuesta pero falló la validación `php -l`. El archivo no fue sobrescrito automáticamente para evitar errores.";
+                }
+            }
+
+            if ($canApply) {
+                // Create backup
+                if (File::exists($fullPath)) {
+                    $backupDir = storage_path('ide_backups/' . date('Y-m-d'));
+                    if (!File::exists($backupDir)) {
+                        File::makeDirectory($backupDir, 0755, true);
+                    }
+                    $backupName = pathinfo($activeFile, PATHINFO_FILENAME) . '_' . date('His') . '.' . $extension . '.bak';
+                    File::copy($fullPath, $backupDir . '/' . $backupName);
+                }
+
+                File::put($fullPath, $modifiedCode);
+                $wasApplied = true;
+                $appliedFile = $activeFile;
+
+                // Auto-commit & push to GitHub
+                try {
+                    $commitMsg = "Antigravity AI Agent: Auto-apply en " . $activeFile . " [" . date('Y-m-d H:i:s') . "]";
+                    $gitRepoPath = base_path();
+                    $escapedFile = escapeshellarg($activeFile);
+                    $escapedMsg = escapeshellarg($commitMsg);
+                    
+                    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                        pclose(popen("start /B git -C " . escapeshellarg($gitRepoPath) . " add " . $escapedFile . " && git -C " . escapeshellarg($gitRepoPath) . " commit -m " . $escapedMsg . " && git -C " . escapeshellarg($gitRepoPath) . " push origin main", "r"));
+                    } else {
+                        exec("git -C " . escapeshellarg($gitRepoPath) . " add " . $escapedFile . " && git -C " . escapeshellarg($gitRepoPath) . " commit -m " . $escapedMsg . " && git -C " . escapeshellarg($gitRepoPath) . " push origin main > /dev/null 2>&1 &");
+                    }
+                } catch (\Exception $e) {
+                    Log::warning("Git auto-push failed: " . $e->getMessage());
+                }
+            }
+        }
+
+        return response()->json($this->sanitizeUtf8([
             'status' => 'success',
             'agent' => 'Antigravity DeepMind',
-            'response' => $fallbackReply,
-            'suggested_code' => $this->extractCodeFromResponse($fallbackReply)
-        ]);
+            'response' => $replyText,
+            'applied' => $wasApplied,
+            'target_file' => $appliedFile,
+            'modified_code' => $modifiedCode
+        ]));
     }
 
     /**

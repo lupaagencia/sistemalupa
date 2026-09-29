@@ -120,7 +120,10 @@
                 <span class="time">{{ msg.time }}</span>
               </div>
               <div class="bubble-content" v-html="formatMessageText(msg.text)"></div>
-              <button v-if="msg.code" class="btn-apply-code" @click="applyCodeToEditor(msg.code)">
+              <div v-if="msg.applied" class="applied-badge mt-2 p-2 rounded text-emerald font-weight-bold" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.78rem;">
+                <i class="fa fa-check-circle"></i> ✅ Cambios aplicados y guardados automáticamente en servidor y GitHub
+              </div>
+              <button v-if="msg.code && !msg.applied" class="btn-apply-code" @click="applyCodeToEditor(msg.code)">
                 <i class="fa fa-code"></i> Insertar en Editor
               </button>
             </div>
@@ -441,10 +444,22 @@ export default {
       })
       .then(res => {
         if (res.data.status === 'success') {
+          if (res.data.applied && res.data.modified_code) {
+            if (this.editor && res.data.target_file === this.activeFilePath) {
+              this.editor.setValue(res.data.modified_code);
+              this.isModified = false;
+              this.syntaxStatus = { type: 'success', message: 'IA: Auto-aplicado & Guardado' };
+            }
+            if (typeof toast !== 'undefined' && toast.fire) {
+              toast.fire({ type: 'success', title: 'Antigravity IA aplicó y guardó los cambios' });
+            }
+          }
+
           this.chatMessages.push({
             role: 'agent',
             text: res.data.response,
-            code: res.data.suggested_code,
+            code: res.data.applied ? null : res.data.modified_code,
+            applied: res.data.applied,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           });
         }
