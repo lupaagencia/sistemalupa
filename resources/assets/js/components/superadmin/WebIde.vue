@@ -168,12 +168,12 @@ Vue.component('tree-item', {
   },
   template: `
     <div class="tree-node">
-      <div class="node-row" :class="{'active': activePath === item.path}" @click="toggle">
-        <i v-if="item.is_dir" class="fa icon-folder" :class="isOpen ? 'fa-folder-open text-warning' : 'fa-folder text-warning'"></i>
-        <i v-else class="fa icon-file" :class="getFileIcon(item.name)"></i>
-        <span class="node-name">{{ item.name }}</span>
+      <div class="node-row" :class="{'active': activePath === item.path}" @click="toggle" style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.84rem; color: #f8fafc !important;">
+        <i v-if="item.is_dir" class="fa icon-folder" :class="isOpen ? 'fa-folder-open' : 'fa-folder'" style="font-size: 1rem; color: #f59e0b !important;"></i>
+        <i v-else class="fa icon-file" :class="getFileIcon(item.name)" style="font-size: 0.9rem;"></i>
+        <span class="node-name" style="color: #f8fafc !important; font-size: 0.84rem; font-weight: 500; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;">{{ item.name }}</span>
       </div>
-      <div v-if="item.is_dir && isOpen" class="node-children">
+      <div v-if="item.is_dir && isOpen" class="node-children" style="padding-left: 14px;">
         <tree-item v-for="child in item.children" :key="child.path" :item="child" :active-path="activePath" @open-file="$emit('open-file', $event)"></tree-item>
       </div>
     </div>
@@ -493,7 +493,38 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+/* Custom Dark Scrollbars */
+.tree-viewport::-webkit-scrollbar,
+.chat-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+.tree-viewport::-webkit-scrollbar-track,
+.chat-viewport::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.tree-viewport::-webkit-scrollbar-thumb,
+.chat-viewport::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+.tree-viewport::-webkit-scrollbar-thumb:hover,
+.chat-viewport::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.node-row:hover {
+  background: #1e293b !important;
+  color: #ffffff !important;
+}
+.node-row.active {
+  background: rgba(99, 102, 241, 0.3) !important;
+  color: #818cf8 !important;
+}
+.node-row.active .node-name {
+  color: #818cf8 !important;
+}
+
 .web-ide-wrapper {
   width: 100%;
   height: calc(100vh - 65px);
