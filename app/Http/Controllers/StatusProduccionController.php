@@ -348,28 +348,7 @@ class StatusProduccionController extends Controller
 
         $orden = Ordentrabajo::find($status->idorden);
         if ($orden) {
-            if ($request->estado == $this->ESTADO_CAMBIO) {
-                $orden->produccion = 'EM';
-                $orden->save();
-                self::cambiarEstadoPedido($orden, 2, [0, 1]);
-            } elseif ($request->estado == $this->ULTIMO_ESTADO) {
-                $orden->produccion = 'E';
-                $orden->save();
-                self::cambiarEstadoPedido($orden, 3, [1, 2]);
-            } else {
-                // Return to "En Produccion" if not in terminal/special states, EXCEPT if order or parent pedido is Pendiente ('P')
-                if ($orden->produccion !== 'ENP' && $orden->produccion !== 'P') {
-                    $isPendingPedido = \App\LineaComprobante::where('ordentrabajo_id', $orden->id)
-                        ->whereHas('comprobante', function ($q) {
-                            $q->where('tipo', 'pedido')->whereIn('estado', [0, 1]);
-                        })->exists();
-
-                    if (!$isPendingPedido) {
-                        $orden->produccion = 'ENP';
-                        $orden->save();
-                    }
-                }
-            }
+            // Note: Per requirements, changing stage in status produccion does NOT alter $orden->produccion status.
 
             // If moving away from 'Terminado', finalize the CuentaPorPagar for all operarias
             if (stripos((string)$estadoAnterior, 'Terminado') !== false && stripos((string)$request->estado, 'Terminado') === false) {
@@ -395,11 +374,6 @@ class StatusProduccionController extends Controller
                     }
                 }
             }
-        }
-
-        if (isset($orden) && $orden && $orden->linea && $orden->linea->comprobante_id) {
-            $otController = new \App\Http\Controllers\OrdentrabajoController();
-            $otController->verificarYActualizarPedido($orden->linea->comprobante_id);
         }
 
         return response()->json(['success' => true, 'status' => $status]);
