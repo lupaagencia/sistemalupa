@@ -107,9 +107,14 @@
                 <div class="agent-status"><span class="pulse-dot"></span> Pair Programmer Activo</div>
               </div>
             </div>
-            <button class="btn-icon-subtle" @click="clearChat" title="Limpiar chat">
-              <i class="fa fa-trash-o"></i>
-            </button>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button class="btn-icon-subtle" @click="configureApiKey" :title="geminiApiKey ? 'API Key Gemini configurada' : 'Configurar API Key Gemini'">
+                <i class="fa fa-key" :style="{ color: geminiApiKey ? '#10b981' : '#f59e0b' }"></i>
+              </button>
+              <button class="btn-icon-subtle" @click="clearChat" title="Limpiar chat">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
           </div>
 
           <!-- Messages Stream -->
@@ -226,7 +231,8 @@ export default {
         }
       ],
       userPrompt: '',
-      aiThinking: false
+      aiThinking: false,
+      geminiApiKey: ''
     };
   },
   watch: {
@@ -235,6 +241,7 @@ export default {
     }
   },
   mounted() {
+    this.geminiApiKey = localStorage.getItem('antigravity_gemini_key') || '';
     this.fetchTree();
     this.loadMonacoScript();
     window.addEventListener('keydown', this.handleGlobalKeydown);
@@ -440,7 +447,8 @@ export default {
         prompt,
         active_file: this.activeFilePath,
         file_content: this.editor ? this.editor.getValue() : '',
-        selected_code: selectedCode
+        selected_code: selectedCode,
+        api_key: this.geminiApiKey
       })
       .then(res => {
         if (res.data.status === 'success') {
@@ -495,6 +503,30 @@ export default {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ];
+    },
+    configureApiKey() {
+      swal({
+        title: '🔑 Configurar Gemini API Key',
+        text: 'Ingresa tu API Key de Google Gemini para habilitar el procesamiento IA autónomo:',
+        content: {
+          element: 'input',
+          attributes: {
+            placeholder: 'AIzaSy...',
+            type: 'password',
+            value: this.geminiApiKey
+          }
+        },
+        buttons: {
+          cancel: 'Cancelar',
+          confirm: { text: 'Guardar Key', closeModal: true }
+        }
+      }).then(value => {
+        if (value !== null && value !== undefined) {
+          this.geminiApiKey = value.trim();
+          localStorage.setItem('antigravity_gemini_key', this.geminiApiKey);
+          swal('API Key Guardada', 'Tu clave de Gemini API se ha guardado localmente en tu navegador.', 'success');
+        }
+      });
     },
     formatMessageText(text) {
       if (!text) return '';

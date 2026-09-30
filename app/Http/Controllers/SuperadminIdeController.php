@@ -244,9 +244,28 @@ class SuperadminIdeController extends Controller
         $activeFile = $request->input('active_file');
         $fileContent = $request->input('file_content');
         $selectedCode = $request->input('selected_code');
+        $userApiKey = trim($request->input('api_key', ''));
 
         if (empty($prompt)) {
             return response()->json(['status' => 'error', 'message' => 'El prompt no puede estar vacío.'], 400);
+        }
+
+        // Direct command parsing (e.g., "abrir Pedido.vue", "desplegar", "guardar")
+        $pLower = strtolower($prompt);
+
+        if (strpos($pLower, 'abrir ') === 0 || strpos($pLower, 'open ') === 0) {
+            $searchTarget = trim(substr($prompt, strpos($prompt, ' ') + 1));
+            $foundFile = $this->findTargetFileForPrompt($searchTarget, '');
+            if (File::exists(base_path($foundFile))) {
+                return response()->json($this->sanitizeUtf8([
+                    'status' => 'success',
+                    'agent' => 'Antigravity Agent',
+                    'response' => "⚡ He localizado y abierto el archivo `{$foundFile}` en el editor.",
+                    'applied' => false,
+                    'target_file' => $foundFile,
+                    'modified_code' => null
+                ]));
+            }
         }
 
         // Auto-detect target file if no active file is open
@@ -281,47 +300,63 @@ class SuperadminIdeController extends Controller
         }
 
         $systemContext .= "\nINSTRUCCIONES DE RESPUESTA AGENTICA:\n";
-        $systemContext .= "1. Analiza el problema o requerimiento del usuario.\n";
-        $systemContext .= "2. Explica qué cambios se realizaron en el archivo {$targetFile} en español en formato Markdown.\n";
-        $systemContext .= "3. Proporciona el CÓDIGO COMPLETO FINAL del archivo {$targetFile} encerrado en un bloque de código ``` (ej. ```php o ```vue o ```javascript) para que el sistema lo aplique y guarde automáticamente en el servidor y GitHub.\n";
+        $systemContext .= "1. Analiza cuidadosamente la solicitud del usuario.\n";
+        $systemContext .= "2. Explica qué cambios específicos se deben realizar o se realizaron en {$targetFile} en español en formato Markdown.\n";
+        $systemContext .= "3. Si la solicitud requiere modificar código, proporciona el CÓDIGO COMPLETO FINAL actualizado del archivo {$targetFile} encerrado en un bloque de código ``` (ej. ```php o ```vue o ```javascript).\n";
 
-        $apiKey = env('GEMINI_API_KEY') ?: env('GOOGLE_API_KEY');
+        $apiKey = $userApiKey ?: env('GEMINI_API_KEY') ?: env('GOOGLE_API_KEY');
         $replyText = "";
 
         if ($apiKey) {
-            try {
-                $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . $apiKey;
-                $payload = [
-                    "contents" => [
-                        [
-                            "parts" => [
-                                ["text" => $systemContext . "\n\nSolicitud del usuario: " . $prompt]
+            $models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+            
+            foreach ($models as $model) {
+                try {
+                    $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key=" . $apiKey;
+                    $payload = [
+                        "contents" => [
+                            [
+                                "parts" => [
+                                    ["text" => $systemContext . "\n\nSolicitud del usuario: " . $prompt]
+                                ]
                             ]
                         ]
-                    ]
-                ];
+                    ];
 
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-                curl_setopt($ch, CURLOPT_TIMEOUT, 35);
-                $res = curl_exec($ch);
-                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+                    $res = curl_exec($ch);
+                    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    curl_close($ch);
 
-                if ($httpCode === 200 && $res) {
-                    $data = json_decode($res, true);
-                    $replyText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "";
+                    if ($httpCode === 200 && $res) {
+                        $data = json_decode($res, true);
+                        $fetchedText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "";
+                        if (!empty($fetchedText)) {
+                            $replyText = $fetchedText;
+                            break;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Error consultando Gemini API model {$model}: " . $e->getMessage());
                 }
-            } catch (\Exception $e) {
-                Log::error("Error consultando Gemini API: " . $e->getMessage());
             }
         }
 
         if (empty($replyText)) {
-            $replyText = $this->generateAgentResponseFallback($prompt, $targetFile, $fileContent, $selectedCode);
+            if (empty($apiKey)) {
+                $replyText = "### ⚡ Antigravity Agent\n\n" .
+                             "Para activar el procesamiento con Inteligencia Artificial autónoma, por favor haz clic en el ícono de la llave **🔑 Clave API** en la barra superior del chat y configura tu **Gemini API Key** de Google.\n\n" .
+                             "**Comandos directos sin API Key**:\n" .
+                             "- `abrir <archivo>` (ej: *abrir Pedido.vue*, *abrir AsistenciaController.php*)\n" .
+                             "- Haz clic en **Desplegar FTP** en la barra superior para subir los cambios al servidor en vivo.";
+            } else {
+                $replyText = "⚠️ **Error de comunicación con Google Gemini API**\n\nLa API Key proporcionada no respondió correctamente o alcanzó el límite de solicitudes. Por favor verifica tu Gemini API Key haciiendo clic en el botón 🔑 en el chat.";
+            }
         }
 
         $modifiedCode = $this->extractCodeFromResponse($replyText);
@@ -394,16 +429,9 @@ class SuperadminIdeController extends Controller
 
     private function generateAgentResponseFallback($prompt, $targetFile, $fileContent, $selectedCode)
     {
-        $fileInfo = $targetFile ? "en el archivo `{$targetFile}`" : "en tu espacio de trabajo";
-        return "### ⚡ Antigravity AI Agent\n\n" .
-               "He localizado automáticamente el archivo relacionado: `{$targetFile}` para procesar tu solicitud: *\"{$prompt}\"*.\n\n" .
-               "**Ejecución de Tareas Autónomas**:\n" .
-               "1. Búsqueda y análisis del componente `{$targetFile}`.\n" .
-               "2. Aplicación de las reglas de arquitectura del sistema (`AGENTS.md`).\n" .
-               "3. Respaldo de seguridad generado en `storage/ide_backups/`.\n" .
-               "4. Verificación de sintaxis y sincronización automática con GitHub.\n\n" .
-               "El archivo `{$targetFile}` se ha abierto en tu editor y las modificaciones han sido guardadas y aplicadas automáticamente en el sistema.";
+        return $this->aiPrompt(request());
     }
+
 
     private function extractCodeFromResponse($text)
     {
