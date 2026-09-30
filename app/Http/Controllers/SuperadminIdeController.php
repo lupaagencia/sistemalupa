@@ -306,9 +306,10 @@ class SuperadminIdeController extends Controller
 
         $apiKey = $userApiKey ?: env('GEMINI_API_KEY') ?: env('GOOGLE_API_KEY');
         $replyText = "";
+        $lastError = "";
 
         if ($apiKey) {
-            $models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+            $models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash-latest', 'gemini-pro'];
             
             foreach ($models as $model) {
                 try {
@@ -329,19 +330,36 @@ class SuperadminIdeController extends Controller
                     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
                     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                    
                     $res = curl_exec($ch);
+                    $curlErr = curl_error($ch);
                     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                     curl_close($ch);
 
-                    if ($httpCode === 200 && $res) {
+                    if ($curlErr) {
+                        $lastError = "cURL error: " . $curlErr;
+                        Log::error("cURL Gemini Error ({$model}): " . $curlErr);
+                        continue;
+                    }
+
+                    if ($res) {
                         $data = json_decode($res, true);
-                        $fetchedText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "";
-                        if (!empty($fetchedText)) {
-                            $replyText = $fetchedText;
-                            break;
+                        if ($httpCode === 200) {
+                            $fetchedText = $data['candidates'][0]['content']['parts'][0]['text'] ?? "";
+                            if (!empty($fetchedText)) {
+                                $replyText = $fetchedText;
+                                break;
+                            }
+                        } else {
+                            $apiErrMsg = $data['error']['message'] ?? ("HTTP Code " . $httpCode);
+                            $lastError = "Google API Error ({$httpCode}): " . $apiErrMsg;
+                            Log::warning("Gemini API Error ({$model} - {$httpCode}): " . $apiErrMsg);
                         }
                     }
                 } catch (\Exception $e) {
+                    $lastError = $e->getMessage();
                     Log::error("Error consultando Gemini API model {$model}: " . $e->getMessage());
                 }
             }
@@ -355,7 +373,8 @@ class SuperadminIdeController extends Controller
                              "- `abrir <archivo>` (ej: *abrir Pedido.vue*, *abrir AsistenciaController.php*)\n" .
                              "- Haz clic en **Desplegar FTP** en la barra superior para subir los cambios al servidor en vivo.";
             } else {
-                $replyText = "⚠️ **Error de comunicación con Google Gemini API**\n\nLa API Key proporcionada no respondió correctamente o alcanzó el límite de solicitudes. Por favor verifica tu Gemini API Key haciiendo clic en el botón 🔑 en el chat.";
+                $errDetail = !empty($lastError) ? "\n\n**Detalle del error**: `" . $lastError . "`" : "";
+                $replyText = "⚠️ **Error de comunicación con Google Gemini API**\n\nLa API Key proporcionada no respondió correctamente." . $errDetail . "\n\nPor favor verifica tu Gemini API Key en [Google AI Studio](https://aistudio.google.com/app/apikey) o reingrésala haciendo clic en el botón 🔑 en el chat.";
             }
         }
 
