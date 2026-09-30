@@ -159,6 +159,36 @@
 
       </div>
     </div>
+
+    <!-- API Key Configuration Modal -->
+    <div v-if="showApiKeyModal" class="api-key-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px;" @click.self="showApiKeyModal = false">
+      <div class="api-key-modal-card" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; width: 100%; max-width: 500px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4); color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h3 style="margin: 0; font-size: 1.15rem; font-weight: 600; color: #f8fafc; display: flex; align-items: center; gap: 8px;">
+            <span style="color: #f59e0b;">🔑</span> Configurar Gemini API Key
+          </h3>
+          <button @click="showApiKeyModal = false" style="background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; line-height: 1;">&times;</button>
+        </div>
+        
+        <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 16px; line-height: 1.5;">
+          Ingresa tu API Key de <strong>Google Gemini</strong> para habilitar el procesamiento IA autónomo en el Web IDE:
+        </p>
+
+        <div style="margin-bottom: 20px;">
+          <input type="password" v-model="tempApiKey" @keyup.enter="saveApiKey" placeholder="Pega tu API Key (AIzaSy...)" style="width: 100%; background: #0f172a; border: 1px solid #475569; border-radius: 6px; padding: 10px 14px; color: #f8fafc; font-size: 0.92rem; outline: none; transition: border 0.2s;" autofocus />
+          <div style="margin-top: 8px; font-size: 0.78rem; color: #64748b;">
+            💡 Se almacena únicamente en la memoria de tu navegador de forma segura.
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button @click="showApiKeyModal = false" style="background: #334155; border: none; color: #cbd5e1; padding: 8px 16px; border-radius: 6px; font-size: 0.86rem; cursor: pointer; font-weight: 500;">Cancelar</button>
+          <button @click="saveApiKey" style="background: #2563eb; border: none; color: #ffffff; padding: 8px 18px; border-radius: 6px; font-size: 0.86rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <i class="fa fa-save"></i> Guardar Key
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -232,7 +262,9 @@ export default {
       ],
       userPrompt: '',
       aiThinking: false,
-      geminiApiKey: ''
+      geminiApiKey: '',
+      showApiKeyModal: false,
+      tempApiKey: ''
     };
   },
   watch: {
@@ -505,28 +537,18 @@ export default {
       ];
     },
     configureApiKey() {
-      swal({
-        title: '🔑 Configurar Gemini API Key',
-        text: 'Ingresa tu API Key de Google Gemini para habilitar el procesamiento IA autónomo:',
-        content: {
-          element: 'input',
-          attributes: {
-            placeholder: 'AIzaSy...',
-            type: 'password',
-            value: this.geminiApiKey
-          }
-        },
-        buttons: {
-          cancel: 'Cancelar',
-          confirm: { text: 'Guardar Key', closeModal: true }
-        }
-      }).then(value => {
-        if (value !== null && value !== undefined) {
-          this.geminiApiKey = value.trim();
-          localStorage.setItem('antigravity_gemini_key', this.geminiApiKey);
-          swal('API Key Guardada', 'Tu clave de Gemini API se ha guardado localmente en tu navegador.', 'success');
-        }
-      });
+      this.tempApiKey = this.geminiApiKey;
+      this.showApiKeyModal = true;
+    },
+    saveApiKey() {
+      this.geminiApiKey = this.tempApiKey.trim();
+      localStorage.setItem('antigravity_gemini_key', this.geminiApiKey);
+      this.showApiKeyModal = false;
+      if (typeof toast !== 'undefined' && toast.fire) {
+        toast.fire({ type: 'success', title: 'API Key Guardada en navegador' });
+      } else {
+        swal('API Key Guardada', 'Tu clave de Gemini API se ha guardado localmente en tu navegador.', 'success');
+      }
     },
     formatMessageText(text) {
       if (!text) return '';
