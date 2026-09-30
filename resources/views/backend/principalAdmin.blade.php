@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Sistema de control Empaques Lupa">
-    <meta name="author" content="empaqueslupa.com">
+    <meta name="author" content="lupack.co">
     <meta name="keyword" content="Sistema de control Empaques Lupa">
     <link rel="shortcut icon" href="img/favicon.png">
     <title>Sistema Lupa</title>
@@ -294,8 +294,8 @@
         }
     </style>
     <footer class="app-footer">
-        <span><a href="http://www.empaqueslupa.com/">Lupa</a> &copy; 2021</span>
-        <span class="ml-auto">Desarrollado por <a href="http://www.empaqueslupa.com/">Lupa</a></span>
+        <span><a href="https://lupack.co">Lupa</a> &copy; 2026</span>
+        <span class="ml-auto">Desarrollado por <a href="https://lupack.co">Lupa</a></span>
     </footer>
 
 

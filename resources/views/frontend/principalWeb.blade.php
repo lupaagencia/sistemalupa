@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description"
         content="Realizamos empaques ecológicos para todo tipo de producto, Comidas, Alimentos empacados, Productos terminados">
-    <meta name="author" content="empaqueslupa.com">
+    <meta name="author" content="lupack.co">
     <meta name="keyword" content="Empaques ecológicos, Bolsas, etiquetas, etiquetas adhesivas para producto">
     <link rel="shortcut icon" href="img/favicon.png">
     <title>Empaques Lupa</title>

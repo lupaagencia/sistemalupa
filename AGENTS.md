@@ -5,7 +5,7 @@
 Whenever the user asks to "subir archivos", "sube los archivos", "desplegar", "subir al FTP", or similar commands, use the stored FTP credentials to upload all updated project files to the production server.
 
 ### FTP Credentials
-- **Host**: `sistema.empaqueslupa.com` (or `ftp.empaqueslupa.com`)
+- **Host**: `sistema.lupack.co` (or `lupack.co`, `sistema.empaqueslupa.com`, `5.9.79.107`)
 - **Port**: 21
 - **Username**: `empaque1`
 - **Password**: `3ZCwdN$AX*y4wEC`
@@ -17,7 +17,7 @@ Whenever the user asks to "subir archivos", "sube los archivos", "desplegar", "s
 
 ### Rules for Uploading
 1. When the user triggers the command **"subir archivos"** or **"sube los archivos"**, automatically detect all files that were modified during the session (PHP controllers, Vue components, compiled `public/js/app.js`, Blade views, migrations, etc.).
-2. Execute a Python script using `ftplib` to connect to `sistema.empaqueslupa.com` on port 21, login with user `empaque1` and password `3ZCwdN$AX*y4wEC`, and upload the files to `/sistema.empaqueslupa.com/<relative_path>`.
+2. Execute a Python script using `ftplib` to connect to `sistema.lupack.co` (or `5.9.79.107` / `sistema.empaqueslupa.com`) on port 21, login with user `empaque1` and password `3ZCwdN$AX*y4wEC`, and upload the files to `/sistema.empaqueslupa.com/<relative_path>`.
 3. Report the result of the upload to the user.
 
 ## Automatic GitHub Synchronization Rules

@@ -1,7 +1,7 @@
 import ftplib
 import os
 
-hosts = ["sistema.empaqueslupa.com", "ftp.empaqueslupa.com", "5.9.79.107"]
+hosts = ["sistema.lupack.co", "lupack.co", "ftp.lupack.co", "sistema.empaqueslupa.com", "ftp.empaqueslupa.com", "5.9.79.107"]
 FTP_PORT = 21
 FTP_USER = "empaque1"
 FTP_PASS = "3ZCwdN$AX*y4wEC"
