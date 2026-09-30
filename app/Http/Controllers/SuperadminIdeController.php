@@ -412,4 +412,95 @@ class SuperadminIdeController extends Controller
         }
         return null;
     }
+
+    /**
+     * Build directory tree recursively.
+     */
+    private function buildTree($dir, $basePath, $depth = 0, $maxDepth = 10)
+    {
+        if ($depth >= $maxDepth) {
+            return [];
+        }
+
+        $items = [];
+        $files = @scandir($dir);
+        if (!$files) {
+            return [];
+        }
+
+        $ignoredDirs = ['.git', 'node_modules', 'vendor', 'storage/framework', 'storage/logs', '.idea', '.vscode'];
+
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $fullPath = $dir . DIRECTORY_SEPARATOR . $file;
+            $realBase = realpath($basePath) ?: $basePath;
+            $realFull = realpath($fullPath) ?: $fullPath;
+
+            $relativePath = str_replace($realBase . DIRECTORY_SEPARATOR, '', $realFull);
+            $relativePath = str_replace('\\', '/', $relativePath);
+
+            // Check ignored dirs
+            $isIgnored = false;
+            foreach ($ignoredDirs as $ignored) {
+                if ($file === $ignored || strpos($relativePath, $ignored) === 0) {
+                    $isIgnored = true;
+                    break;
+                }
+            }
+
+            if ($isIgnored) {
+                continue;
+            }
+
+            $isDir = is_dir($fullPath);
+            $item = [
+                'name' => $file,
+                'path' => $relativePath,
+                'type' => $isDir ? 'dir' : 'file',
+                'extension' => $isDir ? '' : strtolower(pathinfo($file, PATHINFO_EXTENSION)),
+            ];
+
+            if ($isDir) {
+                $children = $this->buildTree($fullPath, $basePath, $depth + 1, $maxDepth);
+                if (!empty($children)) {
+                    $item['children'] = $children;
+                }
+            }
+
+            $items[] = $item;
+        }
+
+        // Sort: directories first, then files alphabetically
+        usort($items, function ($a, $b) {
+            if ($a['type'] === $b['type']) {
+                return strcasecmp($a['name'], $b['name']);
+            }
+            return $a['type'] === 'dir' ? -1 : 1;
+        });
+
+        return $items;
+    }
+
+    /**
+     * Recursively sanitize strings to UTF-8 for JSON encoding.
+     */
+    private function sanitizeUtf8($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->sanitizeUtf8($value);
+            }
+            return $data;
+        } elseif (is_string($data)) {
+            if (!mb_check_encoding($data, 'UTF-8')) {
+                return mb_convert_encoding($data, 'UTF-8', 'ISO-8859-1, Windows-1252, ASCII');
+            }
+            return $data;
+        }
+        return $data;
+    }
 }
+
